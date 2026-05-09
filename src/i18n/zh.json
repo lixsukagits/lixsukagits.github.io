@@ -1,0 +1,112 @@
+{
+  "nav": {
+    "home": "首页",
+    "about": "关于我",
+    "skills": "技能",
+    "achievement": "成就",
+    "education": "教育",
+    "experience": "经历",
+    "certificate": "证书",
+    "gallery": "相册",
+    "cv": "简历",
+    "contact": "联系",
+    "timeline": "时间线",
+    "now": "现在"
+  },
+  "hero": {
+    "greeting": "你好，我是",
+    "role": "IT爱好者 · 网页开发者 · 职高学生",
+    "cta_contact": "联系我",
+    "cta_portfolio": "查看作品集",
+    "open_to": "欢迎合作"
+  },
+  "about": {
+    "title": "关于我",
+    "subtitle": "Felix是谁？",
+    "bio1": "你好！我是Felix Raymond Tan，就读于棉兰SMK Telkom 2的十一年级学生，专业为计算机与网络工程。2009年6月27日出生于棉兰，我是三兄弟中的长子，来自闽南裔华人佛教家庭。",
+    "bio2": "我是一位IT爱好者，对网页开发、网络安全和物联网充满热情。目前正在准备申请中国奖学金，同时通过比赛、组织活动和个人项目不断提升自己的能力。",
+    "bio3": "我相信知识没有边界——这就是为什么我正在学习普通话（HSK 3级），并积极参与各种培训项目，拓宽我在IT领域的视野。",
+    "stats_achievements": "成就",
+    "stats_experience": "组织",
+    "stats_projects": "项目",
+    "stats_certificates": "证书"
+  },
+  "skills": {
+    "title": "技能",
+    "subtitle": "我擅长什么"
+  },
+  "achievement": {
+    "title": "成就",
+    "subtitle": "我取得的成果"
+  },
+  "education": {
+    "title": "教育",
+    "subtitle": "我的学习经历",
+    "current": "在读"
+  },
+  "experience": {
+    "title": "经历",
+    "subtitle": "我的经历"
+  },
+  "certificate": {
+    "title": "证书",
+    "subtitle": "我能力的证明",
+    "filter_all": "全部",
+    "filter_competition": "比赛",
+    "filter_training": "培训",
+    "filter_organization": "组织",
+    "search_placeholder": "搜索证书...",
+    "view": "查看",
+    "total": "显示 {{count}} 张证书"
+  },
+  "gallery": {
+    "title": "相册",
+    "subtitle": "珍贵瞬间"
+  },
+  "cv": {
+    "title": "个人简历",
+    "subtitle": "专业履历",
+    "download": "下载简历",
+    "print": "打印"
+  },
+  "contact": {
+    "title": "联系我",
+    "subtitle": "保持联系",
+    "desc": "有问题、想合作，或者只是想打个招呼？我随时欢迎！"
+  },
+  "timeline": {
+    "title": "人生时间线",
+    "subtitle": "Felix的旅程"
+  },
+  "now": {
+    "title": "现在",
+    "subtitle": "我目前正在做什么",
+    "updated": "更新于"
+  },
+  "footer": {
+    "made": "由 Felix Raymond 用 ❤️ 制作",
+    "rights": "版权所有"
+  },
+  "common": {
+    "contact_me": "联系我",
+    "read_more": "阅读更多",
+    "back": "返回",
+    "loading": "加载中...",
+    "search": "搜索",
+    "close": "关闭"
+  },
+  "welcome": {
+    "title": "欢迎！",
+    "desc": "你叫什么名字？",
+    "placeholder": "请输入你的名字...",
+    "cta": "开始",
+    "error": "名字不能为空"
+  },
+  "cmd": {
+    "placeholder": "输入命令或搜索页面...",
+    "pages": "页面",
+    "actions": "操作",
+    "toggle_theme": "切换主题",
+    "no_result": "没有找到"
+  }
+}

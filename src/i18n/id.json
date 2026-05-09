@@ -1,0 +1,112 @@
+{
+  "nav": {
+    "home": "Beranda",
+    "about": "Tentang",
+    "skills": "Keterampilan",
+    "achievement": "Prestasi",
+    "education": "Pendidikan",
+    "experience": "Pengalaman",
+    "certificate": "Sertifikat",
+    "gallery": "Galeri",
+    "cv": "CV",
+    "contact": "Kontak",
+    "timeline": "Timeline",
+    "now": "Sekarang"
+  },
+  "hero": {
+    "greeting": "Halo, saya",
+    "role": "IT Enthusiast · Web Developer · Siswa SMK",
+    "cta_contact": "Hubungi Saya",
+    "cta_portfolio": "Lihat Portfolio",
+    "open_to": "Terbuka untuk kolaborasi"
+  },
+  "about": {
+    "title": "Tentang Saya",
+    "subtitle": "Siapa Felix?",
+    "bio1": "Halo! Saya Felix Raymond Tan, seorang pelajar kelas XI jurusan Teknik Komputer dan Jaringan di SMK Telkom 2 Medan. Lahir di Medan, 27 Juni 2009, saya adalah anak pertama dari tiga bersaudara dari keluarga Tionghoa-Hokkien yang memeluk agama Buddha.",
+    "bio2": "Saya seorang IT Enthusiast yang sangat tertarik dengan dunia teknologi, khususnya web development, keamanan siber, dan IoT. Saat ini saya sedang mempersiapkan diri untuk meraih beasiswa kuliah di China, sambil terus mengasah kemampuan melalui kompetisi, organisasi, dan proyek mandiri.",
+    "bio3": "Saya percaya bahwa ilmu tidak mengenal batas — itulah mengapa saya belajar Mandarin (HSK 3) dan aktif mengikuti berbagai pelatihan untuk memperluas wawasan saya di bidang IT.",
+    "stats_achievements": "Prestasi",
+    "stats_experience": "Organisasi",
+    "stats_projects": "Proyek",
+    "stats_certificates": "Sertifikat"
+  },
+  "skills": {
+    "title": "Keterampilan",
+    "subtitle": "Apa yang Saya Kuasai"
+  },
+  "achievement": {
+    "title": "Prestasi",
+    "subtitle": "Apa yang Telah Saya Raih"
+  },
+  "education": {
+    "title": "Pendidikan",
+    "subtitle": "Di Mana Saya Belajar",
+    "current": "Aktif"
+  },
+  "experience": {
+    "title": "Pengalaman",
+    "subtitle": "Yang Telah Saya Jalani"
+  },
+  "certificate": {
+    "title": "Sertifikat",
+    "subtitle": "Bukti Kompetensi Saya",
+    "filter_all": "Semua",
+    "filter_competition": "Kompetisi",
+    "filter_training": "Pelatihan",
+    "filter_organization": "Organisasi",
+    "search_placeholder": "Cari sertifikat...",
+    "view": "Lihat",
+    "total": "Menampilkan {{count}} sertifikat"
+  },
+  "gallery": {
+    "title": "Galeri",
+    "subtitle": "Momen Berharga"
+  },
+  "cv": {
+    "title": "Curriculum Vitae",
+    "subtitle": "Resume Profesional",
+    "download": "Download CV",
+    "print": "Cetak"
+  },
+  "contact": {
+    "title": "Kontak",
+    "subtitle": "Mari Terhubung",
+    "desc": "Punya pertanyaan, ingin berkolaborasi, atau sekadar ingin menyapa? Saya terbuka untuk semua!"
+  },
+  "timeline": {
+    "title": "Timeline Hidup",
+    "subtitle": "Perjalanan Felix"
+  },
+  "now": {
+    "title": "Sekarang",
+    "subtitle": "Apa yang Sedang Saya Kerjakan",
+    "updated": "Diperbarui"
+  },
+  "footer": {
+    "made": "Dibuat dengan ❤️ oleh Felix Raymond",
+    "rights": "Hak cipta dilindungi"
+  },
+  "common": {
+    "contact_me": "Hubungi Saya",
+    "read_more": "Baca Selengkapnya",
+    "back": "Kembali",
+    "loading": "Memuat...",
+    "search": "Cari",
+    "close": "Tutup"
+  },
+  "welcome": {
+    "title": "Selamat Datang!",
+    "desc": "Siapa nama kamu?",
+    "placeholder": "Masukkan nama kamu...",
+    "cta": "Mulai",
+    "error": "Nama tidak boleh kosong"
+  },
+  "cmd": {
+    "placeholder": "Ketik perintah atau cari halaman...",
+    "pages": "Halaman",
+    "actions": "Aksi",
+    "toggle_theme": "Ganti Tema",
+    "no_result": "Tidak ada hasil untuk"
+  }
+}

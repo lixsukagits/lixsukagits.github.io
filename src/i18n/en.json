@@ -1,0 +1,112 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "skills": "Skills",
+    "achievement": "Achievements",
+    "education": "Education",
+    "experience": "Experience",
+    "certificate": "Certificates",
+    "gallery": "Gallery",
+    "cv": "CV",
+    "contact": "Contact",
+    "timeline": "Timeline",
+    "now": "Now"
+  },
+  "hero": {
+    "greeting": "Hi, I'm",
+    "role": "IT Enthusiast · Web Developer · Vocational Student",
+    "cta_contact": "Contact Me",
+    "cta_portfolio": "View Portfolio",
+    "open_to": "Open to collaboration"
+  },
+  "about": {
+    "title": "About Me",
+    "subtitle": "Who is Felix?",
+    "bio1": "Hello! I'm Felix Raymond Tan, an 11th-grade student majoring in Computer and Network Engineering at SMK Telkom 2 Medan. Born in Medan on June 27, 2009, I am the eldest of three siblings from a Hokkien-Chinese Buddhist family.",
+    "bio2": "I'm an IT Enthusiast deeply passionate about web development, cybersecurity, and IoT. Currently preparing to pursue a scholarship in China, while continuously honing my skills through competitions, organizations, and personal projects.",
+    "bio3": "I believe knowledge has no boundaries — that's why I'm learning Mandarin (HSK 3) and actively joining various training programs to broaden my IT horizons.",
+    "stats_achievements": "Achievements",
+    "stats_experience": "Organizations",
+    "stats_projects": "Projects",
+    "stats_certificates": "Certificates"
+  },
+  "skills": {
+    "title": "Skills",
+    "subtitle": "What I'm Good At"
+  },
+  "achievement": {
+    "title": "Achievements",
+    "subtitle": "What I've Accomplished"
+  },
+  "education": {
+    "title": "Education",
+    "subtitle": "Where I've Learned",
+    "current": "Active"
+  },
+  "experience": {
+    "title": "Experience",
+    "subtitle": "What I've Been Through"
+  },
+  "certificate": {
+    "title": "Certificates",
+    "subtitle": "Proof of My Competence",
+    "filter_all": "All",
+    "filter_competition": "Competition",
+    "filter_training": "Training",
+    "filter_organization": "Organization",
+    "search_placeholder": "Search certificates...",
+    "view": "View",
+    "total": "Showing {{count}} certificates"
+  },
+  "gallery": {
+    "title": "Gallery",
+    "subtitle": "Precious Moments"
+  },
+  "cv": {
+    "title": "Curriculum Vitae",
+    "subtitle": "Professional Resume",
+    "download": "Download CV",
+    "print": "Print"
+  },
+  "contact": {
+    "title": "Contact",
+    "subtitle": "Let's Connect",
+    "desc": "Have a question, want to collaborate, or just want to say hi? I'm open to all!"
+  },
+  "timeline": {
+    "title": "Life Timeline",
+    "subtitle": "Felix's Journey"
+  },
+  "now": {
+    "title": "Now",
+    "subtitle": "What I'm Currently Working On",
+    "updated": "Updated"
+  },
+  "footer": {
+    "made": "Made with ❤️ by Felix Raymond",
+    "rights": "All rights reserved"
+  },
+  "common": {
+    "contact_me": "Contact Me",
+    "read_more": "Read More",
+    "back": "Back",
+    "loading": "Loading...",
+    "search": "Search",
+    "close": "Close"
+  },
+  "welcome": {
+    "title": "Welcome!",
+    "desc": "What's your name?",
+    "placeholder": "Enter your name...",
+    "cta": "Start",
+    "error": "Name cannot be empty"
+  },
+  "cmd": {
+    "placeholder": "Type a command or search pages...",
+    "pages": "Pages",
+    "actions": "Actions",
+    "toggle_theme": "Toggle Theme",
+    "no_result": "No results for"
+  }
+}
