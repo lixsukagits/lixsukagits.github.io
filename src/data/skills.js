@@ -8,9 +8,10 @@ export const skills = [
     tag: 'Frontend',
     tagColor: 'bg-blue-50 text-blue-600',
     icon: '💻',
-    img: 'https://asset.kompas.com/crops/xaWxxmvq-zWOefkfOiNgs_SfdUI=/0x0:800x533/1200x800/data/photo/2022/10/09/634237bd17f3f.jpg',
-    desc: 'HTML, CSS, JavaScript (Fullstack)',
-    tools: ['HTML', 'CSS', 'JavaScript', 'React', 'Tailwind CSS'],
+    img: 'https://placehold.co/600x400/e8ecff/3758F9?text=Web+Dev',
+    desc: 'HTML, CSS, JavaScript (Fullstack) — React, Node.js, Tailwind CSS',
+    descZh: 'HTML、CSS、JavaScript（全栈）— React、Node.js、Tailwind CSS',
+    tools: ['HTML', 'CSS', 'JavaScript', 'React', 'Node.js', 'Tailwind CSS'],
   },
   {
     id: 2,
@@ -21,8 +22,9 @@ export const skills = [
     tag: 'Kreatif',
     tagColor: 'bg-pink-50 text-pink-600',
     icon: '📸',
-    img: 'https://www.adorama.com/alc/wp-content/uploads/2021/04/photography-camera-learning-feature.jpg',
+    img: 'https://placehold.co/600x400/fbeaf0/86198f?text=Photography',
     desc: 'Komposisi, Editing, Portrait & Event Photography',
+    descZh: '构图、后期处理、人像与活动摄影',
     tools: ['Lightroom', 'Snapseed', 'Canva'],
   },
   {
@@ -34,8 +36,9 @@ export const skills = [
     tag: 'Hardware',
     tagColor: 'bg-green-50 text-green-600',
     icon: '🔌',
-    img: 'https://thumbs.dreamstime.com/b/internet-things-iot-concept-businessman-click-symbol-connected-icons-typical-%C3%A2%E2%82%AC-intelligent-house-car-70990334.jpg',
+    img: 'https://placehold.co/600x400/eaf3de/3B6D11?text=IoT',
     desc: 'Arduino, Sensor, Smart Devices & Otomasi',
+    descZh: 'Arduino、传感器、智能设备与自动化控制',
     tools: ['Arduino', 'Raspberry Pi', 'C++'],
   },
   {
@@ -47,8 +50,9 @@ export const skills = [
     tag: 'Desain',
     tagColor: 'bg-purple-50 text-purple-600',
     icon: '🎨',
-    img: 'https://static-cse.canva.com/blob/1522769/CC2024PR_Workplaceenterprisecentricfeatures.png',
+    img: 'https://placehold.co/600x400/EEEDFE/534AB7?text=UI%2FUX',
     desc: 'Figma, Canva, Desain Grafis & UI Mockup',
+    descZh: 'Figma、Canva、平面设计与UI原型设计',
     tools: ['Figma', 'Canva', 'Adobe XD'],
   },
   {
@@ -60,8 +64,9 @@ export const skills = [
     tag: 'Media',
     tagColor: 'bg-orange-50 text-orange-600',
     icon: '🎬',
-    img: 'https://media.istockphoto.com/id/1356585971/photo/unrecognizable-guy-editing-astronaut-video.jpg?s=612x612',
+    img: 'https://placehold.co/600x400/FAEEDA/854F0B?text=Video+Editing',
     desc: 'CapCut, Premiere, Konten Kreatif & Motion',
+    descZh: 'CapCut、Premiere、创意内容制作与动态效果',
     tools: ['CapCut', 'Adobe Premiere', 'After Effects'],
   },
   {
@@ -73,8 +78,9 @@ export const skills = [
     tag: 'Produktivitas',
     tagColor: 'bg-emerald-50 text-emerald-600',
     icon: '📊',
-    img: 'https://img.freepik.com/free-photo/closeup-hands-using-computer-laptop-with-screen-showing-analysis-data_53876-23014.jpg',
+    img: 'https://placehold.co/600x400/E1F5EE/085041?text=Excel',
     desc: 'Formula, Pivot Table, Data Analysis & Visualisasi',
+    descZh: '公式、数据透视表、数据分析与可视化',
     tools: ['Excel', 'Google Sheets', 'Power BI'],
   },
   {
@@ -88,6 +94,7 @@ export const skills = [
     icon: '🐍',
     img: 'https://placehold.co/600x400/fef9c3/854d0e?text=Python',
     desc: 'Scripting, Otomasi & Data Processing',
+    descZh: '脚本编写、自动化与数据处理',
     tools: ['Python', 'VS Code', 'Jupyter'],
   },
   {
@@ -101,10 +108,12 @@ export const skills = [
     icon: '⚙️',
     img: 'https://placehold.co/600x400/fef9c3/854d0e?text=C%2B%2B',
     desc: 'Algoritma, Pemrograman Dasar & Robotika',
+    descZh: '算法、基础编程与机器人开发',
     tools: ['C++', 'Arduino IDE', 'VS Code'],
   },
 ]
 
+// Radar chart menampilkan 6 skill utama (Python & C++ dikecualikan karena masih level dasar)
 export const skillRadarData = [
   { subject: 'Web Dev', value: 75 },
   { subject: 'Design', value: 70 },

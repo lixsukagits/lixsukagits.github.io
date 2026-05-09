@@ -7,6 +7,7 @@ import Footer from './components/layout/footer'
 import ScrollProgress from './components/widgets/scroll_progress'
 import BackToTop from './components/widgets/back_to_top'
 import CommandPalette from './components/widgets/command_palette'
+import WhatsappButton from './components/widgets/whatsapp_button'
 import HomePage from './pages/home_page'
 import AboutPage from './pages/about_page'
 import SkillsPage from './pages/skills_page'
@@ -73,6 +74,8 @@ export default function App() {
 
       <BackToTop />
       <CommandPalette />
+      {/* Sembunyikan WA button di halaman CV */}
+      {location.pathname !== '/cv' && <WhatsappButton />}
     </div>
   )
 }

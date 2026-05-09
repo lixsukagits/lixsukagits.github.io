@@ -10,7 +10,12 @@ export const education = [
     periodZh: '2024年7月 — 至今',
     icon: '🖥️',
     current: true,
-    achievements: ['Ranking 1 seangkatan tahun 2025', 'Ketua OSIS bidang IT 2026', 'Aktif di Ekskul Robotik'],
+    achievements: [
+      'Ranking 1 seangkatan tahun 2025',
+      'Ketua Bidang IT OSIS periode 2026',
+      'Aktif di Ekskul Robotik',
+      '5 medali emas nasional & internasional (2024–2025)',
+    ],
     location: 'Medan, Sumatera Utara',
   },
   {
@@ -24,7 +29,11 @@ export const education = [
     periodZh: '2012年7月 — 2024年6月',
     icon: '🏫',
     current: false,
-    achievements: ['12 tahun di sekolah yang sama', 'Aktif di berbagai kegiatan sekolah'],
+    achievements: [
+      '12 tahun di sekolah yang sama — TK hingga SMP',
+      'Aktif di berbagai kegiatan dan organisasi sekolah',
+      'Mulai mengenal dunia IT dan pemrograman sejak kelas 9',
+    ],
     location: 'Medan, Sumatera Utara',
   },
 ]

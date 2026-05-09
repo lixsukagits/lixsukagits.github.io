@@ -1,6 +1,3 @@
-// Tambahkan sertifikat baru di sini dengan mengisi field berikut
-// img: URL gambar dari Imgur/Cloudinary/Drive
-
 export const certificates = [
   {
     id: 1,
@@ -8,8 +5,9 @@ export const certificates = [
     issuer: 'DBS Foundation',
     date: 'Juni 2025',
     category: 'Pelatihan',
+    desc: 'Pelatihan intensif 6 bulan mencakup Full-Stack Web Development menggunakan React dan Node.js. Menghasilkan proyek akhir MindSpark — platform belajar interaktif berbasis gamifikasi.',
     img: 'https://placehold.co/600x420/e8ecff/3758F9?text=DBS+Foundation',
-    tags: ['Web Dev', 'Frontend', 'Backend'],
+    tags: ['Full-Stack', 'React', 'Node.js'],
   },
   {
     id: 2,
@@ -17,8 +15,9 @@ export const certificates = [
     issuer: 'Revou',
     date: 'Juni 2025',
     category: 'Pelatihan',
+    desc: 'Program intensif 5 hari mendalami dasar-dasar analisis data, visualisasi data, dan pengambilan keputusan berbasis data menggunakan Excel dan tools modern.',
     img: 'https://placehold.co/600x420/e8ecff/3758F9?text=Revou',
-    tags: ['Data Analytics', 'Excel'],
+    tags: ['Data Analytics', 'Excel', 'Visualisasi'],
   },
   {
     id: 3,
@@ -26,8 +25,9 @@ export const certificates = [
     issuer: 'Panitia OSTN 2024',
     date: 'Desember 2024',
     category: 'Kompetisi',
+    desc: 'Sertifikat Juara Utama Bidang Informatika pada Olimpiade Siswa Tingkat Nasional (OSTN) 2024. Kompetisi nasional pertama yang berhasil ditaklukkan.',
     img: 'https://placehold.co/600x420/fef9c3/854d0e?text=OSTN+2024',
-    tags: ['Olimpiade', 'Informatika'],
+    tags: ['Olimpiade', 'Informatika', 'Nasional'],
   },
   {
     id: 4,
@@ -35,8 +35,9 @@ export const certificates = [
     issuer: 'Panitia OPSI 2025',
     date: 'Maret 2025',
     category: 'Kompetisi',
+    desc: 'Sertifikat Juara Utama Bidang Informatika pada Olimpiade Penelitian Siswa Indonesia (OPSI) 2025 — pencapaian nasional kedua secara berturut-turut.',
     img: 'https://placehold.co/600x420/fef9c3/854d0e?text=OPSI+2025',
-    tags: ['Olimpiade', 'Informatika'],
+    tags: ['Olimpiade', 'Informatika', 'Nasional'],
   },
   {
     id: 5,
@@ -44,6 +45,7 @@ export const certificates = [
     issuer: 'IYSHO 2025',
     date: 'Maret 2025',
     category: 'Kompetisi',
+    desc: 'Sertifikat Medali Emas Bidang Informatika pada International Young Scholar Honor Olympics (IYSHO) 2025 — pencapaian internasional pertama Felix.',
     img: 'https://placehold.co/600x420/fef9c3/854d0e?text=IYSHO+2025',
     tags: ['Olimpiade', 'Informatika', 'Internasional'],
   },
@@ -53,8 +55,9 @@ export const certificates = [
     issuer: 'Panitia PON 2025',
     date: 'Mei 2025',
     category: 'Kompetisi',
+    desc: 'Sertifikat Medali Emas Bidang Informatika pada Pekan Olahraga Nasional (PON) 2025, mewakili Sumatera Utara di tingkat nasional.',
     img: 'https://placehold.co/600x420/fef9c3/854d0e?text=PON+2025',
-    tags: ['Olimpiade', 'Informatika'],
+    tags: ['Olimpiade', 'Informatika', 'Nasional'],
   },
   {
     id: 7,
@@ -62,17 +65,29 @@ export const certificates = [
     issuer: 'Panitia OSI HP 2025',
     date: 'Juni 2025',
     category: 'Kompetisi',
+    desc: 'Sertifikat Medali Emas Bidang Informatika pada Olimpiade Sains Indonesia Harapan Prestasi (OSI HP) 2025, melengkapi koleksi medali di tahun 2025.',
     img: 'https://placehold.co/600x420/fef9c3/854d0e?text=OSI+HP+2025',
-    tags: ['Olimpiade', 'Informatika'],
+    tags: ['Olimpiade', 'Informatika', 'Nasional'],
   },
   {
     id: 8,
     title: 'Anggota OSIS Bidang IT',
     issuer: 'SMK Telkom 2 Medan',
-    date: '2024-2025',
+    date: '2024–2025',
     category: 'Organisasi',
+    desc: 'Sertifikat keaktifan sebagai Anggota Tim IT OSIS SMK Telkom 2 Medan periode 2024–2025, bertanggung jawab atas pengelolaan media digital dan dokumentasi kegiatan organisasi.',
     img: 'https://placehold.co/600x420/f0fdf4/166534?text=OSIS+IT',
-    tags: ['OSIS', 'Organisasi'],
+    tags: ['OSIS', 'Organisasi', 'IT'],
+  },
+  {
+    id: 9,
+    title: 'Coding Camp Web Developer — DBS Foundation 2026',
+    issuer: 'DBS Foundation',
+    date: 'Juni 2026',
+    category: 'Pelatihan',
+    desc: 'Pelatihan intensif Web Developer batch kedua bersama DBS Foundation. Menghasilkan proyek SaldoPath — aplikasi manajemen keuangan personal berbasis React.',
+    img: 'https://placehold.co/600x420/e8ecff/3758F9?text=DBS+Foundation+2026',
+    tags: ['Full-Stack', 'React', 'JavaScript'],
   },
   // Tambahkan sertifikat baru di bawah ini ↓
 ]

@@ -10,8 +10,8 @@ export const profile = {
   github: 'https://github.com/lixsukagits',
   instagram: 'https://www.instagram.com/lixforschl',
   whatsapp: 'https://wa.me/6281262729243',
-  linkedin: '#',
-  tagline: 'IT Enthusiast yang sedang mengejar impian beasiswa ke China 🇨🇳',
+  linkedin: 'https://www.linkedin.com/in/felix-raymond-8187a0345',
+  tagline: 'Peraih 5 medali emas nasional & internasional — membangun karir IT sambil mengejar beasiswa ke China 🇨🇳',
   languages: [
     { name: 'Bahasa Indonesia', level: 'Native', flag: '🇮🇩' },
     { name: 'English', level: 'Intermediate', flag: '🇬🇧' },
@@ -38,6 +38,6 @@ export const profile = {
     learning: 'Mandarin HSK 3 & Advanced Web Development',
     working_on: 'Pengembangan portfolio & persiapan beasiswa China',
     reading: 'Dokumentasi React & materi HSK 3',
-    updated: 'Mei 2025',
+    updated: 'Mei 2026',
   },
 }
