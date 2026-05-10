@@ -5,12 +5,13 @@ import { Helmet } from 'react-helmet-async'
 import { X, ChevronLeft, ChevronRight } from 'lucide-react'
 import PageWrapper from '../components/ui/page_wrapper'
 import SectionHeader from '../components/ui/section_header'
+import LazyImage from '../components/ui/lazy_image'
 import { gallery, galleryCategories } from '../data/gallery'
 
 export default function GalleryPage() {
   const { t } = useTranslation()
   const [active, setActive] = useState('Semua')
-  const [lightbox, setLightbox] = useState(null) // index
+  const [lightbox, setLightbox] = useState(null)
 
   const filtered = active === 'Semua' ? gallery : gallery.filter(g => g.category === active)
 
@@ -19,16 +20,25 @@ export default function GalleryPage() {
 
   return (
     <PageWrapper>
-      <Helmet><title>Galeri Felix Raymond</title></Helmet>
+      <Helmet>
+        <title>Galeri Felix Raymond</title>
+        <meta name="description" content="Galeri foto Felix Raymond — momen kompetisi, kegiatan, dan perjalanan hidup." />
+        <meta property="og:title" content="Galeri Felix Raymond" />
+        <meta property="og:description" content="Koleksi foto dan momen penting Felix Raymond." />
+        <meta property="og:url" content="https://lixsukagits.github.io/gallery" />
+      </Helmet>
+
       <div className="max-w-4xl mx-auto px-4 sm:px-6 md:px-10 py-20">
         <SectionHeader label={t('gallery.subtitle')} title={t('gallery.title')} />
 
         {/* Category filter */}
         <div className="flex flex-wrap gap-2 mb-8 justify-center">
           {galleryCategories.map(cat => (
-            <button
+            <motion.button
               key={cat}
               onClick={() => setActive(cat)}
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.96 }}
               className="px-4 py-2 rounded-xl text-sm font-medium transition-all"
               style={{
                 background: active === cat ? 'var(--primary)' : 'var(--card-bg)',
@@ -37,7 +47,7 @@ export default function GalleryPage() {
               }}
             >
               {cat}
-            </button>
+            </motion.button>
           ))}
         </div>
 
@@ -53,9 +63,14 @@ export default function GalleryPage() {
                 exit={{ opacity: 0 }}
                 className="relative group overflow-hidden rounded-2xl cursor-pointer aspect-square"
                 onClick={() => setLightbox(i)}
+                whileHover={{ scale: 1.02 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
               >
-                <img src={item.img} alt={item.title}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                <LazyImage
+                  src={item.img}
+                  alt={item.title}
+                  className="object-cover transition-transform duration-500 group-hover:scale-110"
+                />
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 flex items-end p-4">
                   <p className="text-white text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     {item.title}
@@ -84,10 +99,14 @@ export default function GalleryPage() {
               className="absolute top-5 right-5 text-white/70 hover:text-white z-10">
               <X size={28} />
             </button>
-            <button onClick={e => { e.stopPropagation(); prev() }}
-              className="absolute left-4 text-white/70 hover:text-white z-10 p-2">
+            <motion.button
+              onClick={e => { e.stopPropagation(); prev() }}
+              className="absolute left-4 text-white/70 hover:text-white z-10 p-2"
+              whileHover={{ scale: 1.15, x: -2 }}
+              whileTap={{ scale: 0.9 }}
+            >
               <ChevronLeft size={36} />
-            </button>
+            </motion.button>
             <motion.img
               key={lightbox}
               initial={{ opacity: 0, scale: 0.95 }}
@@ -98,10 +117,14 @@ export default function GalleryPage() {
               className="max-w-3xl w-full max-h-[80vh] object-contain rounded-2xl shadow-2xl"
               onClick={e => e.stopPropagation()}
             />
-            <button onClick={e => { e.stopPropagation(); next() }}
-              className="absolute right-4 text-white/70 hover:text-white z-10 p-2">
+            <motion.button
+              onClick={e => { e.stopPropagation(); next() }}
+              className="absolute right-4 text-white/70 hover:text-white z-10 p-2"
+              whileHover={{ scale: 1.15, x: 2 }}
+              whileTap={{ scale: 0.9 }}
+            >
               <ChevronRight size={36} />
-            </button>
+            </motion.button>
             <div className="absolute bottom-5 text-white/60 text-sm">
               {filtered[lightbox]?.title} · {lightbox + 1}/{filtered.length}
             </div>

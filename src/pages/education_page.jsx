@@ -12,7 +12,14 @@ export default function EducationPage() {
 
   return (
     <PageWrapper>
-      <Helmet><title>Pendidikan Felix Raymond</title></Helmet>
+      <Helmet>
+        <title>Pendidikan Felix Raymond</title>
+        <meta name="description" content="Riwayat pendidikan Felix Raymond — dari SD hingga SMA, dengan berbagai prestasi akademik di setiap jenjang." />
+        <meta property="og:title" content="Pendidikan Felix Raymond" />
+        <meta property="og:description" content="Perjalanan pendidikan Felix Raymond dari Medan, calon mahasiswa beasiswa China." />
+        <meta property="og:url" content="https://lixsukagits.github.io/education" />
+      </Helmet>
+
       <div className="max-w-2xl mx-auto px-4 sm:px-6 md:px-10 py-20">
         <SectionHeader label={t('education.subtitle')} title={t('education.title')} />
 
@@ -56,11 +63,9 @@ export default function EducationPage() {
                       </span>
                     </div>
                   </div>
-
                   <div className="flex items-center gap-1 text-xs mb-4" style={{ color: 'var(--body-color)' }}>
                     <MapPin size={12} /> {ed.location}
                   </div>
-
                   <ul className="space-y-1">
                     {ed.achievements.map(ac => (
                       <li key={ac} className="flex items-start gap-2 text-sm" style={{ color: 'var(--body-color)' }}>

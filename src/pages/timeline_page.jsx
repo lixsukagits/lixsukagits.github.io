@@ -11,7 +11,14 @@ export default function TimelinePage() {
 
   return (
     <PageWrapper>
-      <Helmet><title>Timeline Felix Raymond</title></Helmet>
+      <Helmet>
+        <title>Timeline Hidup Felix Raymond</title>
+        <meta name="description" content="Perjalanan hidup Felix Raymond dari lahir hingga sekarang — momen penting, pencapaian, dan milestone." />
+        <meta property="og:title" content="Timeline Hidup Felix Raymond" />
+        <meta property="og:description" content="Milestone dan momen penting dalam perjalanan hidup Felix Raymond." />
+        <meta property="og:url" content="https://lixsukagits.github.io/timeline" />
+      </Helmet>
+
       <div className="max-w-2xl mx-auto px-4 sm:px-6 md:px-10 py-20">
         <SectionHeader label={t('timeline.subtitle')} title={t('timeline.title')} />
 
@@ -27,14 +34,12 @@ export default function TimelinePage() {
                 transition={{ delay: i * 0.07 }}
                 className="relative flex gap-6 pl-16"
               >
-                {/* Dot */}
                 <div
                   className="timeline-dot text-lg"
                   style={{ background: item.color, border: '2px solid var(--border)' }}
                 >
                   {item.icon}
                 </div>
-
                 <div className="flex-1 card p-5">
                   <div className="flex items-center gap-2 mb-2">
                     <span className="tag">{item.year}</span>

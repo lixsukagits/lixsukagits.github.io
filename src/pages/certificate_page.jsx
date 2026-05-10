@@ -5,6 +5,7 @@ import { Helmet } from 'react-helmet-async'
 import { Search, X, ExternalLink } from 'lucide-react'
 import PageWrapper from '../components/ui/page_wrapper'
 import SectionHeader from '../components/ui/section_header'
+import LazyImage from '../components/ui/lazy_image'
 import { certificates, certCategories } from '../data/certificates'
 
 export default function CertificatePage() {
@@ -24,7 +25,14 @@ export default function CertificatePage() {
 
   return (
     <PageWrapper>
-      <Helmet><title>Sertifikat Felix Raymond</title></Helmet>
+      <Helmet>
+        <title>Sertifikat Felix Raymond</title>
+        <meta name="description" content="Koleksi sertifikat Felix Raymond di bidang IT, kompetisi, pelatihan, dan organisasi." />
+        <meta property="og:title" content="Sertifikat Felix Raymond" />
+        <meta property="og:description" content="Sertifikat & penghargaan dari berbagai kompetisi dan pelatihan IT." />
+        <meta property="og:url" content="https://lixsukagits.github.io/certificate" />
+      </Helmet>
+
       <div className="max-w-4xl mx-auto px-4 sm:px-6 md:px-10 py-20">
         <SectionHeader label={t('certificate.subtitle')} title={t('certificate.title')} />
 
@@ -36,15 +44,17 @@ export default function CertificatePage() {
               value={query}
               onChange={e => setQuery(e.target.value)}
               placeholder={t('certificate.search_placeholder')}
-              className="w-full pl-9 pr-4 py-2.5 rounded-xl text-sm outline-none border transition-colors"
+              className="w-full pl-9 pr-4 py-2.5 rounded-xl text-sm outline-none border transition-colors glow-hover"
               style={{ background: 'var(--card-bg)', borderColor: 'var(--border)', color: 'var(--dark)' }}
             />
           </div>
           <div className="flex flex-wrap gap-2">
             {certCategories.map(cat => (
-              <button
+              <motion.button
                 key={cat}
                 onClick={() => setActive(cat)}
+                whileHover={{ scale: 1.04 }}
+                whileTap={{ scale: 0.96 }}
                 className="px-4 py-2 rounded-xl text-sm font-medium transition-all"
                 style={{
                   background: active === cat ? 'var(--primary)' : 'var(--card-bg)',
@@ -53,7 +63,7 @@ export default function CertificatePage() {
                 }}
               >
                 {cat}
-              </button>
+              </motion.button>
             ))}
           </div>
         </div>
@@ -74,10 +84,14 @@ export default function CertificatePage() {
                 transition={{ delay: i * 0.05 }}
                 className="card overflow-hidden cursor-pointer"
                 onClick={() => setModal(cert)}
+                whileHover={{ y: -4 }}
               >
                 <div className="relative aspect-[4/3] overflow-hidden bg-gray-50">
-                  <img src={cert.img} alt={cert.title}
-                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" />
+                  <LazyImage
+                    src={cert.img}
+                    alt={cert.title}
+                    className="object-cover transition-transform duration-500 hover:scale-105"
+                  />
                   <span className="absolute top-2 right-2 badge"
                     style={{ background: 'rgba(0,0,0,0.5)', color: '#fff' }}>
                     {cert.category}

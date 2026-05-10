@@ -3,7 +3,7 @@
     "home": "首页",
     "about": "关于我",
     "skills": "技能",
-    "achievement": "成就",
+    "achievement": "荣誉",
     "education": "教育",
     "experience": "经历",
     "certificate": "证书",
@@ -11,11 +11,11 @@
     "cv": "简历",
     "contact": "联系",
     "timeline": "时间线",
-    "now": "现在"
+    "now": "当下"
   },
   "hero": {
     "greeting": "你好，我是",
-    "role": "IT爱好者 · 网页开发者 · 职高学生",
+    "role": "IT爱好者 · 网页开发者 · 职校学生",
     "cta_contact": "联系我",
     "cta_portfolio": "查看作品集",
     "open_to": "欢迎合作"
@@ -23,10 +23,35 @@
   "about": {
     "title": "关于我",
     "subtitle": "Felix是谁？",
-    "bio1": "你好！我是Felix Raymond Tan，就读于棉兰SMK Telkom 2的十一年级学生，专业为计算机与网络工程。2009年6月27日出生于棉兰，我是三兄弟中的长子，来自闽南裔华人佛教家庭。",
-    "bio2": "我是一位IT爱好者，对网页开发、网络安全和物联网充满热情。目前正在准备申请中国奖学金，同时通过比赛、组织活动和个人项目不断提升自己的能力。",
-    "bio3": "我相信知识没有边界——这就是为什么我正在学习普通话（HSK 3级），并积极参与各种培训项目，拓宽我在IT领域的视野。",
-    "stats_achievements": "成就",
+    "tagline": "五枚国内外金牌获得者 — 一边深耕IT，一边追逐赴华留学梦 🇨🇳",
+    "story_title": "我的故事",
+    "bio1": "我叫Felix Raymond Tan，在棉兰出生、成长。这是一座充满活力的城市，以其独特的方式塑造着每一个在此生活的人。身为家中三兄弟的长子，责任感并非我的选择，而是伴随我一同成长的东西。",
+    "bio2": "十二年间，我在同一所学校完成了从幼儿园到初中的全部学业——Global Prima National Plus School。在那里，我不只是学习课本知识，更学会了坚持、适应，以及发现自己真正热爱的事物。初三那年，我找到了答案：第一次写下的HTML代码，感觉像是发现了一门新语言——一门能将想法变为现实的语言。",
+    "bio3": "2024年，我选择进入SMK Telkom 2 Medan就读计算机与网络工程专业。这不是偶然，而是经过深思熟虑的决定。入学后不久，我便证明了这个选择的正确——在OSTN 2024信息学科荣获第一名，赢得了人生中第一个全国级冠军。",
+    "bio4": "2025年的惊喜接连不断。OPSI冠军、国际赛事IYSHO金牌、代表北苏门答腊省出征PON摘得金牌、OSI HP金牌——全都发生在同一年。与此同时，我还完成了DBS基金会为期六个月的编程营，产出MindSpark——一个基于游戏化机制的学习平台，每一行代码我都引以为豪。",
+    "bio5": "奖牌与数字之外，还有同样重要的另一面。我担任学生会IT部门主席，协助记录Cetiya Aryavamsa佛教社区的活动，也偶尔向有意学习的同学分享网页编程基础。",
+    "bio6": "心中始终有一个梦想：赴中国攻读本科并获得奖学金。不只因为中国是世界科技的中心，更因为我相信——在源头学习，才是真正理解的最佳方式。我现在学习的普通话不只是一门语言，更是通往那个梦想的桥梁。",
+    "bio7": "如果你问Felix Raymond Tan是谁——我是一个尚未完成的人。仍在学习，仍在成长，对前方的一切依然充满热忱。",
+    "facts_title": "关于我的小事",
+    "fact_badminton": "打羽毛球是我重置思维的方式",
+    "fact_film": "最喜欢的电影：《我的特工爷爷》——甄子丹的巅峰之作",
+    "fact_mandarin": "正在备考汉语水平考试（HSK）三级",
+    "fact_nightowl": "晚上效率最高——是个货真价实的夜猫子",
+    "fact_hokkien": "闽南语是家里的「秘密语言」",
+    "fact_camera": "随身带相机——最美的瞬间总是不打招呼就来了",
+    "principles_title": "我所坚守的",
+    "principle1": "持之以恒胜过一时热情。",
+    "principle2": "学习不为成绩，而为真正理解。",
+    "principle3": "分享知识不会让我们减少，反而会让我们成倍增长。",
+    "lang_title": "语言能力",
+    "hobbies_title": "爱好与兴趣",
+    "goals_title": "梦想与目标",
+    "goal_short_label": "短期目标",
+    "goal_long_label": "长期目标",
+    "goal_career_label": "职业梦想",
+    "goal_china_label": "为什么选择中国？",
+    "quotes_title": "座右铭",
+    "stats_achievements": "荣誉",
     "stats_experience": "组织",
     "stats_projects": "项目",
     "stats_certificates": "证书"
@@ -36,28 +61,28 @@
     "subtitle": "我擅长什么"
   },
   "achievement": {
-    "title": "成就",
-    "subtitle": "我取得的成果"
+    "title": "荣誉",
+    "subtitle": "荣耀时刻"
   },
   "education": {
     "title": "教育",
-    "subtitle": "我的学习经历",
+    "subtitle": "求学之路",
     "current": "在读"
   },
   "experience": {
     "title": "经历",
-    "subtitle": "我的经历"
+    "subtitle": "走过的每一步"
   },
   "certificate": {
     "title": "证书",
-    "subtitle": "我能力的证明",
+    "subtitle": "实力的见证",
     "filter_all": "全部",
     "filter_competition": "比赛",
     "filter_training": "培训",
     "filter_organization": "组织",
     "search_placeholder": "搜索证书...",
     "view": "查看",
-    "total": "显示 {{count}} 张证书"
+    "total": "共显示 {{count}} 张证书"
   },
   "gallery": {
     "title": "相册",
@@ -72,15 +97,15 @@
   "contact": {
     "title": "联系我",
     "subtitle": "保持联系",
-    "desc": "有问题、想合作，或者只是想打个招呼？我随时欢迎！"
+    "desc": "有问题、想合作，或者只是想打个招呼？随时欢迎！"
   },
   "timeline": {
     "title": "人生时间线",
-    "subtitle": "Felix的旅程"
+    "subtitle": "Felix的成长轨迹"
   },
   "now": {
-    "title": "现在",
-    "subtitle": "我目前正在做什么",
+    "title": "当下",
+    "subtitle": "当下专注的事",
     "updated": "更新于"
   },
   "footer": {
@@ -107,6 +132,6 @@
     "pages": "页面",
     "actions": "操作",
     "toggle_theme": "切换主题",
-    "no_result": "没有找到"
+    "no_result": "未找到相关结果："
   }
 }

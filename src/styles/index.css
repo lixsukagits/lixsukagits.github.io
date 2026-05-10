@@ -1,5 +1,6 @@
 @import "tailwindcss";
 
+/* ─── CSS VARIABLES ─────────────────────────────────────────── */
 :root {
   --primary: #3758F9;
   --primary-dark: #1B44C8;
@@ -9,9 +10,11 @@
   --bg: #f8f9fb;
   --card-bg: #ffffff;
   --border: #e8edf2;
-  --font-display: 'Syne', sans-serif;
+  --font-display: 'Fredoka One', 'Syne', sans-serif;
+  --font-hero: 'Fredoka One', cursive;
   --font-body: 'DM Sans', sans-serif;
   --font-zh: 'Noto Sans SC', sans-serif;
+  --sidebar-w: 240px;
 }
 
 [data-theme="dark"] {
@@ -23,43 +26,88 @@
   --primary-light: #1a2040;
 }
 
-* { font-family: var(--font-body); }
+* { font-family: var(--font-body); box-sizing: border-box; }
 h1, h2, h3, h4, .font-display { font-family: var(--font-display); }
+.font-hero { font-family: var(--font-hero); }
 :lang(zh) { font-family: var(--font-zh); }
 
 body {
   background: var(--bg);
   color: var(--dark);
   transition: background 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
 }
 
-/* Scrollbar */
+/* Custom cursor */
+@media (hover: hover) { * { cursor: none !important; } }
+
+/* ─── ORNAMENTAL PATTERN — lebih tebal di light mode ───────── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cg fill='none' stroke='%23000' stroke-opacity='0.09' stroke-width='0.9'%3E%3Cpath d='M60 8 C48 22 40 34 60 46 C80 34 72 22 60 8Z'/%3E%3Cpath d='M60 112 C48 98 40 86 60 74 C80 86 72 98 60 112Z'/%3E%3Cpath d='M8 60 C22 48 34 40 46 60 C34 80 22 72 8 60Z'/%3E%3Cpath d='M112 60 C98 48 86 40 74 60 C86 80 98 72 112 60Z'/%3E%3Cpath d='M84 14 C81 27 79 37 74 46 C82 49 91 40 84 14Z'/%3E%3Cpath d='M36 14 C39 27 41 37 46 46 C38 49 29 40 36 14Z'/%3E%3Cpath d='M84 106 C81 93 79 83 74 74 C82 71 91 80 84 106Z'/%3E%3Cpath d='M36 106 C39 93 41 83 46 74 C38 71 29 80 36 106Z'/%3E%3Ccircle cx='60' cy='60' r='13'/%3E%3Ccircle cx='60' cy='60' r='7.5'/%3E%3Ccircle cx='60' cy='60' r='2.5' fill='%23000' fill-opacity='0.09' stroke='none'/%3E%3Cpath d='M60 47 L63 54 L60 51 L57 54Z'/%3E%3Cpath d='M60 73 L63 66 L60 69 L57 66Z'/%3E%3Cpath d='M47 60 L54 63 L51 60 L54 57Z'/%3E%3Cpath d='M73 60 L66 63 L69 60 L66 57Z'/%3E%3Cpath d='M0 0 C6 4 10 10 0 18'/%3E%3Cpath d='M120 0 C114 4 110 10 120 18'/%3E%3Cpath d='M0 120 C6 116 10 110 0 102'/%3E%3Cpath d='M120 120 C114 116 110 110 120 102'/%3E%3Ccircle cx='30' cy='30' r='2.5'/%3E%3Ccircle cx='90' cy='30' r='2.5'/%3E%3Ccircle cx='30' cy='90' r='2.5'/%3E%3Ccircle cx='90' cy='90' r='2.5'/%3E%3Cline x1='60' y1='46' x2='60' y2='49'/%3E%3Cline x1='60' y1='71' x2='60' y2='74'/%3E%3Cline x1='46' y1='60' x2='49' y2='60'/%3E%3Cline x1='71' y1='60' x2='74' y2='60'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 120px 120px;
+}
+
+[data-theme="dark"] body::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cg fill='none' stroke='%23fff' stroke-opacity='0.05' stroke-width='0.9'%3E%3Cpath d='M60 8 C48 22 40 34 60 46 C80 34 72 22 60 8Z'/%3E%3Cpath d='M60 112 C48 98 40 86 60 74 C80 86 72 98 60 112Z'/%3E%3Cpath d='M8 60 C22 48 34 40 46 60 C34 80 22 72 8 60Z'/%3E%3Cpath d='M112 60 C98 48 86 40 74 60 C86 80 98 72 112 60Z'/%3E%3Cpath d='M84 14 C81 27 79 37 74 46 C82 49 91 40 84 14Z'/%3E%3Cpath d='M36 14 C39 27 41 37 46 46 C38 49 29 40 36 14Z'/%3E%3Cpath d='M84 106 C81 93 79 83 74 74 C82 71 91 80 84 106Z'/%3E%3Cpath d='M36 106 C39 93 41 83 46 74 C38 71 29 80 36 106Z'/%3E%3Ccircle cx='60' cy='60' r='13'/%3E%3Ccircle cx='60' cy='60' r='7.5'/%3E%3Ccircle cx='60' cy='60' r='2.5' fill='%23fff' fill-opacity='0.05' stroke='none'/%3E%3Cpath d='M60 47 L63 54 L60 51 L57 54Z'/%3E%3Cpath d='M60 73 L63 66 L60 69 L57 66Z'/%3E%3Cpath d='M47 60 L54 63 L51 60 L54 57Z'/%3E%3Cpath d='M73 60 L66 63 L69 60 L66 57Z'/%3E%3Cpath d='M0 0 C6 4 10 10 0 18'/%3E%3Cpath d='M120 0 C114 4 110 10 120 18'/%3E%3Cpath d='M0 120 C6 116 10 110 0 102'/%3E%3Cpath d='M120 120 C114 116 110 110 120 102'/%3E%3Ccircle cx='30' cy='30' r='2.5'/%3E%3Ccircle cx='90' cy='30' r='2.5'/%3E%3Ccircle cx='30' cy='90' r='2.5'/%3E%3Ccircle cx='90' cy='90' r='2.5'/%3E%3Cline x1='60' y1='46' x2='60' y2='49'/%3E%3Cline x1='60' y1='71' x2='60' y2='74'/%3E%3Cline x1='46' y1='60' x2='49' y2='60'/%3E%3Cline x1='71' y1='60' x2='74' y2='60'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* ─── SCROLLBAR ──────────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 
-/* Scroll progress */
+/* ─── SCROLL PROGRESS ───────────────────────────────────────── */
 #scroll-progress {
   position: fixed;
   top: 0; left: 0;
   height: 3px;
-  background: linear-gradient(90deg, var(--primary), #7c3aed);
+  background: linear-gradient(90deg, var(--primary), #7c3aed, #06b6d4);
   z-index: 9999;
   transition: width 0.1s linear;
 }
 
-/* Nav link underline */
-.nav-link { position: relative; }
-.nav-link::after {
-  content: '';
-  position: absolute;
-  bottom: -4px; left: 0;
-  width: 0; height: 2px;
-  background: var(--primary);
-  transition: width 0.3s ease;
+/* ─── LAYOUT — sidebar offset ───────────────────────────────── */
+/* Konten utama tidak tertimpa sidebar */
+.main-content {
+  position: relative;
+  z-index: 1;
 }
-.nav-link:hover::after,
-.nav-link.active::after { width: 100%; }
+
+/* ─── SIDEBAR — solid bg, tidak transparan ──────────────────── */
+aside {
+  background: var(--card-bg) !important;
+  border-right: 1px solid var(--border);
+}
+[data-theme="dark"] aside {
+  background: #12151f !important;
+  backdrop-filter: none;
+}
+
+/* ─── DROPDOWN SOLID BG ─────────────────────────────────────── */
+/* Semua dropdown (lang, color theme) harus solid */
+[data-dropdown] {
+  background: var(--card-bg) !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.12) !important;
+}
+
+/* ─── FLOATING BUTTONS — tidak bertabrakan ──────────────────── */
+/* Stack vertikal di pojok kanan bawah */
+.floating-stack {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 1.5rem;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+}
 
 /* ─── ANIMATIONS ─────────────────────────────────────────────── */
 @keyframes fadeUp {
@@ -74,33 +122,41 @@ body {
   0%, 100% { transform: translateY(0); }
   50%       { transform: translateY(-10px); }
 }
-@keyframes pulse-ring {
-  0%   { transform: scale(1); opacity: 0.6; }
-  100% { transform: scale(1.5); opacity: 0; }
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(55,88,249,0.4); }
+  50%       { box-shadow: 0 0 0 6px rgba(55,88,249,0); }
 }
-
-/* Shimmer sweep — used on CTA buttons */
 @keyframes shimmer {
   0%   { transform: translateX(-100%) skewX(-12deg); }
   100% { transform: translateX(200%) skewX(-12deg); }
 }
-
-/* Subtle scale-in for modals / dropdowns */
 @keyframes scaleIn {
   from { opacity: 0; transform: scale(0.95) translateY(4px); }
   to   { opacity: 1; transform: scale(1) translateY(0); }
 }
-
-/* Stagger slide for list items */
 @keyframes slideInLeft {
   from { opacity: 0; transform: translateX(-16px); }
   to   { opacity: 1; transform: translateX(0); }
 }
+@keyframes marqueeScroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-33.333%); }
+}
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50%       { background-position: 100% 50%; }
+}
 
-/* Glow pulse for active status indicators */
-@keyframes glowPulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(55,88,249,0.4); }
-  50%       { box-shadow: 0 0 0 6px rgba(55,88,249,0); }
+.marquee-track { will-change: transform; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .marquee-track { animation: none !important; }
 }
 
 .animate-fade-up    { animation: fadeUp 0.6s ease forwards; }
@@ -116,132 +172,98 @@ body {
 .delay-500 { animation-delay: 0.5s; opacity: 0; }
 .delay-600 { animation-delay: 0.6s; opacity: 0; }
 
+/* ─── GRADIENT TEXT ─────────────────────────────────────────── */
+.gradient-text {
+  background: linear-gradient(135deg, var(--primary) 0%, #7c3aed 50%, #06b6d4 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 5s ease infinite;
+}
+
 /* ─── CARD ───────────────────────────────────────────────────── */
 .card {
   background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: 1rem;
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+  position: relative;
+  z-index: 1;
+  transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1),
               box-shadow 0.3s ease,
               border-color 0.3s ease;
 }
 .card:hover {
   transform: translateY(-6px) scale(1.01);
   box-shadow: 0 24px 48px rgba(55,88,249,0.1), 0 8px 16px rgba(0,0,0,0.06);
-  border-color: var(--primary-light);
+  border-color: rgba(55,88,249,0.2);
+}
+[data-theme="dark"] .card {
+  background: rgba(26,31,46,0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+[data-theme="dark"] .card:hover {
+  box-shadow: 0 24px 48px rgba(55,88,249,0.22);
+  border-color: rgba(55,88,249,0.35);
 }
 
 /* ─── SHIMMER BUTTON ─────────────────────────────────────────── */
-/* Add class .btn-shimmer to any button/anchor */
-.btn-shimmer {
-  position: relative;
-  overflow: hidden;
-}
+.btn-shimmer { position: relative; overflow: hidden; }
 .btn-shimmer::after {
   content: '';
   position: absolute;
   top: 0; left: -60%;
-  width: 40%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255,255,255,0.25),
-    transparent
-  );
+  width: 40%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
   transform: skewX(-12deg);
   pointer-events: none;
 }
-.btn-shimmer:hover::after {
-  animation: shimmer 0.6s ease forwards;
-}
+.btn-shimmer:hover::after { animation: shimmer 0.6s ease forwards; }
 
-/* ─── MAGNETIC LINK (apply to social icons, nav items) ───────── */
-/* JS handles the translate; CSS just smooths it */
-.magnetic {
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  display: inline-flex;
-}
+/* ─── MAGNETIC / UNDERLINE / GLOW ────────────────────────────── */
+.magnetic { transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1); display: inline-flex; }
 
-/* ─── UNDERLINE SLIDE (for text links) ──────────────────────── */
-.link-underline {
-  position: relative;
-  text-decoration: none;
-}
+.link-underline { position: relative; text-decoration: none; }
 .link-underline::after {
   content: '';
   position: absolute;
   bottom: -2px; left: 0;
   width: 0; height: 2px;
   background: var(--primary);
-  transition: width 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: width 0.3s cubic-bezier(0.34,1.56,0.64,1);
   border-radius: 1px;
 }
 .link-underline:hover::after { width: 100%; }
 
-/* ─── ICON BOUNCE on hover ───────────────────────────────────── */
-.icon-bounce {
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-.icon-bounce:hover {
-  transform: scale(1.2) rotate(-8deg);
-}
+.icon-bounce { transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1); }
+.icon-bounce:hover { transform: scale(1.2) rotate(-8deg); }
 
-/* ─── GLOW BORDER on focus/hover ─────────────────────────────── */
-.glow-hover {
-  transition: box-shadow 0.3s ease, border-color 0.3s ease;
-}
+.glow-hover { transition: box-shadow 0.3s ease, border-color 0.3s ease; }
 .glow-hover:hover {
   box-shadow: 0 0 0 3px rgba(55,88,249,0.15);
   border-color: var(--primary) !important;
 }
 
-/* ─── ACTIVE NAV INDICATOR dot ──────────────────────────────── */
-.nav-active-dot {
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: var(--primary);
-  animation: glowPulse 2s ease infinite;
+/* ─── STAT ICON ──────────────────────────────────────────────── */
+.stat-icon {
+  width: 2.5rem; height: 2.5rem;
+  border-radius: 0.75rem;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 0.5rem;
 }
 
-/* ─── BADGE ──────────────────────────────────────────────────── */
-.badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.2rem 0.75rem;
-  border-radius: 9999px;
-  font-size: 0.75rem;
-  font-weight: 600;
+/* ─── DOT GRID ───────────────────────────────────────────────── */
+.grain::after {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.35;
 }
-
-/* ─── TIMELINE ───────────────────────────────────────────────── */
-.timeline-line {
-  position: absolute;
-  left: 1.5rem;
-  top: 0; bottom: 0;
-  width: 1px;
-  background: var(--border);
-}
-.timeline-dot {
-  position: absolute;
-  left: 0;
-  width: 3rem; height: 3rem;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.25rem;
-  box-shadow: 0 4px 12px rgba(55,88,249,0.2);
-}
-
-/* ─── COMMAND PALETTE ────────────────────────────────────────── */
-.cmd-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.5);
-  backdrop-filter: blur(4px);
-  z-index: 200;
-}
+[data-theme="dark"] .grain::after { opacity: 0.12; }
 
 /* ─── GRAIN OVERLAY ──────────────────────────────────────────── */
 .grain::before {
@@ -249,36 +271,96 @@ body {
   position: fixed; inset: 0;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
   pointer-events: none;
-  z-index: 9998;
-  opacity: 0.35;
+  z-index: 0;
+  opacity: 0.3;
 }
 
-/* ─── TAG ────────────────────────────────────────────────────── */
+/* ─── BADGE / TAG / SECTION LABEL ───────────────────────────── */
+.badge {
+  display: inline-flex; align-items: center;
+  padding: 0.2rem 0.75rem; border-radius: 9999px;
+  font-size: 0.75rem; font-weight: 600;
+}
+
 .tag {
-  background: var(--primary-light);
-  color: var(--primary);
-  padding: 0.15rem 0.6rem;
-  border-radius: 6px;
-  font-size: 0.75rem;
-  font-weight: 600;
+  background: var(--primary-light); color: var(--primary);
+  padding: 0.15rem 0.6rem; border-radius: 6px;
+  font-size: 0.75rem; font-weight: 600;
   transition: background 0.2s, transform 0.2s;
 }
-.tag:hover {
-  background: var(--primary);
-  color: #fff;
-  transform: scale(1.05);
+.tag:hover { background: var(--primary); color: #fff; transform: scale(1.05); }
+
+.section-label {
+  font-size: 0.7rem; font-weight: 700;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--primary);
 }
 
-/* ─── SECTION LABEL ──────────────────────────────────────────── */
-.section-label {
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--primary);
+/* ─── TIMELINE ───────────────────────────────────────────────── */
+.timeline-line {
+  position: absolute; left: 1.5rem; top: 0; bottom: 0;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, var(--primary), var(--border), transparent);
+}
+.timeline-dot {
+  position: absolute; left: 0;
+  width: 3rem; height: 3rem; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.25rem;
+  box-shadow: 0 0 0 4px var(--bg), 0 4px 16px rgba(55,88,249,0.25);
+}
+
+/* ─── NAV ACTIVE DOT ─────────────────────────────────────────── */
+.nav-active-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--primary);
+  animation: glowPulse 2s ease infinite;
+}
+
+/* ─── COMMAND PALETTE ────────────────────────────────────────── */
+.cmd-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(6px);
+  z-index: 200;
 }
 
 /* ─── PAGE TRANSITION ────────────────────────────────────────── */
-/* Framer Motion handles this, but backup CSS */
 .page-enter  { opacity: 0; transform: translateY(12px); }
 .page-active { opacity: 1; transform: translateY(0); transition: 0.35s ease; }
+
+/* ─── SKELETON ───────────────────────────────────────────────── */
+@keyframes skeletonShimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position:  400px 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, var(--border) 25%, var(--card-bg) 50%, var(--border) 75%);
+  background-size: 800px 100%;
+  animation: skeletonShimmer 1.4s ease-in-out infinite;
+  border-radius: 8px;
+}
+
+/* ─── LAZY IMAGE ─────────────────────────────────────────────── */
+.img-wrapper { position: relative; overflow: hidden; background: var(--border); }
+.img-wrapper img { transition: opacity 0.4s ease, transform 0.4s ease; }
+.img-wrapper img.loading { opacity: 0; }
+.img-wrapper img.loaded  { opacity: 1; }
+.img-wrapper::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(90deg, var(--border) 25%, var(--card-bg) 50%, var(--border) 75%);
+  background-size: 800px 100%;
+  animation: skeletonShimmer 1.4s ease-in-out infinite;
+  z-index: 1; transition: opacity 0.3s ease; pointer-events: none;
+}
+.img-wrapper.img-done::before { opacity: 0; }
+
+/* ─── FOCUS VISIBLE ──────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* ─── SELECTION ──────────────────────────────────────────────── */
+::selection { background: rgba(55,88,249,0.18); color: var(--dark); }

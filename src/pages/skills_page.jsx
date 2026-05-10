@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async'
 import { RadarChart, Radar, PolarGrid, PolarAngleAxis, ResponsiveContainer } from 'recharts'
 import PageWrapper from '../components/ui/page_wrapper'
 import SectionHeader from '../components/ui/section_header'
+import LazyImage from '../components/ui/lazy_image'
 import { skills, skillRadarData } from '../data/skills'
 
 export default function SkillsPage() {
@@ -11,7 +12,14 @@ export default function SkillsPage() {
 
   return (
     <PageWrapper>
-      <Helmet><title>Keterampilan Felix Raymond</title></Helmet>
+      <Helmet>
+        <title>Keterampilan Felix Raymond</title>
+        <meta name="description" content="Keterampilan teknis Felix Raymond — web development, programming, cybersecurity, dan desain." />
+        <meta property="og:title" content="Keterampilan Felix Raymond" />
+        <meta property="og:description" content="Stack teknologi dan tingkat kemampuan Felix Raymond di berbagai bidang IT." />
+        <meta property="og:url" content="https://lixsukagits.github.io/skills" />
+      </Helmet>
+
       <div className="max-w-4xl mx-auto px-4 sm:px-6 md:px-10 py-20">
         <SectionHeader label={t('skills.subtitle')} title={t('skills.title')} />
 
@@ -41,10 +49,15 @@ export default function SkillsPage() {
               viewport={{ once: true }}
               transition={{ delay: i * 0.07 }}
               className="card overflow-hidden"
+              whileHover={{ y: -4 }}
             >
               <div className="relative aspect-[16/9] overflow-hidden">
-                <img src={skill.img} alt={skill.title} className="w-full h-full object-cover transition-transform duration-500 hover:scale-105" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                <LazyImage
+                  src={skill.img}
+                  alt={skill.title}
+                  className="object-cover transition-transform duration-500 hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent pointer-events-none" />
                 <span className="absolute bottom-3 left-3 text-2xl">{skill.icon}</span>
               </div>
               <div className="p-5">
@@ -55,8 +68,6 @@ export default function SkillsPage() {
                   </div>
                   <span className={`badge shrink-0 ${skill.tagColor}`}>{skill.tag}</span>
                 </div>
-
-                {/* Progress bar */}
                 <div className="mb-3">
                   <div className="flex justify-between text-xs mb-1" style={{ color: 'var(--body-color)' }}>
                     <span>{skill.levelLabel}</span>
@@ -73,8 +84,6 @@ export default function SkillsPage() {
                     />
                   </div>
                 </div>
-
-                {/* Tools */}
                 <div className="flex flex-wrap gap-1">
                   {skill.tools.map(tool => (
                     <span key={tool} className="tag text-xs">{tool}</span>

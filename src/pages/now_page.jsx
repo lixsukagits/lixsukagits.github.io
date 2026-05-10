@@ -16,7 +16,14 @@ export default function NowPage() {
 
   return (
     <PageWrapper>
-      <Helmet><title>Sekarang — Felix Raymond</title></Helmet>
+      <Helmet>
+        <title>Sekarang — Felix Raymond</title>
+        <meta name="description" content={`Update ${now.updated}: Felix sedang belajar ${now.learning} dan mengerjakan ${now.working_on}.`} />
+        <meta property="og:title" content="Apa yang Sedang Felix Kerjakan Sekarang?" />
+        <meta property="og:description" content={`Update terbaru ${now.updated} — aktivitas terkini Felix Raymond.`} />
+        <meta property="og:url" content="https://lixsukagits.github.io/now" />
+      </Helmet>
+
       <div className="max-w-2xl mx-auto px-4 sm:px-6 md:px-10 py-20">
         <SectionHeader label={t('now.subtitle')} title={t('now.title')} />
 
@@ -40,7 +47,7 @@ export default function NowPage() {
           <p className="text-sm" style={{ color: 'var(--body-color)' }}>
             Halaman ini diperbarui secara manual setiap beberapa minggu. Terinspirasi dari{' '}
             <a href="https://nownownow.com" target="_blank" rel="noopener noreferrer"
-              className="underline" style={{ color: 'var(--primary)' }}>
+              className="link-underline" style={{ color: 'var(--primary)' }}>
               nownownow.com
             </a>
           </p>

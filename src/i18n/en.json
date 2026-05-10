@@ -23,9 +23,34 @@
   "about": {
     "title": "About Me",
     "subtitle": "Who is Felix?",
-    "bio1": "Hello! I'm Felix Raymond Tan, an 11th-grade student majoring in Computer and Network Engineering at SMK Telkom 2 Medan. Born in Medan on June 27, 2009, I am the eldest of three siblings from a Hokkien-Chinese Buddhist family.",
-    "bio2": "I'm an IT Enthusiast deeply passionate about web development, cybersecurity, and IoT. Currently preparing to pursue a scholarship in China, while continuously honing my skills through competitions, organizations, and personal projects.",
-    "bio3": "I believe knowledge has no boundaries — that's why I'm learning Mandarin (HSK 3) and actively joining various training programs to broaden my IT horizons.",
+    "tagline": "5-time national & international gold medalist — building an IT career while chasing a scholarship to China 🇨🇳",
+    "story_title": "My Story",
+    "bio1": "My name is Felix Raymond Tan. I was born and raised in Medan — a vibrant, energetic city that has a unique way of shaping the people who grow up within it. As the eldest of three siblings, responsibility wasn't something I chose; it simply grew alongside me.",
+    "bio2": "For twelve years, I spent my education at a single school — Global Prima National Plus School. From kindergarten through junior high, I didn't just learn subjects; I learned to persevere, adapt, and discover what I was truly passionate about. In 9th grade, I found it: the first lines of HTML I ever wrote felt like discovering a new language — one capable of turning ideas into something real.",
+    "bio3": "In 2024, I chose to enroll at SMK Telkom 2 Medan, majoring in Computer and Network Engineering. It wasn't by chance — it was a carefully considered decision. And soon after, I proved it was the right one: Grand Champion in Informatics at OSTN 2024 became my first national victory.",
+    "bio4": "2025 seemed relentless in its surprises. Grand Champion at OPSI, a Gold Medal at the international IYSHO, a Gold Medal at PON representing North Sumatra, and a Gold Medal at OSI HP — all within a single year. Amid all of that, I also completed the DBS Foundation Coding Camp, producing MindSpark — a gamification-based learning platform I'm proud of down to every line of code.",
+    "bio5": "Beyond the numbers and medals, there's another side that matters just as much. I serve as Head of the IT Division in OSIS, help document activities for the Cetiya Aryavamsa Buddhist community, and occasionally teach basic web coding to friends who want to learn.",
+    "bio6": "There's one dream that has always lived in my mind: pursuing a bachelor's degree on a scholarship to China. Not simply because China is the world's technology hub, but because I believe — learning at the source is the best way to truly understand. The Mandarin I'm studying now isn't just a language; it's a bridge toward that dream.",
+    "bio7": "If you ask who Felix Raymond Tan is — I'm someone who isn't finished yet. Still learning, still growing, and still deeply excited about what lies ahead.",
+    "facts_title": "Facts About Me",
+    "fact_badminton": "Playing badminton to reset my mind",
+    "fact_film": "Favorite film: Big Brother — Donnie Yen at his finest",
+    "fact_mandarin": "Currently studying Mandarin toward HSK 3",
+    "fact_nightowl": "Most productive at night — a true night owl",
+    "fact_hokkien": "Hokkien is the secret language at home",
+    "fact_camera": "Always carry a camera — the best moments arrive unannounced",
+    "principles_title": "What I Stand By",
+    "principle1": "Consistency beats momentary intensity.",
+    "principle2": "Study not for grades — but to truly understand.",
+    "principle3": "Sharing knowledge doesn't diminish us — it multiplies us.",
+    "lang_title": "Languages",
+    "hobbies_title": "Hobbies & Interests",
+    "goals_title": "Dreams & Goals",
+    "goal_short_label": "Short-Term Goal",
+    "goal_long_label": "Long-Term Goal",
+    "goal_career_label": "Career Dream",
+    "goal_china_label": "Why China?",
+    "quotes_title": "Quotes",
     "stats_achievements": "Achievements",
     "stats_experience": "Organizations",
     "stats_projects": "Projects",
@@ -37,7 +62,7 @@
   },
   "achievement": {
     "title": "Achievements",
-    "subtitle": "What I've Accomplished"
+    "subtitle": "Moments of Glory"
   },
   "education": {
     "title": "Education",
@@ -46,7 +71,7 @@
   },
   "experience": {
     "title": "Experience",
-    "subtitle": "What I've Been Through"
+    "subtitle": "Every Step of the Way"
   },
   "certificate": {
     "title": "Certificates",
@@ -80,7 +105,7 @@
   },
   "now": {
     "title": "Now",
-    "subtitle": "What I'm Currently Working On",
+    "subtitle": "What I'm Currently Focused On",
     "updated": "Updated"
   },
   "footer": {

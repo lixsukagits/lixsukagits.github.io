@@ -11,7 +11,14 @@ export default function ExperiencePage() {
 
   return (
     <PageWrapper>
-      <Helmet><title>Pengalaman Felix Raymond</title></Helmet>
+      <Helmet>
+        <title>Pengalaman Felix Raymond</title>
+        <meta name="description" content="Pengalaman organisasi, kepanitiaan, dan event Felix Raymond — OSIS, ekstrakurikuler, dan kegiatan IT." />
+        <meta property="og:title" content="Pengalaman Felix Raymond" />
+        <meta property="og:description" content="Track record organisasi dan kepanitiaan Felix Raymond sejak SMP hingga SMA." />
+        <meta property="og:url" content="https://lixsukagits.github.io/experience" />
+      </Helmet>
+
       <div className="max-w-2xl mx-auto px-4 sm:px-6 md:px-10 py-20">
         <SectionHeader label={t('experience.subtitle')} title={t('experience.title')} />
 
@@ -65,7 +72,6 @@ export default function ExperiencePage() {
           </div>
         </div>
 
-        {/* Events */}
         <div className="card p-6">
           <h3 className="font-display font-bold text-lg mb-4" style={{ color: 'var(--dark)' }}>
             🎪 Kegiatan & Event
