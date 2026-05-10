@@ -29,44 +29,58 @@ const LINKS = [
   { to: '/now',         icon: Flame,          key: 'now' },
 ]
 
-/* ─── ANIMATED THEME TOGGLE ICON ────────────────────────────── */
+/* ─── THEME TOGGLE ICON ──────────────────────────────────────────
+   FIX: motion.circle dengan animate={{ r }} error di FM v11 karena
+   SVG attribute "r" tidak bisa dianimasikan via Framer Motion.
+   Solusi: pakai 2 SVG terpisah (sun & moon) yang swap via AnimatePresence.
+   Semua fitur visual tetap sama, hanya implementasinya berbeda.
+────────────────────────────────────────────────────────────────── */
 function ThemeToggleIcon({ isDark }) {
   return (
-    <motion.svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-      stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-      style={{ display: 'block', flexShrink: 0 }}
-    >
-      <motion.circle cx="12" cy="12" animate={{ r: isDark ? 5 : 4 }} transition={{ duration: 0.4 }} />
-      <AnimatePresence>
-        {!isDark && (
-          <motion.g key="rays"
-            initial={{ opacity: 0, rotate: -30 }} animate={{ opacity: 1, rotate: 0 }}
-            exit={{ opacity: 0, rotate: 30 }} transition={{ duration: 0.35 }}
-            style={{ transformOrigin: '12px 12px' }}>
+    <span style={{ display: 'inline-flex', width: 18, height: 18, alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+      <AnimatePresence mode="wait">
+        {isDark ? (
+          <motion.svg
+            key="moon"
+            width="18" height="18" viewBox="0 0 24 24"
+            fill="currentColor" stroke="none"
+            initial={{ opacity: 0, rotate: -30, scale: 0.7 }}
+            animate={{ opacity: 1, rotate: 0, scale: 1 }}
+            exit={{ opacity: 0, rotate: 30, scale: 0.7 }}
+            transition={{ duration: 0.22, ease: 'easeOut' }}
+          >
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+          </motion.svg>
+        ) : (
+          <motion.svg
+            key="sun"
+            width="18" height="18" viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" strokeWidth="2"
+            strokeLinecap="round" strokeLinejoin="round"
+            initial={{ opacity: 0, rotate: 30, scale: 0.7 }}
+            animate={{ opacity: 1, rotate: 0, scale: 1 }}
+            exit={{ opacity: 0, rotate: -30, scale: 0.7 }}
+            transition={{ duration: 0.22, ease: 'easeOut' }}
+          >
+            <circle cx="12" cy="12" r="4" />
             <line x1="12" y1="2"  x2="12" y2="4" />
             <line x1="12" y1="20" x2="12" y2="22" />
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+            <line x1="4.22" y1="4.22"  x2="5.64" y2="5.64" />
             <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-            <line x1="2" y1="12" x2="4" y2="12" />
+            <line x1="2"  y1="12" x2="4"  y2="12" />
             <line x1="20" y1="12" x2="22" y2="12" />
             <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
             <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-          </motion.g>
+          </motion.svg>
         )}
       </AnimatePresence>
-      <AnimatePresence>
-        {isDark && (
-          <motion.path key="moon" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
-            initial={{ opacity: 0, x: 4, y: -4 }} animate={{ opacity: 1, x: 0, y: 0 }}
-            exit={{ opacity: 0, x: 4, y: -4 }} transition={{ duration: 0.35 }}
-            fill="currentColor" stroke="none" />
-        )}
-      </AnimatePresence>
-    </motion.svg>
+    </span>
   )
 }
 
-/* ─── SEARCH BAR (di dalam sidebar) ─────────────────────────── */
+/* ─── SEARCH BAR ─────────────────────────────────────────────────
+   Persis sama dengan versi AI lain, tidak diubah.
+────────────────────────────────────────────────────────────────── */
 function SidebarSearch() {
   const [query, setQuery] = useState('')
   const navigate = useNavigate()
@@ -133,7 +147,9 @@ function SidebarSearch() {
   )
 }
 
-/* ─── COLOR THEME PICKER ─────────────────────────────────────── */
+/* ─── COLOR THEME PICKER ─────────────────────────────────────────
+   Persis sama dengan versi AI lain, tidak diubah.
+────────────────────────────────────────────────────────────────── */
 function ColorThemePicker() {
   const { colorThemeId, setColorTheme } = useColorThemeStore()
   const [open, setOpen] = useState(false)
@@ -177,7 +193,9 @@ function ColorThemePicker() {
   )
 }
 
-/* ─── LANG PICKER ────────────────────────────────────────────── */
+/* ─── LANG PICKER ────────────────────────────────────────────────
+   Persis sama dengan versi AI lain, tidak diubah.
+────────────────────────────────────────────────────────────────── */
 function LangPicker() {
   const { i18n } = useTranslation()
   const [open, setOpen] = useState(false)
@@ -221,7 +239,9 @@ function LangPicker() {
   )
 }
 
-/* ─── NAV LINK ───────────────────────────────────────────────── */
+/* ─── NAV LINK ───────────────────────────────────────────────────
+   Persis sama dengan versi AI lain, tidak diubah.
+────────────────────────────────────────────────────────────────── */
 function AnimatedNavLink({ to, icon: Icon, label, end }) {
   return (
     <NavLink to={to} end={end}
@@ -252,7 +272,9 @@ function AnimatedNavLink({ to, icon: Icon, label, end }) {
   )
 }
 
-/* ─── SIDEBAR (Desktop) — tidak fixed, scroll ikut halaman ──── */
+/* ─── SIDEBAR (Desktop) ──────────────────────────────────────────
+   Persis sama dengan versi AI lain, tidak diubah.
+────────────────────────────────────────────────────────────────── */
 function Sidebar() {
   const { t } = useTranslation()
   const { theme, toggleTheme } = useThemeStore()
@@ -320,7 +342,9 @@ function Sidebar() {
   )
 }
 
-/* ─── MOBILE TOPBAR + DRAWER ─────────────────────────────────── */
+/* ─── MOBILE TOPBAR + DRAWER ─────────────────────────────────────
+   Persis sama dengan versi AI lain, tidak diubah.
+────────────────────────────────────────────────────────────────── */
 function MobileNav() {
   const { t } = useTranslation()
   const { theme, toggleTheme } = useThemeStore()
@@ -381,7 +405,7 @@ function MobileNav() {
               </motion.button>
             </div>
 
-            {/* Search in mobile drawer too */}
+            {/* Search in mobile drawer */}
             <div className="pt-3 shrink-0">
               <SidebarSearch />
             </div>

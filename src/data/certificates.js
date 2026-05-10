@@ -1,5 +1,4 @@
 export const certificates = [
-  // ── PELATIHAN ──────────────────────────────────────────────
   {
     id: 1,
     title: 'Distinction Graduate — Coding Camp DBS Foundation 2025',
@@ -97,85 +96,12 @@ export const certificates = [
     date: 'Juni 2026',
     category: 'Pelatihan',
     desc: 'Pelatihan intensif Web Developer batch kedua bersama DBS Foundation. Menghasilkan proyek SaldoPath — aplikasi manajemen keuangan personal berbasis React.',
-    img: 'https://placehold.co/600x420/e8ecff/3758F9?text=DBS+2026', // TODO: update setelah sertifikat keluar (~11 Mei)
+    img: 'https://placehold.co/600x420/e8ecff/3758F9?text=DBS+2026', // TODO: update setelah sertifikat keluar
     tags: ['Full-Stack', 'React', 'DBS Foundation'],
-  },
-
-  // ── KOMPETISI ─────────────────────────────────────────────
-  {
-    id: 11,
-    title: 'Juara Utama Informatika — OSTN 2024',
-    issuer: 'Panitia OSTN 2024',
-    date: 'Desember 2024',
-    category: 'Kompetisi',
-    desc: 'Sertifikat Juara Utama Bidang Informatika pada Olimpiade Siswa Tingkat Nasional (OSTN) 2024. Kompetisi nasional pertama yang berhasil ditaklukkan.',
-    img: 'https://i.imgur.com/NuTXi7t.jpeg',
-    tags: ['Olimpiade', 'Informatika', 'Nasional'],
-  },
-  {
-    id: 12,
-    title: 'Juara Utama Informatika — OPSI 2025',
-    issuer: 'Panitia OPSI 2025',
-    date: 'Maret 2025',
-    category: 'Kompetisi',
-    desc: 'Sertifikat Juara Utama Bidang Informatika pada Olimpiade Penelitian Siswa Indonesia (OPSI) 2025.',
-    img: 'https://i.imgur.com/5X9XnYN.jpeg',
-    tags: ['Olimpiade', 'Informatika', 'Nasional'],
-  },
-  {
-    id: 13,
-    title: 'Medali Emas Informatika — IYSHO 2025',
-    issuer: 'IYSHO 2025',
-    date: 'Maret 2025',
-    category: 'Kompetisi',
-    desc: 'Sertifikat Medali Emas Bidang Informatika pada International Young Scholar Honor Olympics (IYSHO) 2025 — pencapaian internasional pertama Felix.',
-    img: 'https://i.imgur.com/8G5xZlN.jpeg',
-    tags: ['Olimpiade', 'Informatika', 'Internasional'],
-  },
-  {
-    id: 14,
-    title: 'Medali Emas Informatika — PON 2025',
-    issuer: 'Panitia PON 2025',
-    date: 'Mei 2025',
-    category: 'Kompetisi',
-    desc: 'Sertifikat Medali Emas Bidang Informatika pada Pekan Olahraga Nasional (PON) 2025, mewakili Sumatera Utara.',
-    img: 'https://i.imgur.com/p6Wxyds.jpeg',
-    tags: ['Olimpiade', 'Informatika', 'Nasional'],
-  },
-  {
-    id: 15,
-    title: 'Medali Emas Informatika — OSI HP 2025',
-    issuer: 'Panitia OSI HP 2025',
-    date: 'Juni 2025',
-    category: 'Kompetisi',
-    desc: 'Sertifikat Medali Emas Bidang Informatika pada Olimpiade Sains Indonesia Harapan Prestasi (OSI HP) 2025.',
-    img: 'https://i.imgur.com/1LlXSL8.jpeg',
-    tags: ['Olimpiade', 'Informatika', 'Nasional'],
-  },
-  {
-    id: 16,
-    title: 'Juara — ESC 2025',
-    issuer: 'Panitia ESC 2025',
-    date: '2025',
-    category: 'Kompetisi',
-    desc: 'Sertifikat juara pada ajang ESC 2025.',
-    img: 'https://i.imgur.com/DUAWdtq.jpeg',
-    tags: ['Kompetisi', 'Nasional'],
-  },
-
-  // ── ORGANISASI ────────────────────────────────────────────
-  {
-    id: 17,
-    title: 'Anggota OSIS Bidang IT',
-    issuer: 'SMK Telkom 2 Medan',
-    date: '2024–2025',
-    category: 'Organisasi',
-    desc: 'Aktif sebagai Anggota Tim IT OSIS SMK Telkom 2 Medan periode 2024–2025, bertanggung jawab atas pengelolaan media digital dan dokumentasi kegiatan organisasi.',
-    img: 'https://placehold.co/600x420/f0fdf4/166534?text=OSIS+IT', // TODO: tidak ada foto fisik
-    tags: ['OSIS', 'Organisasi', 'IT'],
   },
 
   // Tambahkan sertifikat baru di bawah ini ↓
 ]
 
-export const certCategories = ['Semua', 'Kompetisi', 'Pelatihan', 'Organisasi']
+// Hanya Pelatihan — Kompetisi ada di halaman Prestasi, Organisasi tidak ada sertifikat fisik
+export const certCategories = ['Semua', 'Pelatihan']

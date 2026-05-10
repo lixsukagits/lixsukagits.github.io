@@ -2,15 +2,14 @@ import { useRef, useState } from 'react'
 import { motion, useSpring } from 'framer-motion'
 
 /**
- * tilt_card.jsx — FM v11 compatible
- * 3D tilt mengikuti mouse + efek glare manual (tanpa useTransform array).
+ * tilt_card.jsx — glare diperkuat, FM v11 compatible
  * Taruh di: src/components/ui/tilt_card.jsx
  */
 export default function TiltCard({
   children,
-  maxTilt = 14,
+  maxTilt = 16,
   glare = true,
-  scale = 1.04,
+  scale = 1.05,
   className = '',
   style = {},
 }) {
@@ -19,9 +18,9 @@ export default function TiltCard({
   const [glarePos, setGlarePos] = useState({ x: 50, y: 50 })
   const [glareOpacity, setGlareOpacity] = useState(0)
 
-  const rotateX = useSpring(0, { stiffness: 200, damping: 20 })
-  const rotateY = useSpring(0, { stiffness: 200, damping: 20 })
-  const scaleVal = useSpring(1, { stiffness: 200, damping: 20 })
+  const rotateX = useSpring(0, { stiffness: 180, damping: 18 })
+  const rotateY = useSpring(0, { stiffness: 180, damping: 18 })
+  const scaleVal = useSpring(1, { stiffness: 180, damping: 18 })
 
   const handleMove = (e) => {
     if (!ref.current) return
@@ -34,8 +33,11 @@ export default function TiltCard({
 
     rotateX.set(rx)
     rotateY.set(ry)
+
+    // Glare lebih kuat — opacity max 0.6
+    const dist = Math.sqrt(Math.pow(x - 0.5, 2) + Math.pow(y - 0.5, 2))
     setGlarePos({ x: x * 100, y: y * 100 })
-    setGlareOpacity(Math.min((Math.abs(rx) + Math.abs(ry)) / (maxTilt * 2) * 0.4, 0.4))
+    setGlareOpacity(Math.min(dist * 1.2, 0.6))
   }
 
   const handleEnter = () => {
@@ -64,7 +66,7 @@ export default function TiltCard({
         rotateY,
         scale: scaleVal,
         transformStyle: 'preserve-3d',
-        transformPerspective: 800,
+        perspective: 800,
         position: 'relative',
         willChange: 'transform',
       }}
@@ -72,7 +74,7 @@ export default function TiltCard({
     >
       {children}
 
-      {/* Glare overlay */}
+      {/* Glare — lebih terang & lebih besar */}
       {glare && (
         <div
           style={{
@@ -81,27 +83,29 @@ export default function TiltCard({
             borderRadius: 'inherit',
             pointerEvents: 'none',
             zIndex: 2,
-            background: `radial-gradient(circle at ${glarePos.x}% ${glarePos.y}%, rgba(255,255,255,0.35) 0%, transparent 65%)`,
+            background: `radial-gradient(circle at ${glarePos.x}% ${glarePos.y}%, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.15) 40%, transparent 70%)`,
             opacity: glareOpacity,
-            transition: 'opacity 0.1s ease',
+            transition: 'opacity 0.05s linear',
+            mixBlendMode: 'overlay',
           }}
         />
       )}
 
-      {/* Edge glow saat hover */}
-      {hovered && (
-        <div
-          style={{
-            position: 'absolute',
-            inset: -1,
-            borderRadius: 'inherit',
-            border: '1px solid rgba(55,88,249,0.35)',
-            boxShadow: '0 0 20px rgba(55,88,249,0.15)',
-            pointerEvents: 'none',
-            zIndex: 3,
-          }}
-        />
-      )}
+      {/* Edge highlight saat hover */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          borderRadius: 'inherit',
+          pointerEvents: 'none',
+          zIndex: 3,
+          border: `1.5px solid rgba(255,255,255,${hovered ? 0.2 : 0})`,
+          boxShadow: hovered
+            ? '0 30px 60px rgba(55,88,249,0.2), inset 0 1px 0 rgba(255,255,255,0.15)'
+            : 'none',
+          transition: 'border 0.3s, box-shadow 0.3s',
+        }}
+      />
     </motion.div>
   )
 }

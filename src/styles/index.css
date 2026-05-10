@@ -364,3 +364,31 @@ aside {
 
 /* ─── SELECTION ──────────────────────────────────────────────── */
 ::selection { background: rgba(55,88,249,0.18); color: var(--dark); }
+
+/* ─── INSTAGRAM ICON — putih di dark mode ───────────────────── */
+[data-theme="dark"] .social-ig svg path {
+  fill: currentColor;
+}
+
+/* ─── SECTION HEADER — ukuran lebih besar ──────────────────── */
+.section-header-title {
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  font-weight: 700;
+  font-family: var(--font-display);
+  color: var(--dark);
+}
+.section-header-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--primary);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+/* ─── GRADIENTSHIFT keyframe ────────────────────────────────── */
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50%       { background-position: 100% 50%; }
+}
