@@ -12,13 +12,18 @@ createRoot(document.getElementById('root')).render(
     <HelmetProvider>
       <HashRouter>
         <App />
-        <Toaster position="bottom-right" toastOptions={{
-          style: {
-            background: 'var(--card-bg)',
-            color: 'var(--dark)',
-            border: '1px solid var(--border)',
-          }
-        }} />
+        <Toaster
+          position="bottom-right"
+          toastOptions={{
+            style: {
+              background: 'var(--card-bg)',
+              color: 'var(--dark)',
+              border: '1px solid var(--border)',
+              borderRadius: '0.75rem',
+              fontSize: '0.875rem',
+            },
+          }}
+        />
       </HashRouter>
     </HelmetProvider>
   </StrictMode>,

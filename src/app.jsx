@@ -12,6 +12,9 @@ import WhatsappButton from './components/widgets/whatsapp_button'
 import ReactionButton from './components/widgets/reaction_button'
 import SplashScreen from './components/ui/splash_screen'
 import CustomCursor from './components/widgets/custom_cursor'
+import EasterEgg from './components/widgets/easter_egg'
+import ShareButton from './components/widgets/share_button'
+import FontSizeToggle from './components/widgets/font_size_toggle'
 
 // ─── LAZY ROUTES ─────────────────────────────────────────────────
 const HomePage        = lazy(() => import('./pages/home_page'))
@@ -38,7 +41,7 @@ function PageSkeleton() {
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         {Array.from({ length: 6 }).map((_, i) => (
-          <div key={i} className="rounded-2xl overflow-hidden" style={{ border: '1px solid var(--border)' }}>
+          <div key={i} className="rounded-2xl overflow-hidden border border-[var(--border)]">
             <div className="skeleton h-40 w-full" />
             <div className="p-4 space-y-2">
               <div className="skeleton h-4 w-3/4 rounded-lg" />
@@ -51,76 +54,83 @@ function PageSkeleton() {
   )
 }
 
+// ─── SCROLL TO TOP ON ROUTE CHANGE ───────────────────────────────
 function ScrollToTop() {
   const { pathname } = useLocation()
-  useEffect(() => { window.scrollTo(0, 0) }, [pathname])
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' })
+  }, [pathname])
   return null
 }
 
-// ─── FLOATING STACK (struktur asli AI lain, tidak diubah) ────────
+// ─── FLOATING STACK ───────────────────────────────────────────────
 function FloatingStack() {
   const { pathname } = useLocation()
   const isCV = pathname === '/cv'
   return (
     <div className="floating-stack">
       <BackToTop />
+      {!isCV && <FontSizeToggle />}
+      {!isCV && <ShareButton />}
       {!isCV && <ReactionButton />}
       {!isCV && <WhatsappButton />}
     </div>
   )
 }
 
+// ─── ROOT APP ─────────────────────────────────────────────────────
 export default function App() {
   const { theme } = useThemeStore()
   const { colorThemeId } = useColorThemeStore()
   const location = useLocation()
 
-  // Splash sekali per session
+  // Splash: hanya tampil sekali per session
   const [showSplash] = useState(() => {
     try {
       const seen = sessionStorage.getItem('felix-splash')
       if (seen) return false
       sessionStorage.setItem('felix-splash', '1')
       return true
-    } catch { return false }
+    } catch {
+      return false
+    }
   })
   const [splashDone, setSplashDone] = useState(!showSplash)
 
+  // Apply dark/light mode via data-theme attribute
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
   }, [theme])
 
+  // Apply color theme CSS variables
   useEffect(() => {
     applyColorTheme(colorThemeId, theme === 'dark')
   }, [colorThemeId, theme])
 
   return (
     <>
-      {/* Splash screen */}
       {showSplash && !splashDone && (
         <SplashScreen onDone={() => setSplashDone(true)} />
       )}
 
-      {/* Custom cursor — desktop only */}
       <CustomCursor />
+      <EasterEgg />
 
-      {/* Wrapper utama — struktur persis sama dengan AI lain, hanya tambah opacity fade */}
       <div
         className="min-h-screen grain flex"
         style={{
           background: 'var(--bg)',
-          opacity: !splashDone ? 0 : 1,
+          opacity: splashDone ? 1 : 0,
           transition: 'opacity 0.4s ease',
         }}
       >
         <ScrollToTop />
         <ScrollProgress />
-
         <Navbar />
 
-        {/* PERSIS SAMA dengan versi AI lain — tidak ada lg:ml-60, tidak diubah */}
-        <div className="flex-1 flex flex-col min-w-0" style={{ position: 'relative', zIndex: 1 }}>
-          <div className="lg:hidden h-14 shrink-0" />
+        <div className="flex-1 flex flex-col min-w-0 relative z-[1]">
+          {/* Mobile topbar spacer */}
+          <div className="lg:hidden h-14 shrink-0" aria-hidden="true" />
 
           <main className="flex-1">
             <Suspense fallback={<PageSkeleton />}>

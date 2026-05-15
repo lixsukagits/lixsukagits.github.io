@@ -9,6 +9,7 @@ export const experience = [
     periodEn: 'January 2026 — Present',
     periodZh: '2026年1月 — 至今',
     icon: '👑',
+    logo: 'https://placehold.co/96x96/e8ecff/3758F9?text=OSIS', // TODO: ganti URL Imgur logo OSIS
     current: true,
     desc: 'Memimpin divisi IT OSIS, mengelola infrastruktur teknologi dan media digital organisasi sekolah. Naik jabatan dari anggota tim IT di periode sebelumnya.',
     descEn: 'Leading the IT division of OSIS, managing technology infrastructure and digital media for the school organization — promoted from IT team member in the previous term.',
@@ -25,6 +26,7 @@ export const experience = [
     periodEn: 'August 2024 — December 2025',
     periodZh: '2024年8月 — 2025年12月',
     icon: '💻',
+    logo: 'https://placehold.co/96x96/e8ecff/3758F9?text=OSIS', // TODO: sama dengan OSIS di atas
     current: false,
     desc: 'Bertanggung jawab atas pengelolaan media digital dan dokumentasi kegiatan OSIS. Menjadi fondasi sebelum dipercaya memimpin divisi di periode berikutnya.',
     descEn: 'Responsible for digital media management and documentation of OSIS activities — building the foundation before being trusted to lead the division.',
@@ -41,6 +43,7 @@ export const experience = [
     periodEn: 'April 2025 — Present',
     periodZh: '2025年4月 — 至今',
     icon: '📿',
+    logo: 'https://placehold.co/96x96/fdf2f8/86198f?text=CA', // TODO: ganti URL Imgur logo Cetiya Aryavamsa
     current: true,
     desc: 'Mendokumentasikan kegiatan komunitas Buddhist dan mengelola konten media komunikasi. Aktif sebagai panitia dan tim dokumentasi di acara Waisak 2026.',
     descEn: 'Documenting Buddhist community activities and managing media communication content. Actively involved as committee and documentation team for Vesak 2026.',
@@ -57,6 +60,7 @@ export const experience = [
     periodEn: 'January 2025 — June 2025',
     periodZh: '2025年1月 — 2025年6月',
     icon: '🚀',
+    logo: 'https://placehold.co/96x96/e8ecff/3758F9?text=DBS', // TODO: ganti URL Imgur logo DBS Foundation
     current: false,
     desc: 'Pelatihan intensif Web Developer selama 6 bulan mencakup Frontend & Backend Engineering. Menghasilkan proyek akhir MindSpark — platform belajar interaktif berbasis gamifikasi.',
     descEn: '6-month intensive Web Developer training covering Frontend & Backend Engineering. Produced the final project MindSpark — a gamification-based interactive learning platform.',
@@ -73,6 +77,7 @@ export const experience = [
     periodEn: 'January 2026 — June 2026',
     periodZh: '2026年1月 — 2026年6月',
     icon: '🚀',
+    logo: 'https://placehold.co/96x96/e8ecff/3758F9?text=DBS', // TODO: sama dengan DBS di atas
     current: false,
     desc: 'Mengikuti Coding Camp DBS Foundation untuk kedua kalinya. Menghasilkan proyek SaldoPath — aplikasi manajemen keuangan personal yang membantu pengguna melacak pengeluaran dan pemasukan harian.',
     descEn: 'Joined DBS Foundation Coding Camp for the second time. Produced SaldoPath — a personal finance management app that helps users track daily expenses and income.',
@@ -89,6 +94,7 @@ export const experience = [
     periodEn: '16 — 20 June 2025',
     periodZh: '2025年6月16日 — 20日',
     icon: '📊',
+    logo: 'https://placehold.co/96x96/fef9c3/854d0e?text=RV', // TODO: ganti URL Imgur logo Revou
     current: false,
     desc: 'Program intensif 5 hari mendalami dasar-dasar analisis data, visualisasi, dan pengambilan keputusan berbasis data menggunakan Excel dan tools modern.',
     descEn: '5-day intensive program exploring data analytics fundamentals, visualization, and data-driven decision making using Excel and modern tools.',

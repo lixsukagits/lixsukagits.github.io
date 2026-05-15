@@ -14,7 +14,6 @@ export default function PageWrapper({ children, className = '' }) {
       animate="animate"
       exit="exit"
       transition={{ duration: 0.35, ease: 'easeOut' }}
-      // pt-0 desktop (sidebar tidak makan ruang atas), pt-0 mobile (spacer sudah di app.jsx)
       className={className}
     >
       {children}

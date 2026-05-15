@@ -2,30 +2,30 @@
 
 /* ─── CSS VARIABLES ─────────────────────────────────────────── */
 :root {
-  --primary: #3758F9;
-  --primary-dark: #1B44C8;
+  --primary:       #3758F9;
+  --primary-dark:  #1B44C8;
   --primary-light: #e8ecff;
-  --dark: #212b36;
-  --body-color: #637381;
-  --bg: #f8f9fb;
-  --card-bg: #ffffff;
-  --border: #e8edf2;
-  --font-display: 'Fredoka One', 'Syne', sans-serif;
-  --font-hero: 'Fredoka One', cursive;
-  --font-body: 'DM Sans', sans-serif;
-  --font-zh: 'Noto Sans SC', sans-serif;
-  --sidebar-w: 240px;
+  --dark:          #212b36;
+  --body-color:    #637381;
+  --bg:            #f8f9fb;
+  --card-bg:       #ffffff;
+  --border:        #e8edf2;
+  --font-display:  'Fredoka One', 'Syne', sans-serif;
+  --font-hero:     'Fredoka One', cursive;
+  --font-body:     'DM Sans', sans-serif;
+  --font-zh:       'Noto Sans SC', sans-serif;
 }
 
 [data-theme="dark"] {
-  --dark: #f1f5f9;
-  --body-color: #94a3b8;
-  --bg: #0f1117;
-  --card-bg: #1a1f2e;
-  --border: #1e2a3a;
+  --dark:          #f1f5f9;
+  --body-color:    #94a3b8;
+  --bg:            #0f1117;
+  --card-bg:       #1a1f2e;
+  --border:        #1e2a3a;
   --primary-light: #1a2040;
 }
 
+/* ─── BASE TYPOGRAPHY ────────────────────────────────────────── */
 * { font-family: var(--font-body); box-sizing: border-box; }
 h1, h2, h3, h4, .font-display { font-family: var(--font-display); }
 .font-hero { font-family: var(--font-hero); }
@@ -38,10 +38,12 @@ body {
   overflow-x: hidden;
 }
 
-/* Custom cursor */
-@media (hover: hover) { * { cursor: none !important; } }
+/* Custom cursor — hanya di perangkat pointer halus */
+@media (pointer: fine) {
+  *, *::before, *::after { cursor: none !important; }
+}
 
-/* ─── ORNAMENTAL PATTERN — lebih tebal di light mode ───────── */
+/* ─── ORNAMENTAL TILE PATTERN ───────────────────────────────── */
 body::before {
   content: '';
   position: fixed;
@@ -71,14 +73,13 @@ body::before {
   transition: width 0.1s linear;
 }
 
-/* ─── LAYOUT — sidebar offset ───────────────────────────────── */
-/* Konten utama tidak tertimpa sidebar */
+/* ─── LAYOUT ─────────────────────────────────────────────────── */
 .main-content {
   position: relative;
   z-index: 1;
 }
 
-/* ─── SIDEBAR — solid bg, tidak transparan ──────────────────── */
+/* ─── SIDEBAR ────────────────────────────────────────────────── */
 aside {
   background: var(--card-bg) !important;
   border-right: 1px solid var(--border);
@@ -88,16 +89,14 @@ aside {
   backdrop-filter: none;
 }
 
-/* ─── DROPDOWN SOLID BG ─────────────────────────────────────── */
-/* Semua dropdown (lang, color theme) harus solid */
+/* ─── DROPDOWN SOLID BG ──────────────────────────────────────── */
 [data-dropdown] {
   background: var(--card-bg) !important;
   border: 1px solid var(--border) !important;
   box-shadow: 0 8px 32px rgba(0,0,0,0.12) !important;
 }
 
-/* ─── FLOATING BUTTONS — tidak bertabrakan ──────────────────── */
-/* Stack vertikal di pojok kanan bawah */
+/* ─── FLOATING BUTTONS STACK ─────────────────────────────────── */
 .floating-stack {
   position: fixed;
   right: 1.25rem;
@@ -109,7 +108,7 @@ aside {
   gap: 0.6rem;
 }
 
-/* ─── ANIMATIONS ─────────────────────────────────────────────── */
+/* ─── KEYFRAME ANIMATIONS ────────────────────────────────────── */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(24px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -146,9 +145,12 @@ aside {
   0%, 100% { background-position: 0% 50%; }
   50%       { background-position: 100% 50%; }
 }
+@keyframes skeletonShimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position:  400px 0; }
+}
 
-.marquee-track { will-change: transform; }
-
+/* ─── REDUCED MOTION ─────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
@@ -159,6 +161,9 @@ aside {
   .marquee-track { animation: none !important; }
 }
 
+.marquee-track { will-change: transform; }
+
+/* ─── ANIMATION UTILITY CLASSES ──────────────────────────────── */
 .animate-fade-up    { animation: fadeUp 0.6s ease forwards; }
 .animate-fade-in    { animation: fadeIn 0.5s ease forwards; }
 .animate-float      { animation: float 4s ease-in-out infinite; }
@@ -172,7 +177,7 @@ aside {
 .delay-500 { animation-delay: 0.5s; opacity: 0; }
 .delay-600 { animation-delay: 0.6s; opacity: 0; }
 
-/* ─── GRADIENT TEXT ─────────────────────────────────────────── */
+/* ─── GRADIENT TEXT ──────────────────────────────────────────── */
 .gradient-text {
   background: linear-gradient(135deg, var(--primary) 0%, #7c3aed 50%, #06b6d4 100%);
   background-size: 200% auto;
@@ -189,9 +194,10 @@ aside {
   border-radius: 1rem;
   position: relative;
   z-index: 1;
-  transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1),
-              box-shadow 0.3s ease,
-              border-color 0.3s ease;
+  transition:
+    transform 0.3s cubic-bezier(0.34,1.56,0.64,1),
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
 }
 .card:hover {
   transform: translateY(-6px) scale(1.01);
@@ -221,8 +227,11 @@ aside {
 }
 .btn-shimmer:hover::after { animation: shimmer 0.6s ease forwards; }
 
-/* ─── MAGNETIC / UNDERLINE / GLOW ────────────────────────────── */
-.magnetic { transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1); display: inline-flex; }
+/* ─── INTERACTIVE UTILITIES ──────────────────────────────────── */
+.magnetic {
+  transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  display: inline-flex;
+}
 
 .link-underline { position: relative; text-decoration: none; }
 .link-underline::after {
@@ -245,54 +254,32 @@ aside {
   border-color: var(--primary) !important;
 }
 
-/* ─── STAT ICON ──────────────────────────────────────────────── */
-.stat-icon {
-  width: 2.5rem; height: 2.5rem;
-  border-radius: 0.75rem;
-  display: flex; align-items: center; justify-content: center;
-  margin: 0 auto 0.5rem;
-}
-
-/* ─── DOT GRID ───────────────────────────────────────────────── */
-.grain::after {
-  content: '';
-  position: fixed; inset: 0;
-  background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
-  background-size: 28px 28px;
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.35;
-}
-[data-theme="dark"] .grain::after { opacity: 0.12; }
-
-/* ─── GRAIN OVERLAY ──────────────────────────────────────────── */
-.grain::before {
-  content: '';
-  position: fixed; inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.3;
-}
-
 /* ─── BADGE / TAG / SECTION LABEL ───────────────────────────── */
 .badge {
-  display: inline-flex; align-items: center;
-  padding: 0.2rem 0.75rem; border-radius: 9999px;
-  font-size: 0.75rem; font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
 }
 
 .tag {
-  background: var(--primary-light); color: var(--primary);
-  padding: 0.15rem 0.6rem; border-radius: 6px;
-  font-size: 0.75rem; font-weight: 600;
+  background: var(--primary-light);
+  color: var(--primary);
+  padding: 0.15rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
   transition: background 0.2s, transform 0.2s;
 }
 .tag:hover { background: var(--primary); color: #fff; transform: scale(1.05); }
 
 .section-label {
-  font-size: 0.7rem; font-weight: 700;
-  letter-spacing: 0.15em; text-transform: uppercase;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
   color: var(--primary);
 }
 
@@ -304,7 +291,8 @@ aside {
 }
 .timeline-dot {
   position: absolute; left: 0;
-  width: 3rem; height: 3rem; border-radius: 50%;
+  width: 3rem; height: 3rem;
+  border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   font-size: 1.25rem;
   box-shadow: 0 0 0 4px var(--bg), 0 4px 16px rgba(55,88,249,0.25);
@@ -312,12 +300,13 @@ aside {
 
 /* ─── NAV ACTIVE DOT ─────────────────────────────────────────── */
 .nav-active-dot {
-  width: 6px; height: 6px; border-radius: 50%;
+  width: 6px; height: 6px;
+  border-radius: 50%;
   background: var(--primary);
   animation: glowPulse 2s ease infinite;
 }
 
-/* ─── COMMAND PALETTE ────────────────────────────────────────── */
+/* ─── COMMAND PALETTE BACKDROP ───────────────────────────────── */
 .cmd-backdrop {
   position: fixed; inset: 0;
   background: rgba(0,0,0,0.5);
@@ -330,12 +319,13 @@ aside {
 .page-active { opacity: 1; transform: translateY(0); transition: 0.35s ease; }
 
 /* ─── SKELETON ───────────────────────────────────────────────── */
-@keyframes skeletonShimmer {
-  0%   { background-position: -400px 0; }
-  100% { background-position:  400px 0; }
-}
 .skeleton {
-  background: linear-gradient(90deg, var(--border) 25%, var(--card-bg) 50%, var(--border) 75%);
+  background: linear-gradient(
+    90deg,
+    var(--border) 25%,
+    var(--card-bg) 50%,
+    var(--border) 75%
+  );
   background-size: 800px 100%;
   animation: skeletonShimmer 1.4s ease-in-out infinite;
   border-radius: 8px;
@@ -351,26 +341,50 @@ aside {
   background: linear-gradient(90deg, var(--border) 25%, var(--card-bg) 50%, var(--border) 75%);
   background-size: 800px 100%;
   animation: skeletonShimmer 1.4s ease-in-out infinite;
-  z-index: 1; transition: opacity 0.3s ease; pointer-events: none;
+  z-index: 1;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
 }
 .img-wrapper.img-done::before { opacity: 0; }
 
-/* ─── FOCUS VISIBLE ──────────────────────────────────────────── */
+/* ─── STAT ICON ──────────────────────────────────────────────── */
+.stat-icon {
+  width: 2.5rem; height: 2.5rem;
+  border-radius: 0.75rem;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 0.5rem;
+}
+
+/* ─── DOT GRID + GRAIN ───────────────────────────────────────── */
+.grain::after {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.35;
+}
+[data-theme="dark"] .grain::after { opacity: 0.12; }
+
+.grain::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.3;
+}
+
+/* ─── FOCUS & SELECTION ──────────────────────────────────────── */
 :focus-visible {
   outline: 2px solid var(--primary);
   outline-offset: 3px;
   border-radius: 6px;
 }
-
-/* ─── SELECTION ──────────────────────────────────────────────── */
 ::selection { background: rgba(55,88,249,0.18); color: var(--dark); }
 
-/* ─── INSTAGRAM ICON — putih di dark mode ───────────────────── */
-[data-theme="dark"] .social-ig svg path {
-  fill: currentColor;
-}
-
-/* ─── SECTION HEADER — ukuran lebih besar ──────────────────── */
+/* ─── SECTION HEADER ─────────────────────────────────────────── */
 .section-header-title {
   font-size: clamp(1.6rem, 4vw, 2.2rem);
   font-weight: 700;
@@ -385,10 +399,4 @@ aside {
   color: var(--primary);
   display: block;
   margin-bottom: 0.5rem;
-}
-
-/* ─── GRADIENTSHIFT keyframe ────────────────────────────────── */
-@keyframes gradientShift {
-  0%, 100% { background-position: 0% 50%; }
-  50%       { background-position: 100% 50%; }
 }
