@@ -1,0 +1,1 @@
+import{j as a,m as n}from"./vendor-motion-Bvrs6Kwe.js";const e={initial:{opacity:0,y:16},animate:{opacity:1,y:0},exit:{opacity:0,y:-16}};function r({children:i,className:t=""}){return a.jsx(n.div,{variants:e,initial:"initial",animate:"animate",exit:"exit",transition:{duration:.35,ease:"easeOut"},className:t,children:i})}export{r as P};
