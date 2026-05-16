@@ -4,12 +4,15 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Helmet } from 'react-helmet-async'
 import { ChevronDown } from 'lucide-react'
 import PageWrapper from '../components/ui/page_wrapper'
+import SectionHeader from '../components/ui/section_header'
 import { timeline } from '../data/timeline'
 
 export default function TimelinePage() {
   const { t, i18n } = useTranslation()
   const lang = i18n.language
   const [expanded, setExpanded] = useState(null)
+
+  const toggle = (i) => setExpanded(prev => prev === i ? null : i)
 
   return (
     <PageWrapper>
@@ -21,134 +24,124 @@ export default function TimelinePage() {
 
       <div className="max-w-2xl mx-auto px-4 sm:px-6 md:px-10 py-20">
 
-        {/* Section label */}
-        <div className="text-center mb-14">
-          <p style={{
-            fontSize: 'clamp(0.85rem, 1.5vw, 1rem)',
-            fontWeight: 700, letterSpacing: '0.2em',
-            textTransform: 'uppercase', color: 'var(--primary)',
-          }}>
-            {t('timeline.subtitle')}
-          </p>
-        </div>
+        <SectionHeader label={t('timeline.subtitle')} title={t('nav.timeline')} />
 
-        {/* Timeline wrapper */}
         <div className="relative">
 
-          {/* Vertical gradient line — posisi tepat di tengah dot (dot lebar 48px = left 24px) */}
-          <div style={{
-            position: 'absolute',
-            left: 23,
-            top: 24, bottom: 0,
-            width: 2,
-            background: 'linear-gradient(to bottom, var(--primary), rgba(124,58,237,0.3), transparent)',
-            borderRadius: 2,
-            zIndex: 0,
-          }} />
+          {/* Vertical gradient line — gradient + left offset tetap inline */}
+          <div
+            aria-hidden="true"
+            className="absolute top-6 bottom-0 w-0.5 rounded-sm z-0"
+            style={{
+              left: 23,
+              background: 'linear-gradient(to bottom, var(--primary), rgba(124,58,237,0.3), transparent)',
+            }}
+          />
 
           <div className="space-y-6">
-            {timeline.map((item, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-40px' }}
-                transition={{ delay: i * 0.06, type: 'spring', stiffness: 260, damping: 22 }}
-                className="flex gap-4 items-start"
-              >
-                {/* Dot — fixed width, tidak overlap card */}
-                <div style={{
-                  width: 48, height: 48,
-                  borderRadius: '50%',
-                  background: item.color || 'var(--primary-light)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontSize: '1.2rem',
-                  flexShrink: 0,
-                  boxShadow: '0 0 0 3px var(--bg), 0 2px 12px rgba(55,88,249,0.18)',
-                  border: '2px solid var(--border)',
-                  position: 'relative',
-                  zIndex: 1,
-                }}>
-                  {item.icon}
-                </div>
-
-                {/* Card */}
-                <div
-                  className="flex-1 card p-4 sm:p-5 cursor-pointer min-w-0"
-                  onClick={() => setExpanded(expanded === i ? null : i)}
-                  style={{ marginTop: 4 }}
-                >
-                  {/* Header row */}
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="flex items-start gap-2 flex-wrap min-w-0">
-                      <span
-                        className="text-xs font-bold px-2.5 py-1 rounded-full shrink-0 mt-0.5"
-                        style={{ background: 'var(--primary-light)', color: 'var(--primary)' }}
-                      >
-                        {item.year}
-                      </span>
-                      <h3
-                        className="font-display font-bold text-sm sm:text-base leading-snug"
-                        style={{ color: 'var(--dark)' }}
-                      >
-                        {lang === 'en' ? item.titleEn
+            {timeline.map((item, i) => {
+              const isExpanded = expanded === i
+              const title = lang === 'en' ? item.titleEn
                           : lang === 'zh' ? item.titleZh
-                          : item.title}
-                      </h3>
-                    </div>
+                          : item.title
 
-                    {/* Chevron — berputar saat expand */}
-                    <motion.div
-                      animate={{ rotate: expanded === i ? 180 : 0 }}
-                      transition={{ duration: 0.22 }}
-                      style={{ flexShrink: 0, marginTop: 2 }}
-                    >
-                      <ChevronDown size={16} style={{ color: 'var(--body-color)' }} />
-                    </motion.div>
+              return (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-40px' }}
+                  transition={{ delay: i * 0.06, type: 'spring', stiffness: 260, damping: 22 }}
+                  className="flex gap-4 items-start"
+                >
+                  {/* Dot icon — item.color tetap inline (dinamis per-item dari data) */}
+                  {/* FIX: display/alignItems/justifyContent/flexShrink/position → Tailwind */}
+                  <div
+                    aria-hidden="true"
+                    className="w-12 h-12 rounded-full flex items-center justify-center
+                               text-xl shrink-0 relative z-[1] border-2 border-[var(--border)]"
+                    style={{
+                      background: item.color || 'var(--primary-light)',
+                      boxShadow: '0 0 0 3px var(--bg), 0 2px 12px rgba(55,88,249,0.18)',
+                    }}
+                  >
+                    {item.icon}
                   </div>
 
-                  {/* Preview 1 baris saat collapsed */}
-                  {expanded !== i && (
-                    <p
-                      className="text-xs mt-2"
-                      style={{
-                        color: 'var(--body-color)',
-                        opacity: 0.65,
-                        overflow: 'hidden',
-                        display: '-webkit-box',
-                        WebkitLineClamp: 1,
-                        WebkitBoxOrient: 'vertical',
-                      }}
-                    >
-                      {item.desc}
-                    </p>
-                  )}
+                  {/* Card as button */}
+                  {/* FIX: style={{ marginTop, cursor, background:'none' }} → Tailwind */}
+                  <button
+                    type="button"
+                    className="flex-1 card p-4 sm:p-5 min-w-0 text-left w-full mt-1 cursor-pointer bg-transparent"
+                    onClick={() => toggle(i)}
+                    aria-expanded={isExpanded}
+                    aria-controls={`timeline-detail-${i}`}
+                  >
+                    {/* Header row */}
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="flex items-start gap-2 flex-wrap min-w-0">
+                        {/* FIX: style={{ background, color }} → className */}
+                        <span className="text-xs font-bold px-2.5 py-1 rounded-full shrink-0 mt-0.5
+                                         bg-[var(--primary-light)] text-[var(--primary)]">
+                          {item.year}
+                        </span>
+                        {/* FIX: style={{ color }} → className */}
+                        <h3 className="font-display font-bold text-sm sm:text-base leading-snug text-[var(--dark)]">
+                          {title}
+                        </h3>
+                      </div>
 
-                  {/* Full description saat expanded */}
-                  <AnimatePresence initial={false}>
-                    {expanded === i && (
+                      {/* FIX: style={{ flexShrink, marginTop }} → Tailwind */}
                       <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.25, ease: 'easeOut' }}
-                        style={{ overflow: 'hidden' }}
+                        animate={{ rotate: isExpanded ? 180 : 0 }}
+                        transition={{ duration: 0.22 }}
+                        className="shrink-0 mt-0.5"
+                        aria-hidden="true"
                       >
-                        <p
-                          className="text-sm leading-relaxed mt-3 pt-3"
-                          style={{
-                            color: 'var(--body-color)',
-                            borderTop: '1px solid var(--border)',
-                          }}
-                        >
-                          {item.desc}
-                        </p>
+                        {/* FIX: style={{ color }} → className */}
+                        <ChevronDown size={16} className="text-[var(--body-color)]" />
                       </motion.div>
+                    </div>
+
+                    {/* Collapsed preview */}
+                    {/* FIX: style={{ color, opacity }} → className; WebkitLineClamp tetap inline (no Tailwind v4 equiv) */}
+                    {!isExpanded && (
+                      <p
+                        className="text-xs mt-2 text-[var(--body-color)] opacity-65"
+                        style={{
+                          overflow: 'hidden',
+                          display: '-webkit-box',
+                          WebkitLineClamp: 1,
+                          WebkitBoxOrient: 'vertical',
+                        }}
+                      >
+                        {item.desc}
+                      </p>
                     )}
-                  </AnimatePresence>
-                </div>
-              </motion.div>
-            ))}
+
+                    {/* Expanded description */}
+                    <AnimatePresence initial={false}>
+                      {isExpanded && (
+                        <motion.div
+                          id={`timeline-detail-${i}`}
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.25, ease: 'easeOut' }}
+                          className="overflow-hidden"
+                        >
+                          {/* FIX: style={{ color, borderTop }} → className */}
+                          <p className="text-sm leading-relaxed mt-3 pt-3 text-[var(--body-color)]
+                                        border-t border-[var(--border)]">
+                            {item.desc}
+                          </p>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </button>
+                </motion.div>
+              )
+            })}
 
             {/* End card */}
             <motion.div
@@ -158,30 +151,32 @@ export default function TimelinePage() {
               transition={{ delay: 0.1 }}
               className="flex gap-4 items-start"
             >
-              <div style={{
-                width: 48, height: 48,
-                borderRadius: '50%',
-                background: 'linear-gradient(135deg, var(--primary), #7c3aed)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: '1.2rem',
-                flexShrink: 0,
-                boxShadow: '0 0 0 3px var(--bg), 0 4px 16px rgba(55,88,249,0.3)',
-                animation: 'glowPulse 2s ease infinite',
-                position: 'relative', zIndex: 1,
-              }}>
-                🚀
-              </div>
-              <div
-                className="flex-1 card p-4 sm:p-5"
-                style={{
-                  background: 'linear-gradient(135deg, var(--primary-light), var(--card-bg))',
-                  marginTop: 4,
-                }}
+              {/* Pulsing rocket dot — boxShadow animate + gradient tetap inline */}
+              {/* FIX: display/alignItems/justifyContent/flexShrink/position → Tailwind */}
+              <motion.div
+                aria-hidden="true"
+                animate={{ boxShadow: [
+                  '0 0 0 3px var(--bg), 0 4px 16px rgba(55,88,249,0.3)',
+                  '0 0 0 3px var(--bg), 0 4px 24px rgba(55,88,249,0.6)',
+                  '0 0 0 3px var(--bg), 0 4px 16px rgba(55,88,249,0.3)',
+                ]}}
+                transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+                className="w-12 h-12 rounded-full flex items-center justify-center
+                           text-xl shrink-0 relative z-[1]"
+                style={{ background: 'linear-gradient(135deg, var(--primary), #7c3aed)' }}
               >
-                <p className="font-display font-bold text-sm" style={{ color: 'var(--primary)' }}>
+                🚀
+              </motion.div>
+
+              {/* FIX: style={{ background, marginTop }} → className/inline (gradient tetap inline) */}
+              <div
+                className="flex-1 card p-4 sm:p-5 mt-1"
+                style={{ background: 'linear-gradient(135deg, var(--primary-light), var(--card-bg))' }}
+              >
+                <p className="font-display font-bold text-sm text-[var(--primary)]">
                   The journey continues...
                 </p>
-                <p className="text-xs mt-1" style={{ color: 'var(--body-color)' }}>
+                <p className="text-xs mt-1 text-[var(--body-color)]">
                   Beasiswa China • S1 IT • Karir Global 🌏
                 </p>
               </div>

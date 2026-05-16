@@ -9,7 +9,6 @@ import ScrollProgress from './components/widgets/scroll_progress'
 import BackToTop from './components/widgets/back_to_top'
 import CommandPalette from './components/widgets/command_palette'
 import WhatsappButton from './components/widgets/whatsapp_button'
-import ReactionButton from './components/widgets/reaction_button'
 import SplashScreen from './components/ui/splash_screen'
 import CustomCursor from './components/widgets/custom_cursor'
 import EasterEgg from './components/widgets/easter_egg'
@@ -29,6 +28,9 @@ const CvPage          = lazy(() => import('./pages/cv_page'))
 const ContactPage     = lazy(() => import('./pages/contact_page'))
 const TimelinePage    = lazy(() => import('./pages/timeline_page'))
 const NowPage         = lazy(() => import('./pages/now_page'))
+const BlogPage        = lazy(() => import('./pages/blog_page'))
+const UsesPage        = lazy(() => import('./pages/uses_page'))
+const BookshelfPage   = lazy(() => import('./pages/bookshelf_page'))
 const NotFoundPage    = lazy(() => import('./pages/not_found_page'))
 
 // ─── PAGE SKELETON ────────────────────────────────────────────────
@@ -72,7 +74,6 @@ function FloatingStack() {
       <BackToTop />
       {!isCV && <FontSizeToggle />}
       {!isCV && <ShareButton />}
-      {!isCV && <ReactionButton />}
       {!isCV && <WhatsappButton />}
     </div>
   )
@@ -148,6 +149,9 @@ export default function App() {
                   <Route path="/contact"     element={<ContactPage />} />
                   <Route path="/timeline"    element={<TimelinePage />} />
                   <Route path="/now"         element={<NowPage />} />
+                  <Route path="/blog"        element={<BlogPage />} />
+                  <Route path="/uses"        element={<UsesPage />} />
+                  <Route path="/bookshelf"   element={<BookshelfPage />} />
                   <Route path="*"            element={<NotFoundPage />} />
                 </Routes>
               </AnimatePresence>

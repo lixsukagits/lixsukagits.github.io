@@ -3,7 +3,7 @@ import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Globe, Menu, X, Home, User, Zap, Trophy, GraduationCap,
          Briefcase, Award, Image, GitBranch, FileText, Mail, Flame,
-         ChevronDown, Palette, Search } from 'lucide-react'
+         ChevronDown, Palette, Search, BookOpen, Wrench, Library } from 'lucide-react'
 import { useThemeStore } from '../../store/use_theme_store'
 import { useColorThemeStore, COLOR_THEMES } from '../../store/use_color_theme_store'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -18,26 +18,29 @@ const LINKS = [
   { to: '/',            icon: Home,          key: 'home' },
   { to: '/about',       icon: User,          key: 'about' },
   { to: '/skills',      icon: Zap,           key: 'skills' },
-  { to: '/achievement', icon: Trophy,         key: 'achievement' },
-  { to: '/education',   icon: GraduationCap,  key: 'education' },
-  { to: '/experience',  icon: Briefcase,      key: 'experience' },
-  { to: '/certificate', icon: Award,          key: 'certificate' },
-  { to: '/gallery',     icon: Image,          key: 'gallery' },
-  { to: '/timeline',    icon: GitBranch,      key: 'timeline' },
-  { to: '/cv',          icon: FileText,       key: 'cv' },
-  { to: '/contact',     icon: Mail,           key: 'contact' },
-  { to: '/now',         icon: Flame,          key: 'now' },
+  { to: '/achievement', icon: Trophy,        key: 'achievement' },
+  { to: '/education',   icon: GraduationCap, key: 'education' },
+  { to: '/experience',  icon: Briefcase,     key: 'experience' },
+  { to: '/certificate', icon: Award,         key: 'certificate' },
+  { to: '/gallery',     icon: Image,         key: 'gallery' },
+  { to: '/timeline',    icon: GitBranch,     key: 'timeline' },
+  { to: '/cv',          icon: FileText,      key: 'cv' },
+  { to: '/contact',     icon: Mail,          key: 'contact' },
+  { to: '/now',         icon: Flame,         key: 'now' },
+  { to: '/blog',        icon: BookOpen,      key: 'blog' },
+  { to: '/uses',        icon: Wrench,        key: 'uses' },
+  { to: '/bookshelf',   icon: Library,       key: 'bookshelf' },
 ]
 
 /* ─── THEME TOGGLE ICON ──────────────────────────────────────────
    FIX: motion.circle dengan animate={{ r }} error di FM v11 karena
    SVG attribute "r" tidak bisa dianimasikan via Framer Motion.
    Solusi: pakai 2 SVG terpisah (sun & moon) yang swap via AnimatePresence.
-   Semua fitur visual tetap sama, hanya implementasinya berbeda.
 ────────────────────────────────────────────────────────────────── */
 function ThemeToggleIcon({ isDark }) {
   return (
-    <span style={{ display: 'inline-flex', width: 18, height: 18, alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+    // FIX: style={{ display:'inline-flex', width:18, height:18, ... }} → Tailwind
+    <span className="inline-flex w-[18px] h-[18px] items-center justify-center shrink-0">
       <AnimatePresence mode="wait">
         {isDark ? (
           <motion.svg
@@ -79,7 +82,7 @@ function ThemeToggleIcon({ isDark }) {
 }
 
 /* ─── SEARCH BAR ─────────────────────────────────────────────────
-   Persis sama dengan versi AI lain, tidak diubah.
+   FIX: aria-label ditambah ke clear button, placeholder pakai t()
 ────────────────────────────────────────────────────────────────── */
 function SidebarSearch() {
   const [query, setQuery] = useState('')
@@ -104,20 +107,27 @@ function SidebarSearch() {
 
   return (
     <div className="relative px-3 pb-2">
-      <div className="flex items-center gap-2 px-3 py-2 rounded-xl"
-        style={{ background: 'var(--bg)', border: '1px solid var(--border)' }}>
-        <Search size={13} style={{ color: 'var(--body-color)', flexShrink: 0 }} />
+      <div
+        className="flex items-center gap-2 px-3 py-2 rounded-xl"
+        style={{ background: 'var(--bg)', border: '1px solid var(--border)' }}
+      >
+        {/* FIX: style={{ color, flexShrink:0 }} → color tetap inline (CSS var), shrink-0 → Tailwind */}
+        <Search size={13} className="shrink-0" style={{ color: 'var(--body-color)' }} />
         <input
           ref={inputRef}
           type="text"
           value={query}
           onChange={e => setQuery(e.target.value)}
-          placeholder="Cari halaman..."
-          className="flex-1 bg-transparent outline-none text-sm"
-          style={{ color: 'var(--dark)', fontSize: '0.8rem' }}
+          placeholder={t('nav.search_placeholder', 'Cari halaman...')}
+          // FIX: hapus fontSize duplikat, text-[var(--dark)] via className
+          className="flex-1 bg-transparent outline-none text-[0.8rem] text-[var(--dark)]"
         />
         {query && (
-          <button onClick={() => { setQuery(''); setResults([]) }} style={{ color: 'var(--body-color)' }}>
+          <button
+            onClick={() => { setQuery(''); setResults([]) }}
+            aria-label={t('nav.clear_search', 'Hapus pencarian')}
+            className="text-[var(--body-color)]"
+          >
             <X size={12} />
           </button>
         )}
@@ -132,10 +142,13 @@ function SidebarSearch() {
             {results.map(r => {
               const Icon = r.icon
               return (
-                <button key={r.to} onClick={() => handleSelect(r.to)}
-                  className="w-full flex items-center gap-2 px-3 py-2.5 text-sm text-left hover:bg-[var(--primary-light)] transition-colors"
-                  style={{ color: 'var(--dark)' }}>
-                  <Icon size={14} style={{ color: 'var(--primary)', flexShrink: 0 }} />
+                <button
+                  key={r.to}
+                  onClick={() => handleSelect(r.to)}
+                  className="w-full flex items-center gap-2 px-3 py-2.5 text-sm text-left text-[var(--dark)] hover:bg-[var(--primary-light)] transition-colors"
+                >
+                  {/* FIX: style={{ color, flexShrink:0 }} → className */}
+                  <Icon size={14} className="shrink-0 text-[var(--primary)]" />
                   {t(`nav.${r.key}`)}
                 </button>
               )
@@ -148,7 +161,6 @@ function SidebarSearch() {
 }
 
 /* ─── COLOR THEME PICKER ─────────────────────────────────────────
-   Persis sama dengan versi AI lain, tidak diubah.
 ────────────────────────────────────────────────────────────────── */
 function ColorThemePicker() {
   const { colorThemeId, setColorTheme } = useColorThemeStore()
@@ -157,15 +169,21 @@ function ColorThemePicker() {
 
   return (
     <div className="relative">
-      <button onClick={() => setOpen(v => !v)}
-        className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-sm transition-colors hover:bg-[var(--primary-light)]"
-        style={{ color: 'var(--body-color)' }}>
+      <button
+        onClick={() => setOpen(v => !v)}
+        aria-label="Pilih tema warna"
+        aria-expanded={open}
+        className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-sm transition-colors hover:bg-[var(--primary-light)] text-[var(--body-color)]"
+      >
         <span className="flex items-center gap-2">
           <Palette size={15} />
           <span>Tema Warna</span>
         </span>
-        <span className="w-4 h-4 rounded-full shrink-0"
-          style={{ background: current.primary, border: '2px solid var(--border)' }} />
+        {/* background: current.primary harus tetap inline — nilai dinamis dari store */}
+        <span
+          className="w-4 h-4 rounded-full shrink-0"
+          style={{ background: current.primary, border: '2px solid var(--border)' }}
+        />
       </button>
       <AnimatePresence>
         {open && (
@@ -178,12 +196,17 @@ function ColorThemePicker() {
             style={{ background: 'var(--card-bg)', border: '1px solid var(--border)' }}
           >
             {COLOR_THEMES.map(theme => (
-              <button key={theme.id} onClick={() => { setColorTheme(theme.id); setOpen(false) }}
-                className="w-full flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-[var(--primary-light)] transition-colors text-left"
-                style={{ color: colorThemeId === theme.id ? 'var(--primary)' : 'var(--dark)', fontWeight: colorThemeId === theme.id ? 600 : 400 }}>
-                <span className="w-3.5 h-3.5 rounded-full shrink-0" style={{ background: theme.primary }} />
-                <span>{theme.emoji} {theme.label}</span>
-                {colorThemeId === theme.id && <span className="ml-auto text-xs">✓</span>}
+              <button
+                key={theme.id}
+                onClick={() => { setColorTheme(theme.id); setOpen(false) }}
+                className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-left text-[var(--dark)] hover:bg-[var(--primary-light)] transition-colors"
+              >
+                {/* background: theme.primary tetap inline — nilai dinamis */}
+                <span className="w-4 h-4 rounded-full shrink-0" style={{ background: theme.primary }} />
+                {theme.label}
+                {theme.id === colorThemeId && (
+                  <span className="ml-auto text-xs text-[var(--primary)]">✓</span>
+                )}
               </button>
             ))}
           </motion.div>
@@ -194,24 +217,26 @@ function ColorThemePicker() {
 }
 
 /* ─── LANG PICKER ────────────────────────────────────────────────
-   Persis sama dengan versi AI lain, tidak diubah.
 ────────────────────────────────────────────────────────────────── */
 function LangPicker() {
   const { i18n } = useTranslation()
   const [open, setOpen] = useState(false)
-  const currentLang = LANGS.find(l => l.code === i18n.language) || LANGS[0]
+  const current = LANGS.find(l => l.code === i18n.language) || LANGS[0]
 
   return (
     <div className="relative">
-      <button onClick={() => setOpen(v => !v)}
-        className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-sm transition-colors hover:bg-[var(--primary-light)]"
-        style={{ color: 'var(--body-color)' }}>
+      <button
+        onClick={() => setOpen(v => !v)}
+        aria-label="Pilih bahasa"
+        aria-expanded={open}
+        className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-sm transition-colors hover:bg-[var(--primary-light)] text-[var(--body-color)]"
+      >
         <span className="flex items-center gap-2">
           <Globe size={15} />
-          {currentLang.flag} {currentLang.label}
+          <span>{current.flag} {current.label}</span>
         </span>
-        <motion.span animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.22 }} style={{ display: 'flex' }}>
-          <ChevronDown size={13} />
+        <motion.span animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.2 }}>
+          <ChevronDown size={14} />
         </motion.span>
       </button>
       <AnimatePresence>
@@ -224,12 +249,17 @@ function LangPicker() {
             className="absolute bottom-full left-0 w-full mb-1 rounded-xl overflow-hidden shadow-2xl z-50"
             style={{ background: 'var(--card-bg)', border: '1px solid var(--border)' }}
           >
-            {LANGS.map(l => (
-              <button key={l.code} onClick={() => { i18n.changeLanguage(l.code); setOpen(false) }}
-                className="w-full flex items-center gap-2 px-4 py-2.5 text-sm hover:bg-[var(--primary-light)] transition-colors text-left"
-                style={{ color: i18n.language === l.code ? 'var(--primary)' : 'var(--dark)', fontWeight: i18n.language === l.code ? 600 : 400 }}>
-                {l.flag} {l.label}
-                {i18n.language === l.code && <span className="ml-auto text-xs">✓</span>}
+            {LANGS.map(lang => (
+              <button
+                key={lang.code}
+                onClick={() => { i18n.changeLanguage(lang.code); setOpen(false) }}
+                className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-left text-[var(--dark)] hover:bg-[var(--primary-light)] transition-colors"
+              >
+                <span>{lang.flag}</span>
+                <span>{lang.label}</span>
+                {lang.code === i18n.language && (
+                  <span className="ml-auto text-xs text-[var(--primary)]">✓</span>
+                )}
               </button>
             ))}
           </motion.div>
@@ -239,29 +269,28 @@ function LangPicker() {
   )
 }
 
-/* ─── NAV LINK ───────────────────────────────────────────────────
-   Persis sama dengan versi AI lain, tidak diubah.
+/* ─── ANIMATED NAV LINK ──────────────────────────────────────────
 ────────────────────────────────────────────────────────────────── */
 function AnimatedNavLink({ to, icon: Icon, label, end }) {
   return (
-    <NavLink to={to} end={end}
-      style={({ isActive }) => ({
-        display: 'flex', alignItems: 'center', gap: '0.75rem',
-        padding: '0.6rem 0.75rem', borderRadius: '0.75rem',
-        fontSize: '0.875rem', fontWeight: isActive ? 600 : 500,
-        background: isActive ? 'var(--primary-light)' : 'transparent',
-        color: isActive ? 'var(--primary)' : 'var(--body-color)',
-        transition: 'background 0.15s, color 0.15s',
-        textDecoration: 'none',
-      })}
-      className="hover:bg-[var(--primary-light)] hover:text-[var(--primary)]"
+    <NavLink
+      to={to}
+      end={end}
+      className={({ isActive }) =>
+        `flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-medium transition-colors relative group ${
+          isActive
+            ? 'text-[var(--primary)] bg-[var(--primary-light)]'
+            : 'text-[var(--body-color)] hover:text-[var(--dark)] hover:bg-[var(--primary-light)]'
+        }`
+      }
     >
       {({ isActive }) => (
         <>
           <motion.span
-            whileHover={{ scale: 1.15, rotate: isActive ? 0 : -6 }}
+            animate={isActive ? { scale: 1.15, rotate: [0, -8, 8, 0] } : { scale: 1, rotate: 0 }}
             transition={{ type: 'spring', stiffness: 400, damping: 17 }}
-            style={{ display: 'flex', flexShrink: 0 }}
+            // FIX: style={{ display:'flex', flexShrink:0 }} → Tailwind
+            className="flex shrink-0"
           >
             <Icon size={16} />
           </motion.span>
@@ -273,7 +302,6 @@ function AnimatedNavLink({ to, icon: Icon, label, end }) {
 }
 
 /* ─── SIDEBAR (Desktop) ──────────────────────────────────────────
-   Persis sama dengan versi AI lain, tidak diubah.
 ────────────────────────────────────────────────────────────────── */
 function Sidebar() {
   const { t } = useTranslation()
@@ -287,10 +315,13 @@ function Sidebar() {
     >
       {/* Logo */}
       <div className="px-6 py-5 border-b shrink-0" style={{ borderColor: 'var(--border)' }}>
-        <NavLink to="/" className="font-display text-2xl font-extrabold" style={{ color: 'var(--primary)' }}>
-          Felix<span style={{ color: 'var(--dark)' }}>.</span>
+        <NavLink
+          to="/"
+          className="font-display text-2xl font-extrabold text-[var(--primary)]"
+        >
+          Felix<span className="text-[var(--dark)]">.</span>
         </NavLink>
-        <p className="text-xs mt-0.5" style={{ color: 'var(--body-color)' }}>IT Enthusiast</p>
+        <p className="text-xs mt-0.5 text-[var(--body-color)]">IT Enthusiast</p>
       </div>
 
       {/* Search bar */}
@@ -311,30 +342,44 @@ function Sidebar() {
         <ColorThemePicker />
 
         {/* Dark/Light toggle */}
-        <motion.button onClick={toggleTheme}
-          className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-sm hover:bg-[var(--primary-light)] transition-colors"
-          style={{ color: 'var(--body-color)' }}
-          whileTap={{ scale: 0.95 }}>
-          <motion.span style={{
-            display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-            width: 28, height: 16, borderRadius: 8,
-            background: isDark ? 'var(--primary)' : 'var(--border)',
-            position: 'relative', flexShrink: 0, transition: 'background 0.3s',
-          }}>
-            <motion.span layout animate={{ x: isDark ? 5 : -5 }}
+        <motion.button
+          onClick={toggleTheme}
+          aria-label={isDark ? 'Aktifkan light mode' : 'Aktifkan dark mode'}
+          className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-sm hover:bg-[var(--primary-light)] transition-colors text-[var(--body-color)]"
+          whileTap={{ scale: 0.95 }}
+        >
+          {/* Toggle track — harus tetap inline karena nilai kondisional dari CSS var */}
+          <motion.span
+            className="inline-flex items-center justify-center w-7 h-4 rounded-lg relative shrink-0"
+            style={{
+              background: isDark ? 'var(--primary)' : 'var(--border)',
+              transition: 'background 0.3s',
+            }}
+          >
+            {/* FIX: background:'#fff' → bg-white via className */}
+            <motion.span
+              layout
+              animate={{ x: isDark ? 5 : -5 }}
               transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-              style={{ width: 10, height: 10, borderRadius: '50%', background: '#fff', position: 'absolute' }} />
+              className="w-2.5 h-2.5 rounded-full bg-white absolute"
+            />
           </motion.span>
           <ThemeToggleIcon isDark={isDark} />
           <span>{isDark ? 'Light Mode' : 'Dark Mode'}</span>
         </motion.button>
 
         {/* CTA */}
-        <motion.a href="https://wa.me/6281262729243" target="_blank" rel="noopener noreferrer"
-          className="btn-shimmer block w-full text-center py-2.5 rounded-xl font-semibold text-white text-sm mt-1"
-          style={{ background: 'var(--primary)', position: 'relative', overflow: 'hidden' }}
+        <motion.a
+          href="https://wa.me/6281262729243"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Hubungi Felix via WhatsApp"
+          // FIX: position:relative + overflow:hidden → Tailwind
+          className="btn-shimmer block w-full text-center py-2.5 rounded-xl font-semibold text-white text-sm mt-1 relative overflow-hidden"
+          style={{ background: 'var(--primary)' }}
           whileHover={{ scale: 1.02, boxShadow: '0 8px 24px rgba(55,88,249,0.35)' }}
-          whileTap={{ scale: 0.97 }}>
+          whileTap={{ scale: 0.97 }}
+        >
           Hubungi Saya
         </motion.a>
       </div>
@@ -343,7 +388,6 @@ function Sidebar() {
 }
 
 /* ─── MOBILE TOPBAR + DRAWER ─────────────────────────────────────
-   Persis sama dengan versi AI lain, tidak diubah.
 ────────────────────────────────────────────────────────────────── */
 function MobileNav() {
   const { t } = useTranslation()
@@ -360,47 +404,76 @@ function MobileNav() {
 
   return (
     <>
-      <header className="lg:hidden fixed top-0 left-0 w-full z-50 h-14 flex items-center justify-between px-5"
-        style={{ background: 'var(--card-bg)', borderBottom: '1px solid var(--border)' }}>
-        <NavLink to="/" className="font-display text-xl font-extrabold" style={{ color: 'var(--primary)' }}>
-          Felix<span style={{ color: 'var(--dark)' }}>.</span>
+      <header
+        className="lg:hidden fixed top-0 left-0 w-full z-50 h-14 flex items-center justify-between px-5"
+        style={{ background: 'var(--card-bg)', borderBottom: '1px solid var(--border)' }}
+      >
+        <NavLink
+          to="/"
+          className="font-display text-xl font-extrabold text-[var(--primary)]"
+        >
+          Felix<span className="text-[var(--dark)]">.</span>
         </NavLink>
         <div className="flex items-center gap-1">
-          <motion.button onClick={toggleTheme}
-            className="p-2 rounded-lg hover:bg-[var(--primary-light)] transition-colors"
-            style={{ color: 'var(--body-color)' }}
+          {/* FIX: minWidth/minHeight/display/alignItems/justifyContent → Tailwind */}
+          <motion.button
+            onClick={toggleTheme}
+            aria-label={isDark ? 'Aktifkan light mode' : 'Aktifkan dark mode'}
+            className="p-2 rounded-lg hover:bg-[var(--primary-light)] transition-colors text-[var(--body-color)] min-w-11 min-h-11 flex items-center justify-center"
             whileTap={{ scale: 0.88, rotate: isDark ? -15 : 15 }}
-            transition={{ type: 'spring', stiffness: 500, damping: 20 }}>
+            transition={{ type: 'spring', stiffness: 500, damping: 20 }}
+          >
             <ThemeToggleIcon isDark={isDark} />
           </motion.button>
-          <motion.button onClick={() => setOpen(true)}
-            className="p-2 rounded-lg hover:bg-[var(--primary-light)] transition-colors"
-            style={{ color: 'var(--body-color)' }} whileTap={{ scale: 0.9 }}>
+          <motion.button
+            onClick={() => setOpen(true)}
+            aria-label="Buka menu navigasi"
+            className="p-2 rounded-lg hover:bg-[var(--primary-light)] transition-colors text-[var(--body-color)] min-w-11 min-h-11 flex items-center justify-center"
+            whileTap={{ scale: 0.9 }}
+          >
             <Menu size={20} />
           </motion.button>
         </div>
       </header>
 
+      {/* Backdrop */}
       <AnimatePresence>
         {open && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            onClick={() => setOpen(false)} className="fixed inset-0 z-40 lg:hidden"
-            style={{ background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(4px)' }} />
+          <motion.div
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            onClick={() => setOpen(false)}
+            className="fixed inset-0 z-40 lg:hidden"
+            // rgba dan backdropFilter tetap inline — tidak ada Tailwind equivalent yang tepat
+            style={{ background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(4px)' }}
+          />
         )}
       </AnimatePresence>
 
+      {/* Drawer */}
       <AnimatePresence>
         {open && (
           <motion.div
             initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 28, stiffness: 220 }}
             className="fixed top-0 right-0 h-full w-72 z-50 flex flex-col lg:hidden"
-            style={{ background: 'var(--card-bg)', borderLeft: '1px solid var(--border)' }}>
-            <div className="flex items-center justify-between px-5 py-4 border-b shrink-0"
-              style={{ borderColor: 'var(--border)' }}>
-              <span className="font-display font-bold text-lg" style={{ color: 'var(--primary)' }}>Menu</span>
-              <motion.button onClick={() => setOpen(false)} style={{ color: 'var(--body-color)' }}
-                whileTap={{ rotate: 90, scale: 0.85 }} transition={{ duration: 0.2 }}>
+            style={{ background: 'var(--card-bg)', borderLeft: '1px solid var(--border)' }}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Menu navigasi"
+          >
+            <div
+              className="flex items-center justify-between px-5 py-4 border-b shrink-0"
+              style={{ borderColor: 'var(--border)' }}
+            >
+              <span className="font-display font-bold text-lg text-[var(--primary)]">Menu</span>
+              {/* FIX: minWidth/minHeight/display/alignItems/justifyContent → Tailwind */}
+              <motion.button
+                onClick={() => setOpen(false)}
+                aria-label="Tutup menu"
+                className="text-[var(--body-color)] min-w-11 min-h-11 flex items-center justify-center"
+                whileTap={{ rotate: 90, scale: 0.85 }}
+                transition={{ duration: 0.2 }}
+              >
                 <X size={20} />
               </motion.button>
             </div>
@@ -419,10 +492,17 @@ function MobileNav() {
             <div className="px-4 py-4 border-t shrink-0 space-y-1.5" style={{ borderColor: 'var(--border)' }}>
               <LangPicker />
               <ColorThemePicker />
-              <motion.a href="https://wa.me/6281262729243" target="_blank" rel="noopener noreferrer"
-                className="btn-shimmer block w-full text-center py-2.5 rounded-xl font-semibold text-white text-sm"
-                style={{ background: 'var(--primary)', position: 'relative', overflow: 'hidden' }}
-                whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}>
+              {/* FIX: position:relative + overflow:hidden → Tailwind */}
+              <motion.a
+                href="https://wa.me/6281262729243"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Hubungi Felix via WhatsApp"
+                className="btn-shimmer block w-full text-center py-2.5 rounded-xl font-semibold text-white text-sm relative overflow-hidden"
+                style={{ background: 'var(--primary)' }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.97 }}
+              >
                 Hubungi Saya
               </motion.a>
             </div>

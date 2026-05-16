@@ -10,6 +10,9 @@ const QUICK_LINKS = [
   { to: '/achievement', key: 'achievement' },
   { to: '/certificate', key: 'certificate' },
   { to: '/timeline',    key: 'timeline' },
+  { to: '/blog',        key: 'blog' },
+  { to: '/uses',        key: 'uses' },
+  { to: '/bookshelf',   key: 'bookshelf' },
 ]
 
 const SOCIAL = [
@@ -24,19 +27,18 @@ export default function Footer() {
   const year = new Date().getFullYear()
 
   return (
-    <footer
-      className="mt-20 border-t"
-      style={{ background: 'var(--card-bg)', borderColor: 'var(--border)' }}
-    >
+    // FIX: style={{ background, borderColor }} → className
+    <footer className="mt-20 border-t bg-[var(--card-bg)] border-[var(--border)]">
       <div className="max-w-7xl mx-auto px-6 md:px-12 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
 
           {/* Brand */}
           <div>
-            <span className="font-display text-2xl font-extrabold" style={{ color: 'var(--primary)' }}>
-              Felix<span style={{ color: 'var(--dark)' }}>.</span>
+            {/* FIX: style={{ color }} → className */}
+            <span className="font-display text-2xl font-extrabold text-[var(--primary)]">
+              Felix<span className="text-[var(--dark)]">.</span>
             </span>
-            <p className="text-sm mt-2 leading-relaxed" style={{ color: 'var(--body-color)' }}>
+            <p className="text-sm mt-2 leading-relaxed text-[var(--body-color)]">
               IT Enthusiast · Web Developer<br />SMK Telkom 2 Medan
             </p>
             <div className="flex gap-2 mt-4">
@@ -47,8 +49,9 @@ export default function Footer() {
                   target={href.startsWith('mailto') ? undefined : '_blank'}
                   rel={href.startsWith('mailto') ? undefined : 'noopener noreferrer'}
                   aria-label={label}
-                  className="p-2 rounded-lg transition-colors hover:bg-[var(--primary-light)] hover:text-[var(--primary)]"
-                  style={{ color: 'var(--body-color)' }}
+                  // FIX: style={{ color }} → className
+                  className="p-2 rounded-lg transition-colors text-[var(--body-color)]
+                             hover:bg-[var(--primary-light)] hover:text-[var(--primary)]"
                 >
                   <Icon size={18} />
                 </a>
@@ -58,7 +61,8 @@ export default function Footer() {
 
           {/* Quick links */}
           <div>
-            <h4 className="font-display font-bold mb-4 text-sm tracking-wider uppercase" style={{ color: 'var(--dark)' }}>
+            {/* FIX: style={{ color }} → className */}
+            <h4 className="font-display font-bold mb-4 text-sm tracking-wider uppercase text-[var(--dark)]">
               Halaman
             </h4>
             <div className="grid grid-cols-2 gap-1">
@@ -66,8 +70,8 @@ export default function Footer() {
                 <NavLink
                   key={to}
                   to={to}
-                  className="text-sm py-1 transition-colors hover:text-[var(--primary)]"
-                  style={{ color: 'var(--body-color)' }}
+                  // FIX: style={{ color }} → className
+                  className="text-sm py-1 transition-colors text-[var(--body-color)] hover:text-[var(--primary)]"
                 >
                   {t(`nav.${key}`)}
                 </NavLink>
@@ -77,10 +81,11 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h4 className="font-display font-bold mb-4 text-sm tracking-wider uppercase" style={{ color: 'var(--dark)' }}>
+            <h4 className="font-display font-bold mb-4 text-sm tracking-wider uppercase text-[var(--dark)]">
               Kontak
             </h4>
-            <div className="space-y-2 text-sm" style={{ color: 'var(--body-color)' }}>
+            {/* FIX: style={{ color }} → className */}
+            <div className="space-y-2 text-sm text-[var(--body-color)]">
               <p>📧 {profile.email}</p>
               <p>📍 {profile.location}</p>
               <p>🏫 SMK Telkom 2 Medan</p>
@@ -89,16 +94,11 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div
-          className="border-t mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-2"
-          style={{ borderColor: 'var(--border)' }}
-        >
-          <p className="text-xs" style={{ color: 'var(--body-color)' }}>
-            {t('footer.made')} — {year}
-          </p>
-          <p className="text-xs" style={{ color: 'var(--body-color)' }}>
-            Built with React + Vite + Tailwind v4 ⚡
-          </p>
+        {/* FIX: style={{ borderColor }} → className */}
+        <div className="border-t border-[var(--border)] mt-10 pt-6
+                        flex flex-col sm:flex-row items-center justify-between gap-2">
+          <p className="text-xs text-[var(--body-color)]">{t('footer.made')} — {year}</p>
+          <p className="text-xs text-[var(--body-color)]">Built with React + Vite + Tailwind v4 ⚡</p>
         </div>
       </div>
     </footer>

@@ -11,7 +11,12 @@
     "cv": "CV",
     "contact": "Contact",
     "timeline": "Timeline",
-    "now": "Now"
+    "now": "Now",
+    "blog": "Blog",
+    "uses": "Uses",
+    "bookshelf": "Bookshelf",
+    "search_placeholder": "Search pages...",
+    "clear_search": "Clear search"
   },
   "hero": {
     "greeting": "Hi, I'm",

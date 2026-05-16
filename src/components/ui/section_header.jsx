@@ -1,22 +1,37 @@
-import { useInView } from 'react-intersection-observer'
+import { motion } from 'framer-motion'
+
+const labelVariants = {
+  hidden:  { opacity: 0, y: 16 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: 'easeOut' } },
+}
+
+const titleVariants = {
+  hidden:  { opacity: 0, y: 16 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: 'easeOut', delay: 0.1 } },
+}
 
 export default function SectionHeader({ label, title, center = true }) {
-  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.2 })
-
   return (
-    <div ref={ref} className={`mb-12 ${center ? 'text-center' : ''}`}>
-      <span
-        className={`section-label transition-all duration-500 ${inView ? 'opacity-100' : 'opacity-0 translate-y-4'}`}
-        style={{ display: 'block', marginBottom: '0.5rem' }}
+    <div className={`mb-12 ${center ? 'text-center' : ''}`}>
+      <motion.span
+        className="section-label block mb-2"
+        variants={labelVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
       >
         {label}
-      </span>
-      <h2
-        className={`font-display text-3xl md:text-4xl font-bold transition-all duration-500 delay-100 ${inView ? 'opacity-100' : 'opacity-0 translate-y-4'}`}
+      </motion.span>
+      <motion.h2
+        className="font-display text-3xl md:text-4xl font-bold"
         style={{ color: 'var(--dark)' }}
+        variants={titleVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
       >
         {title}
-      </h2>
+      </motion.h2>
     </div>
   )
 }

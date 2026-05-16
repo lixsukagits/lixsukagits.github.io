@@ -11,7 +11,12 @@
     "cv": "CV",
     "contact": "Kontak",
     "timeline": "Timeline",
-    "now": "Sekarang"
+    "now": "Sekarang",
+    "blog": "Blog",
+    "uses": "Peralatan",
+    "bookshelf": "Rak Buku",
+    "search_placeholder": "Cari halaman...",
+    "clear_search": "Hapus pencarian"
   },
   "hero": {
     "greeting": "Halo, saya",

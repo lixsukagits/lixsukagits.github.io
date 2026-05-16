@@ -6,7 +6,8 @@ import { Search, X, ChevronLeft, ChevronRight } from 'lucide-react'
 import PageWrapper from '../components/ui/page_wrapper'
 import SectionHeader from '../components/ui/section_header'
 import LazyImage from '../components/ui/lazy_image'
-import { certificates, certCategories } from '../data/certificates'
+import HoverPreview from '../components/ui/hover_preview'
+import { certificates } from '../data/certificates'
 import { useThemeStore } from '../store/use_theme_store'
 
 // ── Accent color (Pelatihan) ────────────────────────────────────
@@ -66,11 +67,14 @@ function CertCard({ cert, index, onClick }) {
 
       {/* Body */}
       <div className="p-4 pb-5">
+        {/* Judul dengan HoverPreview — preview gambar sertifikat muncul saat hover nama */}
         <h3
           className="font-display font-bold text-sm mb-1.5 group-hover:text-[var(--primary)] transition-colors duration-200"
           style={{ color: 'var(--dark)', lineHeight: 1.75, letterSpacing: '0.03em', wordSpacing: '0.05em' }}
         >
-          {cert.title}
+          <HoverPreview src={cert.img} alt={cert.title} width={220} height={155}>
+            {cert.title}
+          </HoverPreview>
         </h3>
         <p className="text-xs mb-3" style={{ color: 'var(--body-color)' }}>
           {cert.issuer} · {cert.date}
@@ -244,7 +248,6 @@ export default function CertificatePage() {
   const [query, setQuery] = useState('')
   const [modal, setModal] = useState(null)
 
-  // Filter by search only (no category filter needed — semua Pelatihan)
   const filtered = useMemo(() =>
     [...certificates]
       .sort((a, b) => b.id - a.id)

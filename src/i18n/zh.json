@@ -11,7 +11,12 @@
     "cv": "简历",
     "contact": "联系",
     "timeline": "时间线",
-    "now": "当下"
+    "now": "当下",
+    "blog": "博客",
+    "uses": "工具箱",
+    "bookshelf": "书架",
+    "search_placeholder": "搜索页面...",
+    "clear_search": "清除搜索"
   },
   "hero": {
     "greeting": "你好，我是",

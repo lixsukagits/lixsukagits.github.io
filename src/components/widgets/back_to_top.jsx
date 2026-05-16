@@ -19,12 +19,15 @@ export default function BackToTop() {
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.7 }}
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="w-10 h-10 rounded-xl flex items-center justify-center shadow-lg transition-all hover:scale-110"
-          style={{ background: 'var(--primary)', color: '#fff' }}
           aria-label="Kembali ke atas"
           whileTap={{ scale: 0.9 }}
+          whileHover={{ scale: 1.1 }}
+          // FIX: w-11 h-11 = 44px minimum tap target
+          className="w-11 h-11 rounded-xl flex items-center justify-center shadow-lg"
+          style={{ background: 'var(--primary)', color: '#fff' }}
         >
-          <ArrowUp size={18} />
+          {/* FIX: aria-hidden — label sudah ada di button */}
+          <ArrowUp size={18} aria-hidden="true" />
         </motion.button>
       )}
     </AnimatePresence>
