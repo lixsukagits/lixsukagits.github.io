@@ -22,11 +22,10 @@ export default function BackToTop() {
           aria-label="Kembali ke atas"
           whileTap={{ scale: 0.9 }}
           whileHover={{ scale: 1.1 }}
-          // FIX: w-11 h-11 = 44px minimum tap target
-          className="w-11 h-11 rounded-xl flex items-center justify-center shadow-lg"
-          style={{ background: 'var(--primary)', color: '#fff' }}
+          // FIX: style={{ background, color:'#fff' }} → className
+          className="w-11 h-11 rounded-xl flex items-center justify-center shadow-lg
+                     bg-[var(--primary)] text-white"
         >
-          {/* FIX: aria-hidden — label sudah ada di button */}
           <ArrowUp size={18} aria-hidden="true" />
         </motion.button>
       )}

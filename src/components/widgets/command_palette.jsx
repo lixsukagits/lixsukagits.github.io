@@ -26,6 +26,9 @@ export default function CommandPalette() {
     { label: t('nav.cv'),          path: '/cv',          icon: '📄' },
     { label: t('nav.contact'),     path: '/contact',     icon: '✉️' },
     { label: t('nav.now'),         path: '/now',         icon: '🔥' },
+    { label: t('nav.blog'),        path: '/blog',        icon: '📝' },
+    { label: t('nav.uses'),        path: '/uses',        icon: '🔧' },
+    { label: t('nav.bookshelf'),   path: '/bookshelf',   icon: '📚' },
   ]
 
   const actions = [
@@ -70,16 +73,15 @@ export default function CommandPalette() {
 
   return (
     <>
-      {/* FIX: Trigger — aria-label eksplisit */}
+      {/* Trigger button */}
+      {/* FIX: style={{ background, border, color, minHeight }} → className */}
       <button
         onClick={() => setOpen(true)}
         aria-label={t('cmd.open_label', 'Buka command palette (Ctrl+K)')}
         aria-keyshortcuts="Control+k Meta+k"
-        className="fixed bottom-24 left-5 z-40 hidden md:flex items-center gap-2 px-3 py-2 rounded-xl text-xs shadow-md transition-all hover:scale-105"
-        style={{
-          background: 'var(--card-bg)', border: '1px solid var(--border)',
-          color: 'var(--body-color)', minHeight: 44,
-        }}
+        className="fixed bottom-24 left-5 z-40 hidden md:flex items-center gap-2 px-3 py-2
+                   rounded-xl text-xs shadow-md transition-all hover:scale-105 min-h-11
+                   bg-[var(--card-bg)] border border-[var(--border)] text-[var(--body-color)]"
       >
         <Search size={13} aria-hidden="true" />
         <kbd className="opacity-60">Ctrl K</kbd>
@@ -88,7 +90,6 @@ export default function CommandPalette() {
       <AnimatePresence>
         {open && (
           <>
-            {/* FIX: Backdrop aria-hidden — dekoratif */}
             <motion.div
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
               className="cmd-backdrop"
@@ -96,7 +97,7 @@ export default function CommandPalette() {
               aria-hidden="true"
             />
 
-            {/* FIX: role="dialog" + aria-modal + aria-label */}
+            {/* FIX: style={{ background, border }} → className */}
             <motion.div
               role="dialog"
               aria-modal="true"
@@ -105,46 +106,55 @@ export default function CommandPalette() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: -20 }}
               transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-              className="fixed top-1/4 left-1/2 -translate-x-1/2 w-full max-w-lg z-[201] rounded-2xl shadow-2xl overflow-hidden"
-              style={{ background: 'var(--card-bg)', border: '1px solid var(--border)' }}
+              className="fixed top-1/4 left-1/2 -translate-x-1/2 w-full max-w-lg z-[201]
+                         rounded-2xl shadow-2xl overflow-hidden
+                         bg-[var(--card-bg)] border border-[var(--border)]"
             >
-              <div className="flex items-center gap-3 px-4 py-3 border-b" style={{ borderColor: 'var(--border)' }}>
-                <Search size={16} style={{ color: 'var(--body-color)' }} aria-hidden="true" />
+              {/* Search input row */}
+              {/* FIX: style={{ borderColor }} → className */}
+              <div className="flex items-center gap-3 px-4 py-3 border-b border-[var(--border)]">
+                {/* FIX: style={{ color }} → className */}
+                <Search size={16} className="text-[var(--body-color)]" aria-hidden="true" />
+                {/* FIX: style={{ color }} → className */}
                 <input
                   ref={inputRef}
                   value={query}
                   onChange={e => setQuery(e.target.value)}
                   placeholder={t('cmd.placeholder')}
                   aria-label={t('cmd.search_label', 'Cari halaman atau aksi')}
-                  className="flex-1 bg-transparent outline-none text-sm"
-                  style={{ color: 'var(--dark)' }}
+                  className="flex-1 bg-transparent outline-none text-sm text-[var(--dark)]"
                 />
+                {/* FIX: style={{ background, color }} → className */}
                 <kbd
-                  className="text-xs px-2 py-1 rounded-md"
-                  style={{ background: 'var(--bg)', color: 'var(--body-color)' }}
+                  className="text-xs px-2 py-1 rounded-md bg-[var(--bg)] text-[var(--body-color)]"
                   aria-label="Tekan Escape untuk menutup"
                 >
                   ESC
                 </kbd>
               </div>
 
-              <div className="max-h-72 overflow-y-auto p-2" role="listbox" aria-label={t('cmd.results_label', 'Hasil pencarian')}>
+              <div
+                className="max-h-72 overflow-y-auto p-2"
+                role="listbox"
+                aria-label={t('cmd.results_label', 'Hasil pencarian')}
+              >
                 {filtered.length === 0 ? (
-                  <p className="text-center py-8 text-sm" style={{ color: 'var(--body-color)' }}>
+                  // FIX: style={{ color }} → className
+                  <p className="text-center py-8 text-sm text-[var(--body-color)]">
                     {t('cmd.no_result')} &ldquo;{query}&rdquo;
                   </p>
                 ) : (
                   filtered.map((item) => (
-                    // FIX: key pakai path atau id — bukan index
+                    // FIX: style={{ color }} → className
                     <button
                       key={item.path || item.id}
                       role="option"
                       aria-selected="false"
                       onClick={() => handleSelect(item)}
-                      className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-left transition-colors hover:bg-[var(--primary-light)]"
-                      style={{ color: 'var(--dark)' }}
+                      className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm
+                                 text-left transition-colors text-[var(--dark)]
+                                 hover:bg-[var(--primary-light)]"
                     >
-                      {/* FIX: emoji icon aria-hidden */}
                       <span className="text-base" aria-hidden="true">{item.icon}</span>
                       <span>{item.label}</span>
                       {item.type === 'action' && (

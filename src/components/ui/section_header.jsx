@@ -22,9 +22,9 @@ export default function SectionHeader({ label, title, center = true }) {
       >
         {label}
       </motion.span>
+      {/* FIX: style={{ color:'var(--dark)' }} → className */}
       <motion.h2
-        className="font-display text-3xl md:text-4xl font-bold"
-        style={{ color: 'var(--dark)' }}
+        className="font-display text-3xl md:text-4xl font-bold text-[var(--dark)]"
         variants={titleVariants}
         initial="hidden"
         whileInView="visible"

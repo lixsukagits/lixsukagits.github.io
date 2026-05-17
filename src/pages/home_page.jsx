@@ -433,7 +433,11 @@ export default function HomePage() {
                 </span>
               </div>
               <div className="p-4">
-                <h3 className="font-display font-bold text-sm leading-snug mb-1 text-[var(--dark)]">
+                <h3 className="font-display font-bold text-sm leading-snug mb-1 text-[var(--dark)]"
+                style={{
+                letterSpacing: '0.05em',   /* ← jarak antar huruf lebih lebar */
+                wordSpacing: '0.05em',     /* ← jarak antar kata sedikit lebih lega */
+                }}>
                   {a.title}
                 </h3>
                 <p className="text-xs text-[var(--body-color)]">{a.date}</p>

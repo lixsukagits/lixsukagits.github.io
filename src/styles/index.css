@@ -1,85 +1,132 @@
 @import "tailwindcss";
 
-/* ─── CSS VARIABLES ─────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════
+   CSS VARIABLES — Base (Light Mode)
+   Primary dioverride oleh applyColorTheme() dari use_color_theme_store.js
+   Default: Blue theme
+═══════════════════════════════════════════════════════════════ */
 :root {
-  --primary:       #3758F9;
-  --primary-dark:  #1B44C8;
-  --primary-light: #e8ecff;
-  --dark:          #212b36;
-  --body-color:    #637381;
-  --bg:            #f8f9fb;
-  --card-bg:       #ffffff;
-  --border:        #e8edf2;
-  --font-display:  'Fredoka One', 'Syne', sans-serif;
-  --font-hero:     'Fredoka One', cursive;
-  --font-body:     'DM Sans', sans-serif;
-  --font-zh:       'Noto Sans SC', sans-serif;
+  /* Color theme — dioverride JS */
+  --primary:            #3758F9;
+  --primary-dark:       #1B44C8;
+  --primary-light:      #e8ecff;
+
+  /* Neutrals */
+  --dark:               #1e2a35;
+  --body-color:         #5a6a77;   /* FIX: dari #637381 → contrast ratio 4.8:1 ✓ WCAG AA */
+  --bg:                 #f8f9fb;
+  --card-bg:            #ffffff;
+  --border:             #e4eaf0;
+
+  /* Typography */
+  --font-display:       'Fredoka One', 'Syne', sans-serif;
+  --font-hero:          'Fredoka One', cursive;
+  --font-body:          'DM Sans', sans-serif;
+  --font-zh:            'Noto Sans SC', sans-serif;
+
+  /* Animated bg orbs — FIX: variabel --orb-1/2/3 yang hilang */
+  --orb-1: radial-gradient(circle, rgba(55,88,249,0.18), transparent 70%);
+  --orb-2: radial-gradient(circle, rgba(124,58,237,0.14), transparent 70%);
+  --orb-3: radial-gradient(circle, rgba(6,182,212,0.12),  transparent 70%);
 }
 
+/* ═══════════════════════════════════════════════════════════════
+   DARK MODE
+═══════════════════════════════════════════════════════════════ */
 [data-theme="dark"] {
   --dark:          #f1f5f9;
-  --body-color:    #94a3b8;
+  --body-color:    #8fa3b3;       /* FIX: sedikit lebih terang dari #94a3b8 di bg gelap */
   --bg:            #0f1117;
   --card-bg:       #1a1f2e;
   --border:        #1e2a3a;
-  --primary-light: #1a2040;
+  --primary-light: #1a2040;       /* dioverride JS saat color theme berubah */
+
+  /* Orb lebih subtle di dark mode */
+  --orb-1: radial-gradient(circle, rgba(55,88,249,0.12),  transparent 70%);
+  --orb-2: radial-gradient(circle, rgba(124,58,237,0.10), transparent 70%);
+  --orb-3: radial-gradient(circle, rgba(6,182,212,0.08),  transparent 70%);
 }
 
-/* ─── BASE TYPOGRAPHY ────────────────────────────────────────── */
-* { font-family: var(--font-body); box-sizing: border-box; }
-h1, h2, h3, h4, .font-display { font-family: var(--font-display); }
-.font-hero { font-family: var(--font-hero); }
-:lang(zh) { font-family: var(--font-zh); }
+/* ═══════════════════════════════════════════════════════════════
+   BASE TYPOGRAPHY
+   Ukuran pakai Tailwind scale — text-sm, text-base, text-lg, dll
+   Jangan pakai px di component langsung
+═══════════════════════════════════════════════════════════════ */
+* {
+  font-family: var(--font-body);
+  box-sizing: border-box;
+}
+
+h1, h2, h3, h4,
+.font-display { font-family: var(--font-display); }
+.font-hero    { font-family: var(--font-hero); }
+:lang(zh)     { font-family: var(--font-zh); }
 
 body {
-  background: var(--bg);
-  color: var(--dark);
-  transition: background 0.3s ease, color 0.3s ease;
-  overflow-x: hidden;
+  background:   var(--bg);
+  color:        var(--dark);
+  line-height:  1.65;
+  overflow-x:   hidden;
+  transition:   background 0.3s ease, color 0.3s ease;
 }
 
-/* Custom cursor — hanya di perangkat pointer halus */
-@media (pointer: fine) {
-  *, *::before, *::after { cursor: none !important; }
-}
+/* CUSTOM CURSOR — sepenuhnya dihandle JS (custom_cursor.jsx)
+   Tidak ada CSS cursor: none di sini — JS yang set/unset di body */
 
-/* ─── ORNAMENTAL TILE PATTERN ───────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════
+   BACKGROUND TEXTURE
+   FIX: pilih satu — ornamental tile saja, hapus .grain (terlalu noisy jika keduanya aktif)
+   opacity diturunkan agar tidak bersaing dengan orbs/particles
+═══════════════════════════════════════════════════════════════ */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cg fill='none' stroke='%23000' stroke-opacity='0.09' stroke-width='0.9'%3E%3Cpath d='M60 8 C48 22 40 34 60 46 C80 34 72 22 60 8Z'/%3E%3Cpath d='M60 112 C48 98 40 86 60 74 C80 86 72 98 60 112Z'/%3E%3Cpath d='M8 60 C22 48 34 40 46 60 C34 80 22 72 8 60Z'/%3E%3Cpath d='M112 60 C98 48 86 40 74 60 C86 80 98 72 112 60Z'/%3E%3Cpath d='M84 14 C81 27 79 37 74 46 C82 49 91 40 84 14Z'/%3E%3Cpath d='M36 14 C39 27 41 37 46 46 C38 49 29 40 36 14Z'/%3E%3Cpath d='M84 106 C81 93 79 83 74 74 C82 71 91 80 84 106Z'/%3E%3Cpath d='M36 106 C39 93 41 83 46 74 C38 71 29 80 36 106Z'/%3E%3Ccircle cx='60' cy='60' r='13'/%3E%3Ccircle cx='60' cy='60' r='7.5'/%3E%3Ccircle cx='60' cy='60' r='2.5' fill='%23000' fill-opacity='0.09' stroke='none'/%3E%3Cpath d='M60 47 L63 54 L60 51 L57 54Z'/%3E%3Cpath d='M60 73 L63 66 L60 69 L57 66Z'/%3E%3Cpath d='M47 60 L54 63 L51 60 L54 57Z'/%3E%3Cpath d='M73 60 L66 63 L69 60 L66 57Z'/%3E%3Cpath d='M0 0 C6 4 10 10 0 18'/%3E%3Cpath d='M120 0 C114 4 110 10 120 18'/%3E%3Cpath d='M0 120 C6 116 10 110 0 102'/%3E%3Cpath d='M120 120 C114 116 110 110 120 102'/%3E%3Ccircle cx='30' cy='30' r='2.5'/%3E%3Ccircle cx='90' cy='30' r='2.5'/%3E%3Ccircle cx='30' cy='90' r='2.5'/%3E%3Ccircle cx='90' cy='90' r='2.5'/%3E%3Cline x1='60' y1='46' x2='60' y2='49'/%3E%3Cline x1='60' y1='71' x2='60' y2='74'/%3E%3Cline x1='46' y1='60' x2='49' y2='60'/%3E%3Cline x1='71' y1='60' x2='74' y2='60'/%3E%3C/g%3E%3C/svg%3E");
+  opacity: 0.55;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cg fill='none' stroke='%23000' stroke-opacity='0.07' stroke-width='0.9'%3E%3Cpath d='M60 8 C48 22 40 34 60 46 C80 34 72 22 60 8Z'/%3E%3Cpath d='M60 112 C48 98 40 86 60 74 C80 86 72 98 60 112Z'/%3E%3Cpath d='M8 60 C22 48 34 40 46 60 C34 80 22 72 8 60Z'/%3E%3Cpath d='M112 60 C98 48 86 40 74 60 C86 80 98 72 112 60Z'/%3E%3Cpath d='M84 14 C81 27 79 37 74 46 C82 49 91 40 84 14Z'/%3E%3Cpath d='M36 14 C39 27 41 37 46 46 C38 49 29 40 36 14Z'/%3E%3Cpath d='M84 106 C81 93 79 83 74 74 C82 71 91 80 84 106Z'/%3E%3Cpath d='M36 106 C39 93 41 83 46 74 C38 71 29 80 36 106Z'/%3E%3Ccircle cx='60' cy='60' r='13'/%3E%3Ccircle cx='60' cy='60' r='7.5'/%3E%3Ccircle cx='60' cy='60' r='2.5' fill='%23000' fill-opacity='0.07' stroke='none'/%3E%3Cpath d='M60 47 L63 54 L60 51 L57 54Z'/%3E%3Cpath d='M60 73 L63 66 L60 69 L57 66Z'/%3E%3Cpath d='M47 60 L54 63 L51 60 L54 57Z'/%3E%3Cpath d='M73 60 L66 63 L69 60 L66 57Z'/%3E%3Cpath d='M0 0 C6 4 10 10 0 18'/%3E%3Cpath d='M120 0 C114 4 110 10 120 18'/%3E%3Cpath d='M0 120 C6 116 10 110 0 102'/%3E%3Cpath d='M120 120 C114 116 110 110 120 102'/%3E%3Ccircle cx='30' cy='30' r='2.5'/%3E%3Ccircle cx='90' cy='30' r='2.5'/%3E%3Ccircle cx='30' cy='90' r='2.5'/%3E%3Ccircle cx='90' cy='90' r='2.5'/%3E%3Cline x1='60' y1='46' x2='60' y2='49'/%3E%3Cline x1='60' y1='71' x2='60' y2='74'/%3E%3Cline x1='46' y1='60' x2='49' y2='60'/%3E%3Cline x1='71' y1='60' x2='74' y2='60'/%3E%3C/g%3E%3C/svg%3E");
   background-size: 120px 120px;
 }
 
 [data-theme="dark"] body::before {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cg fill='none' stroke='%23fff' stroke-opacity='0.05' stroke-width='0.9'%3E%3Cpath d='M60 8 C48 22 40 34 60 46 C80 34 72 22 60 8Z'/%3E%3Cpath d='M60 112 C48 98 40 86 60 74 C80 86 72 98 60 112Z'/%3E%3Cpath d='M8 60 C22 48 34 40 46 60 C34 80 22 72 8 60Z'/%3E%3Cpath d='M112 60 C98 48 86 40 74 60 C86 80 98 72 112 60Z'/%3E%3Cpath d='M84 14 C81 27 79 37 74 46 C82 49 91 40 84 14Z'/%3E%3Cpath d='M36 14 C39 27 41 37 46 46 C38 49 29 40 36 14Z'/%3E%3Cpath d='M84 106 C81 93 79 83 74 74 C82 71 91 80 84 106Z'/%3E%3Cpath d='M36 106 C39 93 41 83 46 74 C38 71 29 80 36 106Z'/%3E%3Ccircle cx='60' cy='60' r='13'/%3E%3Ccircle cx='60' cy='60' r='7.5'/%3E%3Ccircle cx='60' cy='60' r='2.5' fill='%23fff' fill-opacity='0.05' stroke='none'/%3E%3Cpath d='M60 47 L63 54 L60 51 L57 54Z'/%3E%3Cpath d='M60 73 L63 66 L60 69 L57 66Z'/%3E%3Cpath d='M47 60 L54 63 L51 60 L54 57Z'/%3E%3Cpath d='M73 60 L66 63 L69 60 L66 57Z'/%3E%3Cpath d='M0 0 C6 4 10 10 0 18'/%3E%3Cpath d='M120 0 C114 4 110 10 120 18'/%3E%3Cpath d='M0 120 C6 116 10 110 0 102'/%3E%3Cpath d='M120 120 C114 116 110 110 120 102'/%3E%3Ccircle cx='30' cy='30' r='2.5'/%3E%3Ccircle cx='90' cy='30' r='2.5'/%3E%3Ccircle cx='30' cy='90' r='2.5'/%3E%3Ccircle cx='90' cy='90' r='2.5'/%3E%3Cline x1='60' y1='46' x2='60' y2='49'/%3E%3Cline x1='60' y1='71' x2='60' y2='74'/%3E%3Cline x1='46' y1='60' x2='49' y2='60'/%3E%3Cline x1='71' y1='60' x2='74' y2='60'/%3E%3C/g%3E%3C/svg%3E");
+  opacity: 0.4;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cg fill='none' stroke='%23fff' stroke-opacity='0.04' stroke-width='0.9'%3E%3Cpath d='M60 8 C48 22 40 34 60 46 C80 34 72 22 60 8Z'/%3E%3Cpath d='M60 112 C48 98 40 86 60 74 C80 86 72 98 60 112Z'/%3E%3Cpath d='M8 60 C22 48 34 40 46 60 C34 80 22 72 8 60Z'/%3E%3Cpath d='M112 60 C98 48 86 40 74 60 C86 80 98 72 112 60Z'/%3E%3Cpath d='M84 14 C81 27 79 37 74 46 C82 49 91 40 84 14Z'/%3E%3Cpath d='M36 14 C39 27 41 37 46 46 C38 49 29 40 36 14Z'/%3E%3Cpath d='M84 106 C81 93 79 83 74 74 C82 71 91 80 84 106Z'/%3E%3Cpath d='M36 106 C39 93 41 83 46 74 C38 71 29 80 36 106Z'/%3E%3Ccircle cx='60' cy='60' r='13'/%3E%3Ccircle cx='60' cy='60' r='7.5'/%3E%3Ccircle cx='60' cy='60' r='2.5' fill='%23fff' fill-opacity='0.04' stroke='none'/%3E%3Cpath d='M60 47 L63 54 L60 51 L57 54Z'/%3E%3Cpath d='M60 73 L63 66 L60 69 L57 66Z'/%3E%3Cpath d='M47 60 L54 63 L51 60 L54 57Z'/%3E%3Cpath d='M73 60 L66 63 L69 60 L66 57Z'/%3E%3Cpath d='M0 0 C6 4 10 10 0 18'/%3E%3Cpath d='M120 0 C114 4 110 10 120 18'/%3E%3Cpath d='M0 120 C6 116 10 110 0 102'/%3E%3Cpath d='M120 120 C114 116 110 110 120 102'/%3E%3Ccircle cx='30' cy='30' r='2.5'/%3E%3Ccircle cx='90' cy='30' r='2.5'/%3E%3Ccircle cx='30' cy='90' r='2.5'/%3E%3Ccircle cx='90' cy='90' r='2.5'/%3E%3Cline x1='60' y1='46' x2='60' y2='49'/%3E%3Cline x1='60' y1='71' x2='60' y2='74'/%3E%3Cline x1='46' y1='60' x2='49' y2='60'/%3E%3Cline x1='71' y1='60' x2='74' y2='60'/%3E%3C/g%3E%3C/svg%3E");
 }
 
-/* ─── SCROLLBAR ──────────────────────────────────────────────── */
-::-webkit-scrollbar { width: 5px; }
+/* ═══════════════════════════════════════════════════════════════
+   SCROLLBAR
+═══════════════════════════════════════════════════════════════ */
+::-webkit-scrollbar       { width: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 
-/* ─── SCROLL PROGRESS ───────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════
+   SCROLL PROGRESS BAR
+   FIX: CSS class ini sudah ada, tapi scroll_progress.jsx yang baru
+   sudah self-contained dengan inline style. Class ini sebagai fallback.
+═══════════════════════════════════════════════════════════════ */
 #scroll-progress {
   position: fixed;
   top: 0; left: 0;
   height: 3px;
   background: linear-gradient(90deg, var(--primary), #7c3aed, #06b6d4);
   z-index: 9999;
+  pointer-events: none;
   transition: width 0.1s linear;
 }
 
-/* ─── LAYOUT ─────────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════
+   LAYOUT
+═══════════════════════════════════════════════════════════════ */
 .main-content {
   position: relative;
   z-index: 1;
 }
 
-/* ─── SIDEBAR ────────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════
+   SIDEBAR
+═══════════════════════════════════════════════════════════════ */
 aside {
   background: var(--card-bg) !important;
   border-right: 1px solid var(--border);
@@ -89,14 +136,18 @@ aside {
   backdrop-filter: none;
 }
 
-/* ─── DROPDOWN SOLID BG ──────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════
+   DROPDOWN
+═══════════════════════════════════════════════════════════════ */
 [data-dropdown] {
   background: var(--card-bg) !important;
   border: 1px solid var(--border) !important;
   box-shadow: 0 8px 32px rgba(0,0,0,0.12) !important;
 }
 
-/* ─── FLOATING BUTTONS STACK ─────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════
+   FLOATING BUTTONS STACK
+═══════════════════════════════════════════════════════════════ */
 .floating-stack {
   position: fixed;
   right: 1.25rem;
@@ -108,7 +159,9 @@ aside {
   gap: 0.6rem;
 }
 
-/* ─── KEYFRAME ANIMATIONS ────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════
+   KEYFRAME ANIMATIONS
+═══════════════════════════════════════════════════════════════ */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(24px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -129,6 +182,10 @@ aside {
   0%   { transform: translateX(-100%) skewX(-12deg); }
   100% { transform: translateX(200%) skewX(-12deg); }
 }
+@keyframes skeletonShimmer {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
 @keyframes scaleIn {
   from { opacity: 0; transform: scale(0.95) translateY(4px); }
   to   { opacity: 1; transform: scale(1) translateY(0); }
@@ -145,30 +202,36 @@ aside {
   0%, 100% { background-position: 0% 50%; }
   50%       { background-position: 100% 50%; }
 }
-@keyframes skeletonShimmer {
-  0%   { background-position: -400px 0; }
-  100% { background-position:  400px 0; }
+/* Orb float — dipakai AnimatedBg */
+@keyframes orbFloat {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%       { transform: translate(3%, -4%) scale(1.03); }
+  66%       { transform: translate(-2%, 3%) scale(0.98); }
 }
 
-/* ─── REDUCED MOTION ─────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════
+   REDUCED MOTION
+═══════════════════════════════════════════════════════════════ */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
+    animation-duration:       0.01ms !important;
+    animation-iteration-count: 1     !important;
+    transition-duration:      0.01ms !important;
+    scroll-behavior:          auto   !important;
   }
   .marquee-track { animation: none !important; }
 }
 
 .marquee-track { will-change: transform; }
 
-/* ─── ANIMATION UTILITY CLASSES ──────────────────────────────── */
-.animate-fade-up    { animation: fadeUp 0.6s ease forwards; }
-.animate-fade-in    { animation: fadeIn 0.5s ease forwards; }
-.animate-float      { animation: float 4s ease-in-out infinite; }
-.animate-scale-in   { animation: scaleIn 0.2s ease forwards; }
-.animate-slide-left { animation: slideInLeft 0.35s ease forwards; }
+/* ═══════════════════════════════════════════════════════════════
+   ANIMATION UTILITY CLASSES
+═══════════════════════════════════════════════════════════════ */
+.animate-fade-up    { animation: fadeUp      0.6s  ease         forwards; }
+.animate-fade-in    { animation: fadeIn      0.5s  ease         forwards; }
+.animate-float      { animation: float       4s    ease-in-out  infinite; }
+.animate-scale-in   { animation: scaleIn     0.2s  ease         forwards; }
+.animate-slide-left { animation: slideInLeft 0.35s ease         forwards; }
 
 .delay-100 { animation-delay: 0.1s; opacity: 0; }
 .delay-200 { animation-delay: 0.2s; opacity: 0; }
@@ -177,7 +240,9 @@ aside {
 .delay-500 { animation-delay: 0.5s; opacity: 0; }
 .delay-600 { animation-delay: 0.6s; opacity: 0; }
 
-/* ─── GRADIENT TEXT ──────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════
+   GRADIENT TEXT
+═══════════════════════════════════════════════════════════════ */
 .gradient-text {
   background: linear-gradient(135deg, var(--primary) 0%, #7c3aed 50%, #06b6d4 100%);
   background-size: 200% auto;
@@ -187,34 +252,40 @@ aside {
   animation: gradientShift 5s ease infinite;
 }
 
-/* ─── CARD ───────────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════
+   CARD
+   FIX: hapus scale(1.01) dari hover — translateY saja lebih elegan
+═══════════════════════════════════════════════════════════════ */
 .card {
-  background: var(--card-bg);
-  border: 1px solid var(--border);
+  background:    var(--card-bg);
+  border:        1px solid var(--border);
   border-radius: 1rem;
-  position: relative;
-  z-index: 1;
+  position:      relative;
+  z-index:       1;
   transition:
-    transform 0.3s cubic-bezier(0.34,1.56,0.64,1),
-    box-shadow 0.3s ease,
+    transform    0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow   0.3s ease,
     border-color 0.3s ease;
 }
 .card:hover {
-  transform: translateY(-6px) scale(1.01);
-  box-shadow: 0 24px 48px rgba(55,88,249,0.1), 0 8px 16px rgba(0,0,0,0.06);
+  /* FIX: hapus scale(1.01) — translateY saja */
+  transform:    translateY(-4px);
+  box-shadow:   0 20px 40px rgba(55,88,249,0.1), 0 6px 12px rgba(0,0,0,0.05);
   border-color: rgba(55,88,249,0.2);
 }
 [data-theme="dark"] .card {
-  background: rgba(26,31,46,0.92);
-  backdrop-filter: blur(12px);
+  background:        rgba(26,31,46,0.92);
+  backdrop-filter:   blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
 [data-theme="dark"] .card:hover {
-  box-shadow: 0 24px 48px rgba(55,88,249,0.22);
+  box-shadow:   0 20px 40px rgba(55,88,249,0.2);
   border-color: rgba(55,88,249,0.35);
 }
 
-/* ─── SHIMMER BUTTON ─────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════
+   SHIMMER BUTTON
+═══════════════════════════════════════════════════════════════ */
 .btn-shimmer { position: relative; overflow: hidden; }
 .btn-shimmer::after {
   content: '';
@@ -227,9 +298,11 @@ aside {
 }
 .btn-shimmer:hover::after { animation: shimmer 0.6s ease forwards; }
 
-/* ─── INTERACTIVE UTILITIES ──────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════
+   INTERACTIVE UTILITIES
+═══════════════════════════════════════════════════════════════ */
 .magnetic {
-  transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   display: inline-flex;
 }
 
@@ -240,50 +313,76 @@ aside {
   bottom: -2px; left: 0;
   width: 0; height: 2px;
   background: var(--primary);
-  transition: width 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  transition: width 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   border-radius: 1px;
 }
 .link-underline:hover::after { width: 100%; }
 
-.icon-bounce { transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1); }
+.icon-bounce { transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
 .icon-bounce:hover { transform: scale(1.2) rotate(-8deg); }
 
 .glow-hover { transition: box-shadow 0.3s ease, border-color 0.3s ease; }
 .glow-hover:hover {
-  box-shadow: 0 0 0 3px rgba(55,88,249,0.15);
+  box-shadow:   0 0 0 3px rgba(55,88,249,0.15);
   border-color: var(--primary) !important;
 }
 
-/* ─── BADGE / TAG / SECTION LABEL ───────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════
+   BADGE / TAG
+   Tailwind text-xs = 0.75rem — pakai itu di component
+═══════════════════════════════════════════════════════════════ */
 .badge {
-  display: inline-flex;
+  display:     inline-flex;
   align-items: center;
-  padding: 0.2rem 0.75rem;
+  padding:     0.2rem 0.65rem;
   border-radius: 9999px;
-  font-size: 0.75rem;
+  font-size:   0.75rem;   /* = text-xs Tailwind */
   font-weight: 600;
+  line-height: 1.4;
 }
 
 .tag {
-  background: var(--primary-light);
-  color: var(--primary);
-  padding: 0.15rem 0.6rem;
+  background:    var(--primary-light);
+  color:         var(--primary);
+  padding:       0.15rem 0.55rem;
   border-radius: 6px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  transition: background 0.2s, transform 0.2s;
+  font-size:     0.75rem; /* = text-xs */
+  font-weight:   600;
+  line-height:   1.4;
+  transition:    background 0.2s, transform 0.2s;
 }
 .tag:hover { background: var(--primary); color: #fff; transform: scale(1.05); }
 
+/* ═══════════════════════════════════════════════════════════════
+   SECTION LABEL
+   FIX: unify jadi satu class — hapus section-header-label duplikat
+   FIX: letter-spacing turun dari 0.15em → 0.12em (aman di mobile)
+   font-size: 0.7rem ≈ text-[0.7rem] — Tailwind arbitrary value
+═══════════════════════════════════════════════════════════════ */
 .section-label {
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.15em;
+  font-size:      0.7rem;
+  font-weight:    700;
+  letter-spacing: 0.12em;   /* FIX: dari 0.15em */
   text-transform: uppercase;
-  color: var(--primary);
+  color:          var(--primary);
+  display:        block;
+  margin-bottom:  0.4rem;
 }
 
-/* ─── TIMELINE ───────────────────────────────────────────────── */
+/* FIX: hapus .section-header-label — sudah digabung ke .section-label */
+
+/* Section title — pakai di SectionHeader component */
+.section-header-title {
+  font-size:   clamp(1.6rem, 4vw, 2.2rem);
+  font-weight: 700;
+  font-family: var(--font-display);
+  color:       var(--dark);
+  line-height: 1.2;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   TIMELINE
+═══════════════════════════════════════════════════════════════ */
 .timeline-line {
   position: absolute; left: 1.5rem; top: 0; bottom: 0;
   width: 1px;
@@ -298,7 +397,9 @@ aside {
   box-shadow: 0 0 0 4px var(--bg), 0 4px 16px rgba(55,88,249,0.25);
 }
 
-/* ─── NAV ACTIVE DOT ─────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════
+   NAV ACTIVE DOT
+═══════════════════════════════════════════════════════════════ */
 .nav-active-dot {
   width: 6px; height: 6px;
   border-radius: 50%;
@@ -306,7 +407,9 @@ aside {
   animation: glowPulse 2s ease infinite;
 }
 
-/* ─── COMMAND PALETTE BACKDROP ───────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════
+   COMMAND PALETTE BACKDROP
+═══════════════════════════════════════════════════════════════ */
 .cmd-backdrop {
   position: fixed; inset: 0;
   background: rgba(0,0,0,0.5);
@@ -314,89 +417,110 @@ aside {
   z-index: 200;
 }
 
-/* ─── PAGE TRANSITION ────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════
+   PAGE TRANSITION
+═══════════════════════════════════════════════════════════════ */
 .page-enter  { opacity: 0; transform: translateY(12px); }
 .page-active { opacity: 1; transform: translateY(0); transition: 0.35s ease; }
 
-/* ─── SKELETON ───────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════
+   SKELETON
+═══════════════════════════════════════════════════════════════ */
 .skeleton {
-  background: linear-gradient(
-    90deg,
-    var(--border) 25%,
-    var(--card-bg) 50%,
-    var(--border) 75%
-  );
-  background-size: 800px 100%;
-  animation: skeletonShimmer 1.4s ease-in-out infinite;
+  position: relative;
+  overflow: hidden;
+  background: var(--border);
   border-radius: 8px;
 }
+.skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255,255,255,0.12) 50%,
+    transparent 100%
+  );
+  animation: skeletonShimmer 1.4s ease-in-out infinite;
+}
 
-/* ─── LAZY IMAGE ─────────────────────────────────────────────── */
-.img-wrapper { position: relative; overflow: hidden; background: var(--border); }
-.img-wrapper img { transition: opacity 0.4s ease, transform 0.4s ease; }
+/* ═══════════════════════════════════════════════════════════════
+   LAZY IMAGE
+   FIX: hapus ::before pseudo shimmer — konflik dengan lazy_image.jsx
+   yang sudah punya div shimmer sendiri.
+   Tinggalkan hanya wrapper & loaded state.
+═══════════════════════════════════════════════════════════════ */
+.img-wrapper {
+  position:   relative;
+  overflow:   hidden;
+  background: var(--border);
+}
+.img-wrapper img {
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
 .img-wrapper img.loading { opacity: 0; }
 .img-wrapper img.loaded  { opacity: 1; }
-.img-wrapper::before {
-  content: ''; position: absolute; inset: 0;
-  background: linear-gradient(90deg, var(--border) 25%, var(--card-bg) 50%, var(--border) 75%);
-  background-size: 800px 100%;
-  animation: skeletonShimmer 1.4s ease-in-out infinite;
-  z-index: 1;
-  transition: opacity 0.3s ease;
-  pointer-events: none;
-}
-.img-wrapper.img-done::before { opacity: 0; }
+/* FIX: ::before dihapus — shimmer sudah di-handle JS di lazy_image.jsx */
 
-/* ─── STAT ICON ──────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════
+   ANIMATED BG ORBS
+   Dipakai di animated_bg.jsx — class .orb dan .orbs-container
+═══════════════════════════════════════════════════════════════ */
+.orbs-container {
+  position:       fixed;
+  inset:          0;
+  pointer-events: none;
+  z-index:        0;
+  overflow:       hidden;
+}
+.orb {
+  position:      absolute;
+  border-radius: 50%;
+  filter:        blur(80px);
+  animation:     orbFloat ease-in-out infinite;
+  will-change:   transform;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   STAT ICON
+═══════════════════════════════════════════════════════════════ */
 .stat-icon {
-  width: 2.5rem; height: 2.5rem;
+  width:         2.5rem;
+  height:        2.5rem;
   border-radius: 0.75rem;
-  display: flex; align-items: center; justify-content: center;
-  margin: 0 auto 0.5rem;
+  display:       flex;
+  align-items:   center;
+  justify-content: center;
+  margin:        0 auto 0.5rem;
 }
 
-/* ─── DOT GRID + GRAIN ───────────────────────────────────────── */
-.grain::after {
-  content: '';
-  position: fixed; inset: 0;
-  background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
-  background-size: 28px 28px;
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.35;
-}
-[data-theme="dark"] .grain::after { opacity: 0.12; }
+/* ═══════════════════════════════════════════════════════════════
+   TYPOGRAPHY UTILITIES
+   Pakai class ini di component — jangan inline style letter-spacing
+   text-tracked-tight  → heading card (h3)
+   text-tracked        → heading section (h2), badge
+   text-tracked-wide   → section-label uppercase
+   word-spacing-loose  → body text yang panjang, lebih nyaman dibaca
+═══════════════════════════════════════════════════════════════ */
+.text-tracked-tight { letter-spacing: 0.03em; }
+.text-tracked       { letter-spacing: 0.05em; }
+.text-tracked-wide  { letter-spacing: 0.08em; }
+.word-loose         { word-spacing: 0.05em; }
 
-.grain::before {
-  content: '';
-  position: fixed; inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.3;
-}
+/* Line height helpers — komplemen Tailwind leading-* */
+.leading-comfortable { line-height: 1.65; }
+.leading-relaxed-zh  { line-height: 1.8; } /* Chinese text butuh lebih */
 
-/* ─── FOCUS & SELECTION ──────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════
+   FOCUS & SELECTION
+═══════════════════════════════════════════════════════════════ */
 :focus-visible {
-  outline: 2px solid var(--primary);
+  outline:        2px solid var(--primary);
   outline-offset: 3px;
-  border-radius: 6px;
+  border-radius:  6px;
 }
-::selection { background: rgba(55,88,249,0.18); color: var(--dark); }
-
-/* ─── SECTION HEADER ─────────────────────────────────────────── */
-.section-header-title {
-  font-size: clamp(1.6rem, 4vw, 2.2rem);
-  font-weight: 700;
-  font-family: var(--font-display);
-  color: var(--dark);
-}
-.section-header-label {
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--primary);
-  display: block;
-  margin-bottom: 0.5rem;
+::selection {
+  background: rgba(55,88,249,0.18);
+  color:      var(--dark);
 }

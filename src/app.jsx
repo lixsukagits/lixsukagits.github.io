@@ -14,6 +14,7 @@ import CustomCursor from './components/widgets/custom_cursor'
 import EasterEgg from './components/widgets/easter_egg'
 import ShareButton from './components/widgets/share_button'
 import FontSizeToggle from './components/widgets/font_size_toggle'
+import AnimatedBg from './components/widgets/animated_bg'
 
 // ─── LAZY ROUTES ─────────────────────────────────────────────────
 const HomePage        = lazy(() => import('./pages/home_page'))
@@ -116,9 +117,10 @@ export default function App() {
 
       <CustomCursor />
       <EasterEgg />
+      <AnimatedBg />
 
       <div
-        className="min-h-screen grain flex"
+        className="min-h-screen flex"
         style={{
           background: 'var(--bg)',
           opacity: splashDone ? 1 : 0,

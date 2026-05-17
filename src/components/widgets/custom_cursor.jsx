@@ -42,8 +42,12 @@ export default function CustomCursor() {
     document.body.appendChild(dot)
     document.body.appendChild(ring)
 
-    // FIX: hide native cursor saat custom cursor aktif
-    document.body.style.cursor = 'none'
+    // Hide native cursor via style injection — lebih reliable dari body.style.cursor
+    // karena body.style.cursor tidak override cursor pada child elements
+    const styleTag = document.createElement('style')
+    styleTag.id = 'felix-cursor-style'
+    styleTag.textContent = '*, *::before, *::after { cursor: none !important; }'
+    document.head.appendChild(styleTag)
 
     let mouseX = -9999, mouseY = -9999
     let ringX  = -9999, ringY  = -9999
@@ -143,8 +147,8 @@ export default function CustomCursor() {
       cancelAnimationFrame(rafId)
       clearTimeout(debounceTimer)
       observer.disconnect()
-      // FIX: restore native cursor saat cleanup
-      document.body.style.cursor = ''
+      // Restore native cursor
+      document.getElementById('felix-cursor-style')?.remove()
       dot.remove()
       ring.remove()
     }
