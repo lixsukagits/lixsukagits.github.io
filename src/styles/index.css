@@ -513,6 +513,27 @@ aside {
 .leading-relaxed-zh  { line-height: 1.8; } /* Chinese text butuh lebih */
 
 /* ═══════════════════════════════════════════════════════════════
+   BADGE COLOR OVERRIDES — dark mode
+   Tailwind dark: prefix tidak bekerja dengan data-theme="dark".
+   Pakai selector CSS langsung.
+═══════════════════════════════════════════════════════════════ */
+/* Badge "Terbuka untuk kolaborasi" — primary lebih cerah di dark */
+[data-theme="dark"] .badge-open-to {
+  color:        #93b4ff;
+  border-color: #93b4ff;
+}
+/* Badge Ranking 1 */
+[data-theme="dark"] .badge-ranking {
+  color:        #fcd34d;
+  border-color: #f59e0b;
+}
+/* Badge HSK 3 */
+[data-theme="dark"] .badge-hsk {
+  color:        #fca5a5;
+  border-color: #f87171;
+}
+
+/* ═══════════════════════════════════════════════════════════════
    FOCUS & SELECTION
 ═══════════════════════════════════════════════════════════════ */
 :focus-visible {

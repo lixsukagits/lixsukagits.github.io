@@ -29,7 +29,6 @@ export default function ExperiencePage() {
 
         {/* ── Timeline ── */}
         <div className="relative mb-20">
-          {/* Gradient line — desktop only */}
           <div
             className="hidden sm:block absolute left-6 top-0 bottom-0 w-px"
             style={{ background: 'linear-gradient(to bottom, var(--primary), var(--border) 85%, transparent)' }}
@@ -47,7 +46,6 @@ export default function ExperiencePage() {
                   transition={{ delay: i * 0.1, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
                   className="relative flex gap-6 sm:pl-16"
                 >
-                  {/* Dot with logo — desktop only */}
                   <div className="hidden sm:flex absolute left-0 top-5 items-center justify-center">
                     <motion.div
                       initial={{ scale: 0 }}
@@ -62,11 +60,7 @@ export default function ExperiencePage() {
                           : '0 2px 8px rgba(0,0,0,0.08)',
                       }}
                     >
-                      <img
-                        src={ex.logo}
-                        alt={ex.org}
-                        className="w-full h-full object-cover"
-                      />
+                      <img src={ex.logo} alt={ex.org} className="w-full h-full object-cover" />
                     </motion.div>
                     {ex.current && (
                       <motion.div
@@ -78,19 +72,15 @@ export default function ExperiencePage() {
                     )}
                   </div>
 
-                  {/* Card */}
                   <motion.div
                     className="flex-1 card p-6 group relative overflow-hidden"
                     whileHover={{ y: -4 }}
                     transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                   >
-                    {/* Top accent on hover */}
                     <div
                       className="absolute top-0 left-0 right-0 h-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                       style={{ background: `linear-gradient(90deg, transparent, ${ac.color}, transparent)` }}
                     />
-
-                    {/* Bg shimmer on hover */}
                     <div
                       className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
                       style={{ background: `radial-gradient(ellipse at top left, ${ac.bg}, transparent 70%)` }}
@@ -99,7 +89,6 @@ export default function ExperiencePage() {
                     <div className="relative">
                       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-2">
                         <div className="flex items-center gap-3">
-                          {/* Logo inside card — mobile only */}
                           <div
                             className="sm:hidden w-10 h-10 rounded-xl overflow-hidden shrink-0"
                             style={{ border: `1.5px solid ${ac.border}` }}
@@ -107,9 +96,11 @@ export default function ExperiencePage() {
                             <img src={ex.logo} alt={ex.org} className="w-full h-full object-cover" />
                           </div>
                           <div>
+                            {/* FIX: style={{ color }} → className */}
                             <h3
-                              className="font-display font-bold text-lg group-hover:text-[var(--primary)] transition-colors duration-200"
-                              style={{ color: 'var(--dark)', letterSpacing: '0.02em', lineHeight: 1.4 }}
+                              className="font-display font-bold text-lg text-[var(--dark)] group-hover:text-[var(--primary)] transition-colors duration-200"
+                              className="text-tracked-tight"
+                            style={{ lineHeight: 1.4 }}
                             >
                               {ex.org}
                             </h3>
@@ -120,24 +111,26 @@ export default function ExperiencePage() {
                         </div>
                         <div className="flex flex-col items-start sm:items-end gap-1.5 shrink-0">
                           {ex.current && (
+                            // FIX: hardcode 'Aktif' → t()
                             <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold"
                               style={{ background: 'rgba(34,197,94,0.12)', color: '#16a34a', border: '1px solid rgba(34,197,94,0.3)' }}>
                               <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-                              Aktif
+                              {t('experience.current')}
                             </span>
                           )}
-                          <span className="inline-flex items-center gap-1 text-xs" style={{ color: 'var(--body-color)' }}>
+                          {/* FIX: style={{ color }} → className */}
+                          <span className="inline-flex items-center gap-1 text-xs text-[var(--body-color)]">
                             <Calendar size={11} />
-                            {lang === 'en' ? ex.periodEn : ex.period}
+                            {lang === 'en' ? ex.periodEn : lang === 'zh' ? ex.periodZh ?? ex.period : ex.period}
                           </span>
                         </div>
                       </div>
 
-                      <p
-                        className="text-sm leading-relaxed mb-4"
-                        style={{ color: 'var(--body-color)', lineHeight: 1.75, letterSpacing: '0.01em' }}
-                      >
-                        {lang === 'en' ? ex.descEn : ex.desc}
+                      {/* FIX: style={{ color }} → className */}
+                      <p className="text-sm leading-relaxed mb-4 text-[var(--body-color)]"
+                        className="text-tracked-tight word-loose"
+                        style={{ lineHeight: 1.75 }}>
+                        {lang === 'en' ? ex.descEn : lang === 'zh' ? ex.descZh ?? ex.desc : ex.desc}
                       </p>
 
                       <div className="flex flex-wrap gap-1.5">
@@ -168,13 +161,16 @@ export default function ExperiencePage() {
         >
           <div className="flex items-center gap-3 mb-6">
             <span className="text-xl">🎪</span>
-            <h2 className="font-display font-bold text-lg" style={{ color: 'var(--dark)', letterSpacing: '0.02em' }}>
-              Kegiatan & Event
+            {/* FIX: hardcode 'Kegiatan & Event' → t() + style={{ color }} → className */}
+            <h2 className="font-display font-bold text-lg text-[var(--dark)]"
+              className="text-tracked-tight">
+              {t('experience.events_title')}
             </h2>
-            <div className="flex-1 h-px" style={{ background: 'linear-gradient(90deg, var(--border), transparent)' }} />
+            <div className="flex-1 h-px"
+              style={{ background: 'linear-gradient(90deg, var(--border), transparent)' }} />
             <span
-              className="text-xs font-semibold px-2.5 py-1 rounded-full"
-              style={{ background: 'rgba(55,88,249,0.10)', color: 'var(--primary)', border: '1px solid rgba(55,88,249,0.2)' }}
+              className="text-xs font-semibold px-2.5 py-1 rounded-full text-[var(--primary)]"
+              style={{ background: 'rgba(55,88,249,0.10)', border: '1px solid rgba(55,88,249,0.2)' }}
             >
               {events.length}
             </span>
@@ -201,15 +197,14 @@ export default function ExperiencePage() {
                 >
                   {ev.icon}
                 </div>
-                <p
-                  className="flex-1 font-semibold text-sm group-hover:text-[var(--primary)] transition-colors duration-200 min-w-0"
-                  style={{ color: 'var(--dark)', letterSpacing: '0.01em' }}
-                >
+                {/* FIX: style={{ color }} → className */}
+                <p className="flex-1 font-semibold text-sm text-[var(--dark)] group-hover:text-[var(--primary)] transition-colors duration-200 min-w-0"
+                  className="text-tracked-tight">
                   {ev.title}
                 </p>
                 <span
-                  className="shrink-0 text-xs font-bold px-2.5 py-1 rounded-full"
-                  style={{ background: 'rgba(55,88,249,0.10)', color: 'var(--primary)', border: '1px solid rgba(55,88,249,0.20)' }}
+                  className="shrink-0 text-xs font-bold px-2.5 py-1 rounded-full text-[var(--primary)]"
+                  style={{ background: 'rgba(55,88,249,0.10)', border: '1px solid rgba(55,88,249,0.20)' }}
                 >
                   {ev.year}
                 </span>

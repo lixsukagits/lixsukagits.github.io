@@ -1,7 +1,10 @@
+import { useTranslation } from 'react-i18next'
 import { motion } from 'framer-motion'
 import { Helmet } from 'react-helmet-async'
 import PageWrapper from '../components/ui/page_wrapper'
 
+// NOTE: category names & item desc sengaja tidak di-i18n —
+// tool names bersifat proper noun & teknikal, lebih natural tetap dalam ID.
 const USES = [
   {
     category: 'Perangkat', emoji: '💻', color: '#3758F9',
@@ -58,6 +61,8 @@ const USES = [
 ]
 
 export default function UsesPage() {
+  const { t } = useTranslation()
+
   return (
     <PageWrapper>
       <Helmet>
@@ -68,39 +73,53 @@ export default function UsesPage() {
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 md:px-10 py-20">
 
+        {/* Header */}
+        {/* FIX: style={{ ... }} → className + t() */}
         <div className="text-center mb-12">
-          <p style={{ fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--primary)', marginBottom: '0.5rem' }}>
-            Setup & Tools
+          <p className="text-[0.7rem] font-bold tracking-[0.2em] uppercase text-[var(--primary)] mb-2">
+            {t('uses.subtitle')}
           </p>
-          <h1 className="font-display text-3xl md:text-4xl font-bold" style={{ color: 'var(--dark)' }}>Uses</h1>
-          <p className="mt-3 text-sm max-w-md mx-auto" style={{ color: 'var(--body-color)' }}>
-            Perangkat, software, dan tools yang saya pakai sehari-hari untuk coding, belajar Mandarin, dan produktivitas.
+          <h1 className="font-display text-3xl md:text-4xl font-bold text-[var(--dark)]">
+            {t('uses.title')}
+          </h1>
+          <p className="mt-3 text-sm max-w-md mx-auto text-[var(--body-color)]">
+            {t('uses.desc')}
           </p>
         </div>
 
         <div className="space-y-10">
           {USES.map((section, si) => (
-            <motion.div key={section.category}
+            <motion.div
+              key={section.category}
               initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }} transition={{ delay: si * 0.08 }}>
+              viewport={{ once: true }} transition={{ delay: si * 0.08 }}
+            >
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-9 h-9 rounded-xl flex items-center justify-center text-lg"
-                  style={{ background: `${section.color}15`, border: `1px solid ${section.color}25` }}>
+                {/* section icon — alpha dari section.color dinamis, tetap inline */}
+                <div
+                  className="w-9 h-9 rounded-xl flex items-center justify-center text-lg"
+                  style={{ background: `${section.color}15`, border: `1px solid ${section.color}25` }}
+                >
                   {section.emoji}
                 </div>
-                <h2 className="font-display font-bold text-lg" style={{ color: 'var(--dark)' }}>{section.category}</h2>
+                {/* FIX: style={{ color }} → className */}
+                <h2 className="font-display font-bold text-lg text-[var(--dark)] text-tracked">{section.category}</h2>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {section.items.map((item, ii) => (
-                  <motion.div key={item.name}
+                  <motion.div
+                    key={item.name}
                     initial={{ opacity: 0, x: -12 }} whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: si * 0.04 + ii * 0.06, type: 'spring', stiffness: 260, damping: 22 }}
-                    whileHover={{ x: 4 }} className="card p-4 flex items-start gap-3">
+                    whileHover={{ x: 4 }}
+                    className="card p-4 flex items-start gap-3"
+                  >
                     <span className="text-xl shrink-0 mt-0.5">{item.icon}</span>
                     <div>
-                      <p className="font-semibold text-sm" style={{ color: 'var(--dark)' }}>{item.name}</p>
-                      <p className="text-xs mt-0.5 leading-relaxed" style={{ color: 'var(--body-color)' }}>{item.desc}</p>
+                      {/* FIX: style={{ color }} → className */}
+                      <p className="font-semibold text-sm text-[var(--dark)] text-tracked-tight">{item.name}</p>
+                      <p className="text-xs mt-0.5 leading-relaxed text-[var(--body-color)]">{item.desc}</p>
                     </div>
                   </motion.div>
                 ))}
@@ -109,13 +128,23 @@ export default function UsesPage() {
           ))}
         </div>
 
-        <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
+        {/* Footer note */}
+        {/* FIX: style={{ background }} → inline (gradient); style={{ color }} → className + t() */}
+        <motion.div
+          initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
           className="mt-12 card p-5 text-center"
-          style={{ background: 'linear-gradient(135deg, var(--primary-light), var(--card-bg))' }}>
-          <p className="text-sm" style={{ color: 'var(--body-color)' }}>
-            Terinspirasi dari{' '}
-            <a href="https://uses.tech" target="_blank" rel="noopener noreferrer"
-              className="link-underline font-semibold" style={{ color: 'var(--primary)' }}>uses.tech</a>
+          style={{ background: 'linear-gradient(135deg, var(--primary-light), var(--card-bg))' }}
+        >
+          <p className="text-sm text-[var(--body-color)]">
+            {t('uses.inspired')}{' '}
+            <a
+              href="https://uses.tech"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="link-underline font-semibold text-[var(--primary)]"
+            >
+              uses.tech
+            </a>
             {' '}— komunitas developer yang berbagi setup mereka.
           </p>
         </motion.div>

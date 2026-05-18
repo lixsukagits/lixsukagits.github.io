@@ -9,13 +9,25 @@ export const education = [
     periodEn: 'July 2024 — Present',
     periodZh: '2024年7月 — 至今',
     icon: '🖥️',
-    logo: 'https://placehold.co/96x96/e8ecff/3758F9?text=SMK', // TODO: ganti URL Imgur logo SMK Telkom 2
+    logo: 'https://placehold.co/96x96/e8ecff/3758F9?text=SMK',
     current: true,
     achievements: [
       'Ranking 1 seangkatan tahun 2025',
       'Ketua Bidang IT OSIS periode 2026',
       'Aktif di Ekskul Robotik',
       '5 medali emas nasional & internasional (2024–2025)',
+    ],
+    achievementsEn: [
+      'Top rank of school year 2025',
+      'Head of IT Division OSIS 2026',
+      'Active in Robotics Extracurricular',
+      '5 national & international gold medals (2024–2025)',
+    ],
+    achievementsZh: [
+      '荣获2025年度年级第一名',
+      '担任2026年学生会IT部门主席',
+      '积极参与机器人兴趣小组',
+      '荣获5枚国内外金牌（2024–2025年）',
     ],
     location: 'Medan, Sumatera Utara',
   },
@@ -29,12 +41,22 @@ export const education = [
     periodEn: 'July 2012 — June 2024',
     periodZh: '2012年7月 — 2024年6月',
     icon: '🏫',
-    logo: 'https://placehold.co/96x96/f0fdf4/166534?text=GP', // TODO: ganti URL Imgur logo Global Prima
+    logo: 'https://placehold.co/96x96/f0fdf4/166534?text=GP',
     current: false,
     achievements: [
       '12 tahun di sekolah yang sama — TK hingga SMP',
       'Aktif di berbagai kegiatan dan organisasi sekolah',
       'Mulai mengenal dunia IT dan pemrograman sejak kelas 9',
+    ],
+    achievementsEn: [
+      '12 years at the same school — kindergarten through junior high',
+      'Active in various school activities and organizations',
+      'Started exploring IT and programming from grade 9',
+    ],
+    achievementsZh: [
+      '在同一所学校度过12年——从幼儿园到初中',
+      '积极参与各类校园活动与组织',
+      '从九年级开始接触IT与编程',
     ],
     location: 'Medan, Sumatera Utara',
   },
@@ -48,10 +70,16 @@ export const education = [
     periodEn: '2011 — 2012',
     periodZh: '2011年 — 2012年',
     icon: '🧸',
-    logo: 'https://placehold.co/96x96/fdf2f8/86198f?text=YPW', // TODO: ganti URL Imgur logo YP Winfield
+    logo: 'https://placehold.co/96x96/fdf2f8/86198f?text=YPW',
     current: false,
     achievements: [
       'Awal perjalanan pendidikan formal Felix',
+    ],
+    achievementsEn: [
+      'The beginning of Felix\'s formal education journey',
+    ],
+    achievementsZh: [
+      'Felix正式求学之旅的起点',
     ],
     location: 'Medan, Sumatera Utara',
   },

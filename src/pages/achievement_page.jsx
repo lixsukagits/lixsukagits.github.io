@@ -53,10 +53,8 @@ function AchievementCard({ a, index, onClick, onMedalClick }) {
           <p className="text-white/90 text-xs leading-relaxed line-clamp-2 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300"
             style={{ textShadow: '0 1px 6px rgba(0,0,0,0.7)' }}>{a.desc}</p>
         </div>
-        {/* Medal — klik 7x untuk easter egg, tidak propagate ke card onClick */}
         <span
-          className="absolute top-3 left-3 text-3xl drop-shadow-lg select-none"
-          style={{ cursor: 'pointer', zIndex: 10 }}
+          className="absolute top-3 left-3 text-3xl drop-shadow-lg select-none z-10 cursor-pointer"
           onClick={onMedalClick} onTouchEnd={onMedalClick}
           role="button" tabIndex={0} aria-label="Klik medali berkali-kali untuk kejutan"
           title="Psst... klik 7x! 🏆"
@@ -67,9 +65,10 @@ function AchievementCard({ a, index, onClick, onMedalClick }) {
         </span>
       </div>
       <div className="p-5 pb-6">
-        <h3 className="font-display font-bold text-sm mb-2 group-hover:text-[var(--primary)] transition-colors duration-200"
-          style={{ color: 'var(--dark)', lineHeight: 1.75, letterSpacing: '0.1em', wordSpacing: '0.05em' }}>{a.title}</h3>
-        <p className="text-xs mb-3" style={{ color: 'var(--body-color)' }}>{a.date}</p>
+        {/* FIX: style={{ color }} → className */}
+        <h3 className="font-display font-bold text-sm mb-2 text-[var(--dark)] group-hover:text-[var(--primary)] transition-colors duration-200 text-tracked word-loose"
+          style={{ lineHeight: 1.75 }}>{a.title}</h3>
+        <p className="text-xs mb-3 text-[var(--body-color)]">{a.date}</p>
         <div className="flex items-center gap-2">
           <span className="tag">{a.category}</span>
           <span className="w-1.5 h-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
@@ -81,22 +80,22 @@ function AchievementCard({ a, index, onClick, onMedalClick }) {
 }
 
 /* ─── MODAL ─────────────────────────────────────────────────── */
-function AchievementModal({ modal, currentIndex, total, onClose, onPrev, onNext, isDark }) {
+function AchievementModal({ modal, currentIndex, total, onClose, onPrev, onNext, isDark, t }) {
   if (!modal) return null
   const lvl = getLevel(modal)
-  const backdropBg = isDark ? 'rgba(8,10,18,0.92)' : 'rgba(15,20,40,0.80)'
-  const panelBg    = isDark ? 'rgba(22,27,42,0.97)' : 'rgba(255,255,255,0.98)'
-  const titleColor = isDark ? '#f1f5f9' : '#212b36'
-  const dateColor  = isDark ? 'rgba(148,163,184,0.8)' : '#637381'
-  const descColor  = isDark ? 'rgba(203,213,225,0.85)' : '#374151'
-  const divider    = isDark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.06)'
-  const btnBg      = isDark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.05)'
-  const btnBorder  = isDark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.09)'
-  const btnColor   = isDark ? 'rgba(255,255,255,0.65)' : '#374151'
-  const counterColor = isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.35)'
-  const closeColor = isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.4)'
-  const hintColor  = isDark ? 'rgba(255,255,255,0.22)' : 'rgba(0,0,0,0.20)'
-  const imgBg      = isDark ? '#0f1117' : '#f0f2f5'
+  const backdropBg  = isDark ? 'rgba(8,10,18,0.92)'     : 'rgba(15,20,40,0.80)'
+  const panelBg     = isDark ? 'rgba(22,27,42,0.97)'    : 'rgba(255,255,255,0.98)'
+  const titleColor  = isDark ? '#f1f5f9'                 : '#212b36'
+  const dateColor   = isDark ? 'rgba(148,163,184,0.8)'  : '#637381'
+  const descColor   = isDark ? 'rgba(203,213,225,0.85)' : '#374151'
+  const divider     = isDark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.06)'
+  const btnBg       = isDark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.05)'
+  const btnBorder   = isDark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.09)'
+  const btnColor    = isDark ? 'rgba(255,255,255,0.65)' : '#374151'
+  const counterColor= isDark ? 'rgba(255,255,255,0.4)'  : 'rgba(0,0,0,0.35)'
+  const closeColor  = isDark ? 'rgba(255,255,255,0.5)'  : 'rgba(0,0,0,0.4)'
+  const hintColor   = isDark ? 'rgba(255,255,255,0.22)' : 'rgba(0,0,0,0.20)'
+  const imgBg       = isDark ? '#0f1117'                 : '#f0f2f5'
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
@@ -141,16 +140,19 @@ function AchievementModal({ modal, currentIndex, total, onClose, onPrev, onNext,
           )}
         </motion.div>
         <div className="flex items-center justify-between px-6 pb-5 pt-4" style={{ borderTop: `1px solid ${divider}` }}>
+          {/* FIX: hardcode 'Sebelumnya' → t() */}
           <motion.button onClick={onPrev} whileHover={{ scale: 1.05, x: -2 }} whileTap={{ scale: 0.95 }}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold"
             style={{ background: btnBg, border: `1px solid ${btnBorder}`, color: btnColor }}>
-            <ChevronLeft size={15} /> Sebelumnya
+            <ChevronLeft size={15} /> {t('achievement.prev')}
           </motion.button>
-          <p className="text-xs hidden sm:block" style={{ color: hintColor }}>← → navigasi · Esc tutup</p>
+          {/* FIX: hardcode nav hint → t() */}
+          <p className="text-xs hidden sm:block" style={{ color: hintColor }}>{t('achievement.nav_hint')}</p>
+          {/* FIX: hardcode 'Berikutnya' → t() */}
           <motion.button onClick={onNext} whileHover={{ scale: 1.05, x: 2 }} whileTap={{ scale: 0.95 }}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold"
             style={{ background: btnBg, border: `1px solid ${btnBorder}`, color: btnColor }}>
-            Berikutnya <ChevronRight size={15} />
+            {t('achievement.next')} <ChevronRight size={15} />
           </motion.button>
         </div>
       </motion.div>
@@ -181,10 +183,11 @@ export default function AchievementPage() {
     return () => window.removeEventListener('keydown', handler)
   }, [modalIndex])
 
+  // FIX: stats label → t()
   const stats = [
-    { label: 'Total Prestasi', val: sorted.length, color: '#3758F9' },
-    { label: 'Nasional', val: sorted.filter(a => a.level === 'Nasional').length, color: '#7c3aed' },
-    { label: 'Sekolah', val: sorted.filter(a => a.level === 'Sekolah').length, color: '#22c55e' },
+    { labelKey: 'achievement.stat_total',    val: sorted.length,                                      color: '#3758F9' },
+    { labelKey: 'achievement.stat_national', val: sorted.filter(a => a.level === 'Nasional').length,  color: '#7c3aed' },
+    { labelKey: 'achievement.stat_school',   val: sorted.filter(a => a.level === 'Sekolah').length,   color: '#22c55e' },
   ]
 
   return (
@@ -200,16 +203,17 @@ export default function AchievementPage() {
         <div className="[&_.section-title]:text-4xl [&_.section-title]:sm:text-5xl [&_.section-title]:font-extrabold [&_.section-title]:mb-3">
           <SectionHeader label={t('achievement.subtitle')} title={t('achievement.title')} />
         </div>
-        <p className="text-center text-xs mb-4" style={{ color: 'var(--body-color)', opacity: 0.45 }}>
-          🏅 Psst... coba klik emoji medalinya berkali-kali
+        {/* FIX: hardcode easter hint → t() + style={{ color, opacity }} → className */}
+        <p className="text-center text-xs mb-4 text-[var(--body-color)] opacity-45">
+          🏅 {t('achievement.easter_hint')}
         </p>
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.15, duration: 0.4 }} className="flex flex-wrap gap-3 justify-center mb-10">
-          {stats.map(({ label, val, color }) => (
-            <div key={label} className="flex items-center gap-2 px-4 py-2 rounded-full text-sm"
+          {stats.map(({ labelKey, val, color }) => (
+            <div key={labelKey} className="flex items-center gap-2 px-4 py-2 rounded-full text-sm"
               style={{ background: `${color}12`, border: `1px solid ${color}28`, color }}>
               <span className="font-extrabold text-base">{val}</span>
-              <span className="font-normal opacity-75">{label}</span>
+              <span className="font-normal opacity-75">{t(labelKey)}</span>
             </div>
           ))}
         </motion.div>
@@ -223,8 +227,11 @@ export default function AchievementPage() {
 
       <AnimatePresence>
         {modalIndex !== null && (
-          <AchievementModal modal={sorted[modalIndex]} currentIndex={modalIndex}
-            total={sorted.length} onClose={closeModal} onPrev={prevModal} onNext={nextModal} isDark={isDark} />
+          <AchievementModal
+            modal={sorted[modalIndex]} currentIndex={modalIndex}
+            total={sorted.length} onClose={closeModal} onPrev={prevModal} onNext={nextModal}
+            isDark={isDark} t={t}
+          />
         )}
       </AnimatePresence>
     </PageWrapper>

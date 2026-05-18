@@ -92,7 +92,7 @@ export default function CvPage() {
             >
               <span className="text-lg shrink-0" aria-hidden="true">{a.medal}</span>
               <div className="flex-1 flex flex-col sm:flex-row sm:justify-between sm:items-start gap-0.5">
-                <p className="text-xs font-medium text-[var(--dark)]">{a.title}</p>
+                <p className="text-xs font-medium text-[var(--dark)] text-tracked-tight word-loose">{a.title}</p>
                 <span className="text-xs shrink-0 text-[var(--body-color)]">{a.date}</span>
               </div>
             </div>
@@ -115,7 +115,7 @@ export default function CvPage() {
               <span className="text-lg shrink-0" aria-hidden="true">{s.icon}</span>
               <div className="flex-1 min-w-0">
                 <div className="flex justify-between text-xs mb-1">
-                  <span className="font-medium truncate text-[var(--dark)]">{s.title}</span>
+                  <span className="font-medium truncate text-[var(--dark)] text-tracked-tight">{s.title}</span>
                   <span className="shrink-0 ml-1 text-[var(--primary)]">{s.level}%</span>
                 </div>
                 <div

@@ -20,6 +20,9 @@ export default function WelcomeModal() {
     <div
       className="fixed inset-0 z-[300] flex items-center justify-center px-4"
       style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(6px)' }}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="welcome-title"
     >
       {/* FIX: style={{ background, border }} → className */}
       <motion.div
@@ -31,7 +34,7 @@ export default function WelcomeModal() {
         <div className="text-center mb-6">
           <div className="text-4xl mb-3">👋</div>
           {/* FIX: style={{ color }} → className */}
-          <h2 className="font-display text-2xl font-bold text-[var(--dark)]">
+          <h2 id="welcome-title" className="font-display text-2xl font-bold text-[var(--dark)] text-tracked">
             {t('welcome.title')}
           </h2>
           <p className="text-sm mt-1 text-[var(--body-color)]">{t('welcome.desc')}</p>
@@ -45,11 +48,13 @@ export default function WelcomeModal() {
           onChange={e => { setName(e.target.value); setError('') }}
           onKeyDown={e => e.key === 'Enter' && handleSubmit()}
           placeholder={t('welcome.placeholder')}
+          aria-label={t('welcome.name_label', 'Nama kamu')}
+          aria-describedby={error ? 'welcome-error' : undefined}
           className="w-full px-4 py-3 rounded-xl text-sm outline-none border transition-colors
                      bg-[var(--bg)] text-[var(--dark)]"
           style={{ borderColor: error ? '#ef4444' : 'var(--border)' }}
         />
-        {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
+        {error && <p id="welcome-error" className="text-red-500 text-xs mt-1" role="alert">{error}</p>}
 
         {/* FIX: style={{ background:'var(--primary)' }} → className */}
         <button

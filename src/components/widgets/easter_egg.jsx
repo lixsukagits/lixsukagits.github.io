@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
+import { useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { onEasterEgg } from '../../store/use_easter_egg'
 
@@ -8,10 +9,11 @@ const KONAMI  = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown',
                  'ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a']
 const EMOJIS  = ['🎉','✨','🔥','🏆','💻','🇨🇳','🏸','⭐','🎊','💙','🌟','🎯','🚀','💎']
 
+// Jumlah halaman unik yang harus dikunjungi untuk trigger egg "explorer"
+const EXPLORER_THRESHOLD = 5
+
 /* ─── EGG DEFINITIONS ───────────────────────────────────────── */
-// Setiap egg punya: id, emoji, title, subtitle, content, accentColor, buttonLabel, buttonColor
 const EGGS = {
-  // 1 — Ketik "felix"
   felix: {
     emoji: '🎉',
     title: 'Easter Egg Ditemukan!',
@@ -23,35 +25,30 @@ const EGGS = {
     confettiCount: 40,
     content: () => (
       <>
-        <p style={{ fontSize: '0.875rem', color: 'var(--body-color)', lineHeight: 1.7, marginBottom: '0.5rem' }}>
+        <p style={{ fontSize:'0.875rem', color:'var(--body-color)', lineHeight:1.7, marginBottom:'0.5rem' }}>
           Selamat! Kamu berhasil menemukan pesan rahasia Felix 🏆
         </p>
-        <div style={{
-          margin: '1rem auto', padding: '0.75rem 1.25rem', borderRadius: '0.75rem',
-          background: 'var(--primary-light)', border: '1px solid var(--border)',
-          display: 'inline-block',
-        }}>
-          <p style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--primary)', letterSpacing: '0.08em', marginBottom: '0.2rem' }}>
+        <div style={{ margin:'1rem auto', padding:'0.75rem 1.25rem', borderRadius:'0.75rem',
+          background:'var(--primary-light)', border:'1px solid var(--border)', display:'inline-block' }}>
+          <p style={{ fontSize:'1.2rem', fontWeight:800, color:'var(--primary)', letterSpacing:'0.08em', marginBottom:'0.2rem' }}>
             学无止境
           </p>
-          <p style={{ fontSize: '0.72rem', color: 'var(--body-color)', fontStyle: 'italic' }}>
+          <p style={{ fontSize:'0.72rem', color:'var(--body-color)', fontStyle:'italic' }}>
             "Belajar tidak ada batasnya"
           </p>
         </div>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, justifyContent: 'center', margin: '1rem 0 0.5rem' }}>
+        <div style={{ display:'flex', flexWrap:'wrap', gap:6, justifyContent:'center', margin:'1rem 0 0.5rem' }}>
           {['#IT Enthusiast','#Web Dev','#China 🇨🇳','#Badminton 🏸'].map(tag => (
-            <span key={tag} style={{
-              fontSize: '0.68rem', fontWeight: 600, padding: '0.25rem 0.6rem',
-              borderRadius: 999, background: 'var(--bg)', border: '1px solid var(--border)',
-              color: 'var(--body-color)',
-            }}>{tag}</span>
+            <span key={tag} style={{ fontSize:'0.68rem', fontWeight:600, padding:'0.25rem 0.6rem',
+              borderRadius:999, background:'var(--bg)', border:'1px solid var(--border)', color:'var(--body-color)' }}>
+              {tag}
+            </span>
           ))}
         </div>
       </>
     ),
   },
 
-  // 2 — Konami Code
   konami: {
     emoji: '🎮',
     emojiAnimate: true,
@@ -64,16 +61,17 @@ const EGGS = {
     confettiCount: 60,
     content: () => (
       <>
-        <p style={{ fontSize: '0.875rem', color: 'var(--body-color)', lineHeight: 1.7, marginBottom: '1rem' }}>
+        <p style={{ fontSize:'0.875rem', color:'var(--body-color)', lineHeight:1.7, marginBottom:'1rem' }}>
           Luar biasa! Kamu tahu Konami Code?<br />
-          <span style={{ fontWeight: 700, color: 'var(--dark)' }}>+30 nyawa</span> untuk semangat belajarmu 🚀
+          <span style={{ fontWeight:700, color:'var(--dark)' }}>+30 nyawa</span> untuk semangat belajarmu 🚀
         </p>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: '0.5rem' }}>
+        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8, marginBottom:'0.5rem' }}>
           {[['🏆','5','Medali Emas'],['📜','8+','Sertifikat'],['🇨🇳','HSK3','Mandarin'],['💻','3+','Proyek']].map(([icon,val,label]) => (
-            <div key={label} style={{ padding:'0.6rem', borderRadius:'0.75rem', background:'var(--bg)', border:'1px solid var(--border)', textAlign:'center' }}>
+            <div key={label} style={{ padding:'0.6rem', borderRadius:'0.75rem', background:'var(--bg)',
+              border:'1px solid var(--border)', textAlign:'center' }}>
               <div style={{ fontSize:'1.3rem' }}>{icon}</div>
-              <div style={{ fontWeight:800, fontSize:'1rem', color:'var(--primary)' }}>{val}</div>
-              <div style={{ fontSize:'0.65rem', color:'var(--body-color)' }}>{label}</div>
+              <div className='font-display font-extrabold text-[var(--primary)] text-tracked' style={{ fontSize:'1rem' }}>{val}</div>
+              <div className='text-[var(--body-color)]' style={{ fontSize:'0.65rem' }}>{label}</div>
             </div>
           ))}
         </div>
@@ -81,7 +79,6 @@ const EGGS = {
     ),
   },
 
-  // 3 — Foto diklik 5x (about page)
   photo: {
     emoji: '📸',
     title: 'Kamu Stalker Nih! 😂',
@@ -93,13 +90,14 @@ const EGGS = {
     confettiCount: 35,
     content: () => (
       <>
-        <p style={{ fontSize: '0.875rem', color: 'var(--body-color)', lineHeight: 1.7, marginBottom: '1rem' }}>
+        <p style={{ fontSize:'0.875rem', color:'var(--body-color)', lineHeight:1.7, marginBottom:'1rem' }}>
           Udah klik foto Felix berapa kali? 👀<br />
           Tenang, Felix tahu kamu penasaran 😄
         </p>
-        <div style={{ padding: '0.75rem', borderRadius: '0.75rem', background: 'var(--bg)', border: '1px solid var(--border)', marginBottom: '0.5rem' }}>
-          <p style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--dark)', marginBottom: '0.25rem' }}>Fun Fact:</p>
-          <p style={{ fontSize: '0.75rem', color: 'var(--body-color)', lineHeight: 1.6 }}>
+        <div style={{ padding:'0.75rem', borderRadius:'0.75rem', background:'var(--bg)',
+          border:'1px solid var(--border)', marginBottom:'0.5rem' }}>
+          <p className='font-semibold text-tracked-tight text-[var(--dark)] mb-1' style={{ fontSize:'0.8rem' }}>Fun Fact:</p>
+          <p style={{ fontSize:'0.75rem', color:'var(--body-color)', lineHeight:1.6 }}>
             Felix suka badminton, benci bangun pagi, dan lagi ngejar beasiswa ke China 🇨🇳
           </p>
         </div>
@@ -107,7 +105,6 @@ const EGGS = {
     ),
   },
 
-  // 4 — Medali diklik 7x (achievement page)
   trophy: {
     emoji: '🏆',
     emojiAnimate: true,
@@ -120,26 +117,23 @@ const EGGS = {
     confettiCount: 50,
     content: () => (
       <>
-        <p style={{ fontSize: '0.875rem', color: 'var(--body-color)', lineHeight: 1.7, marginBottom: '1rem' }}>
+        <p style={{ fontSize:'0.875rem', color:'var(--body-color)', lineHeight:1.7, marginBottom:'1rem' }}>
           Kamu menghargai setiap medali Felix — terima kasih! 🥹
         </p>
-        <div style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap', marginBottom: '0.5rem' }}>
+        <div style={{ display:'flex', gap:8, justifyContent:'center', flexWrap:'wrap', marginBottom:'0.75rem' }}>
           {['🥇','🥇','🥇','🥇','🥇'].map((m, i) => (
-            <motion.span key={i} style={{ fontSize: '2rem' }}
-              animate={{ y: [0, -12, 0], rotate: [0, 10, -10, 0] }}
-              transition={{ duration: 1.2, repeat: Infinity, delay: i * 0.2 }}>
-              {m}
-            </motion.span>
+            <motion.span key={i} style={{ fontSize:'2rem' }}
+              animate={{ y:[0,-12,0], rotate:[0,10,-10,0] }}
+              transition={{ duration:1.2, repeat:Infinity, delay:i*0.2 }}>{m}</motion.span>
           ))}
         </div>
-        <p style={{ fontSize: '0.75rem', color: 'var(--body-color)', marginTop: '0.5rem' }}>
+        <p style={{ fontSize:'0.75rem', color:'var(--body-color)' }}>
           5 medali emas yang tidak datang dari bakat, tapi dari latihan tiap hari 💪
         </p>
       </>
     ),
   },
 
-  // 5 — Dark mode diklik 10x (disco mode)
   disco: {
     emoji: '🕺',
     emojiAnimate: true,
@@ -152,26 +146,23 @@ const EGGS = {
     confettiCount: 80,
     content: () => (
       <>
-        <p style={{ fontSize: '0.875rem', color: 'var(--body-color)', lineHeight: 1.7, marginBottom: '1rem' }}>
+        <p style={{ fontSize:'0.875rem', color:'var(--body-color)', lineHeight:1.7, marginBottom:'1rem' }}>
           Kamu toggle dark mode terus — mau yang mana sih? 😂
         </p>
-        <motion.div
-          style={{ display: 'flex', gap: 6, justifyContent: 'center', marginBottom: '0.75rem', flexWrap: 'wrap' }}
-        >
+        <motion.div style={{ display:'flex', gap:6, justifyContent:'center', marginBottom:'0.75rem', flexWrap:'wrap' }}>
           {['#ff0080','#7928ca','#3758F9','#10b981','#f59e0b','#ef4444'].map((c, i) => (
-            <motion.div key={c} style={{ width: 24, height: 24, borderRadius: '50%', background: c }}
-              animate={{ scale: [1, 1.4, 1], rotate: [0, 180, 360] }}
-              transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.15 }} />
+            <motion.div key={c} style={{ width:24, height:24, borderRadius:'50%', background:c }}
+              animate={{ scale:[1,1.4,1], rotate:[0,180,360] }}
+              transition={{ duration:1.5, repeat:Infinity, delay:i*0.15 }} />
           ))}
         </motion.div>
-        <p style={{ fontSize: '0.75rem', color: 'var(--body-color)' }}>
-          Portal → Felix adalah pemilik website paling colorful di SMK! 🌈
+        <p style={{ fontSize:'0.75rem', color:'var(--body-color)' }}>
+          Felix adalah pemilik website paling colorful di SMK! 🌈
         </p>
       </>
     ),
   },
 
-  // 6 — Shake HP
   shake: {
     emoji: '📱',
     title: 'Iya Iya, Santai! 😅',
@@ -183,20 +174,18 @@ const EGGS = {
     confettiCount: 30,
     content: () => (
       <>
-        <p style={{ fontSize: '0.875rem', color: 'var(--body-color)', lineHeight: 1.7, marginBottom: '1rem' }}>
+        <p style={{ fontSize:'0.875rem', color:'var(--body-color)', lineHeight:1.7, marginBottom:'1rem' }}>
           Goyangan detected! Felix juga sering goyangkan kepala pas lagu favorit di coding session 🎵
         </p>
         <div style={{ padding:'0.75rem', borderRadius:'0.75rem', background:'var(--bg)', border:'1px solid var(--border)' }}>
-          <p style={{ fontSize: '0.75rem', color:'var(--body-color)', lineHeight: 1.6 }}>
-            🎧 Playlist coding Felix:<br />
-            Lo-fi Hip Hop · Chinese Indie · OST Drama 🇨🇳
+          <p style={{ fontSize:'0.75rem', color:'var(--body-color)', lineHeight:1.6 }}>
+            🎧 Playlist coding Felix:<br />Lo-fi Hip Hop · Chinese Indie · OST Drama 🇨🇳
           </p>
         </div>
       </>
     ),
   },
 
-  // 7 — Long press logo
   longpress: {
     emoji: '👆',
     title: 'Sabar Banget Kamu!',
@@ -208,12 +197,12 @@ const EGGS = {
     confettiCount: 30,
     content: () => (
       <>
-        <p style={{ fontSize: '0.875rem', color: 'var(--body-color)', lineHeight: 1.7, marginBottom: '1rem' }}>
+        <p style={{ fontSize:'0.875rem', color:'var(--body-color)', lineHeight:1.7, marginBottom:'1rem' }}>
           Kamu tahan logo Felix 2 detik — kesabaran level dewa! 🧘
         </p>
         <div style={{ padding:'0.75rem', borderRadius:'0.75rem', background:'var(--bg)', border:'1px solid var(--border)' }}>
-          <p style={{ fontSize: '0.75rem', fontWeight: 700, color:'var(--dark)', marginBottom: '0.25rem' }}>Kata Felix:</p>
-          <p style={{ fontSize: '0.75rem', color:'var(--body-color)', fontStyle: 'italic', lineHeight: 1.6 }}>
+          <p className='font-semibold text-tracked-tight text-[var(--dark)] mb-1' style={{ fontSize:'0.75rem' }}>Kata Felix:</p>
+          <p style={{ fontSize:'0.75rem', color:'var(--body-color)', fontStyle:'italic', lineHeight:1.6 }}>
             "Kesabaran adalah kunci — belajar bahasa Mandarin mengajarkan itu."
           </p>
         </div>
@@ -221,64 +210,54 @@ const EGGS = {
     ),
   },
 
-  // 8 — Scroll ke bawah footer 3x
-  scroll: {
-    emoji: '🐭',
+  // Easter egg #8 — sudah kunjungi 5+ halaman unik
+  explorer: {
+    emoji: '🗺️',
     title: 'Explorer Sejati!',
-    subtitle: 'Scroll ke bawah 3 kali',
+    subtitle: `Sudah jelajah ${EXPLORER_THRESHOLD} halaman berbeda`,
     accent: 'linear-gradient(90deg, #8b5cf6, #06b6d4, #8b5cf6)',
     accentColor: '#8b5cf6',
     buttonLabel: 'Mantap! 🔍',
     buttonColor: 'linear-gradient(135deg, #8b5cf6, #06b6d4)',
-    confettiCount: 30,
+    confettiCount: 35,
     content: () => (
       <>
-        <p style={{ fontSize: '0.875rem', color: 'var(--body-color)', lineHeight: 1.7, marginBottom: '1rem' }}>
-          Kamu scroll sampai paling bawah 3 kali? Kamu pasti orang yang detail! 🔍
+        <p style={{ fontSize:'0.875rem', color:'var(--body-color)', lineHeight:1.7, marginBottom:'1rem' }}>
+          Kamu sudah jelajah {EXPLORER_THRESHOLD}+ halaman portfolio Felix — kamu pasti orang yang detail dan penasaran! 🔍
         </p>
         <div style={{ padding:'0.75rem', borderRadius:'0.75rem', background:'var(--bg)', border:'1px solid var(--border)' }}>
-          <p style={{ fontSize: '0.75rem', color:'var(--body-color)', lineHeight: 1.6 }}>
-            💡 Hidden gem: halaman /now selalu diupdate Felix tiap beberapa minggu. Cek yuk!
+          <p style={{ fontSize:'0.75rem', color:'var(--body-color)', lineHeight:1.6 }}>
+            💡 Hidden gem: halaman <strong style={{ color:'var(--primary)' }}>/now</strong> selalu diupdate Felix tiap beberapa minggu. Cek yuk!
           </p>
         </div>
       </>
     ),
   },
 
-  // 9 — Tap WA 5x cepat (contact page)
   waSecret: {
     emoji: '📞',
     title: 'Mau Ngobrol Nih?',
-    subtitle: 'Tap nomor WA 5x cepat',
+    subtitle: 'Tap kartu WA 5x cepat',
     accent: 'linear-gradient(90deg, #25D366, #128C7E, #25D366)',
     accentColor: '#25D366',
-    buttonLabel: 'Let\'s chat! 💬',
+    buttonLabel: "Let's chat! 💬",
     buttonColor: 'linear-gradient(135deg, #25D366, #128C7E)',
     confettiCount: 25,
     content: () => (
       <>
-        <p style={{ fontSize: '0.875rem', color: 'var(--body-color)', lineHeight: 1.7, marginBottom: '1rem' }}>
-          Kamu tap nomor WA Felix berkali-kali — langsung hubungi aja ga usah malu! 😄
+        <p style={{ fontSize:'0.875rem', color:'var(--body-color)', lineHeight:1.7, marginBottom:'1rem' }}>
+          Kamu tap kartu WA Felix berkali-kali — langsung hubungi aja ga usah malu! 😄
         </p>
-        <motion.a
-          href="https://wa.me/6281262729243"
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            display: 'inline-block', padding: '0.6rem 1.5rem',
-            borderRadius: 9999, background: '#25D366', color: '#fff',
-            fontWeight: 700, fontSize: '0.85rem', textDecoration: 'none',
-          }}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.96 }}
-        >
+        <motion.a href="https://wa.me/6281262729243" target="_blank" rel="noopener noreferrer"
+          style={{ display:'inline-block', padding:'0.6rem 1.5rem', borderRadius:9999,
+            background:'#25D366', color:'#fff', fontWeight:700, fontSize:'0.85rem', textDecoration:'none' }}
+          whileHover={{ scale:1.05 }} whileTap={{ scale:0.96 }}>
           💬 Chat Felix Sekarang
         </motion.a>
       </>
     ),
   },
 
-  // 10 — Midnight visitor
   midnight: {
     emoji: '🌙',
     title: 'Night Owl Detected!',
@@ -290,12 +269,12 @@ const EGGS = {
     confettiCount: 20,
     content: () => (
       <>
-        <p style={{ fontSize: '0.875rem', color: 'var(--body-color)', lineHeight: 1.7, marginBottom: '1rem' }}>
+        <p style={{ fontSize:'0.875rem', color:'var(--body-color)', lineHeight:1.7, marginBottom:'1rem' }}>
           Jam segini masih jelajah portfolio? Felix biasanya juga masih coding jam segini! 🦉
         </p>
         <div style={{ padding:'0.75rem', borderRadius:'0.75rem', background:'var(--bg)', border:'1px solid var(--border)' }}>
-          <p style={{ fontSize: '0.8rem', fontWeight: 700, color:'var(--dark)', marginBottom: '0.25rem' }}>Kata Felix:</p>
-          <p style={{ fontSize: '0.75rem', color:'var(--body-color)', fontStyle: 'italic', lineHeight: 1.6 }}>
+          <p className='font-semibold text-tracked-tight text-[var(--dark)] mb-1' style={{ fontSize:'0.8rem' }}>Kata Felix:</p>
+          <p style={{ fontSize:'0.75rem', color:'var(--body-color)', fontStyle:'italic', lineHeight:1.6 }}>
             "Malam adalah waktu paling produktif. Dunia tidur, kita belajar." 🌟
           </p>
         </div>
@@ -307,123 +286,128 @@ const EGGS = {
 /* ─── RAIN DROP ──────────────────────────────────────────────── */
 function RainDrop({ emoji, left, duration, delay, rotation }) {
   return (
-    <motion.div
-      aria-hidden="true"
-      initial={{ y: '-2rem', opacity: 1, rotate: 0 }}
-      animate={{ y: '110vh', opacity: 0, rotate: rotation }}
-      transition={{ duration, delay, ease: 'linear' }}
-      style={{
-        position: 'fixed', top: 0, left: `${left}%`,
-        fontSize: '1.4rem', pointerEvents: 'none',
-        zIndex: 99999, userSelect: 'none',
-      }}
-    >
+    <motion.div aria-hidden="true"
+      initial={{ y:'-2rem', opacity:1, rotate:0 }}
+      animate={{ y:'110vh', opacity:0, rotate:rotation }}
+      transition={{ duration, delay, ease:'linear' }}
+      style={{ position:'fixed', top:0, left:`${left}%`, fontSize:'1.4rem',
+        pointerEvents:'none', zIndex:99999, userSelect:'none' }}>
       {emoji}
     </motion.div>
   )
 }
 
-/* ─── EGG MODAL ─────────────────────────────────────────────── */
+/* ─── EGG MODAL — hanya bisa tutup via tombol ────────────────── */
 function EggModal({ eggId, onClose }) {
   const egg = EGGS[eggId]
   if (!egg) return null
   const closeRef = useRef(null)
 
   useEffect(() => {
+    // Focus tombol tutup saat modal muncul
     setTimeout(() => closeRef.current?.focus(), 80)
-  }, [])
+
+    // Tangkap Escape untuk tutup modal
+    const handler = (e) => { if (e.key === 'Escape') onClose() }
+    window.addEventListener('keydown', handler)
+    return () => window.removeEventListener('keydown', handler)
+  }, [onClose])
 
   return (
     <AnimatePresence>
-      <motion.div
-        aria-hidden="true"
-        initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-        onClick={onClose}
+      {/* Backdrop — pointer-events: none, tidak bisa diklik */}
+      <motion.div aria-hidden="true"
+        initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }}
         style={{
-          position: 'fixed', inset: 0, zIndex: 99997,
-          background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(6px)',
+          position:'fixed', inset:0, zIndex:99997,
+          background:'rgba(0,0,0,0.65)', backdropFilter:'blur(7px)',
+          // TIDAK ada onClick — backdrop tidak interaktif
+          pointerEvents:'none',
         }}
       />
+
+      {/* Modal */}
       <motion.div
         role="dialog" aria-modal="true" aria-label={egg.title}
-        initial={{ opacity: 0, scale: 0.75, x: '-50%', y: 'calc(-50% + 24px)' }}
-        animate={{ opacity: 1, scale: 1,    x: '-50%', y: '-50%' }}
-        exit={{   opacity: 0, scale: 0.75,  x: '-50%', y: 'calc(-50% + 24px)' }}
-        transition={{ type: 'spring', stiffness: 320, damping: 22 }}
+        initial={{ opacity:0, scale:0.78, x:'-50%', y:'calc(-50% + 28px)' }}
+        animate={{ opacity:1, scale:1,    x:'-50%', y:'-50%' }}
+        exit={{   opacity:0, scale:0.78,  x:'-50%', y:'calc(-50% + 28px)' }}
+        transition={{ type:'spring', stiffness:320, damping:22 }}
         style={{
-          position: 'fixed', top: '50%', left: '50%', zIndex: 99998,
-          borderRadius: '1.5rem', padding: '2.5rem 2rem 2rem', textAlign: 'center',
-          maxWidth: 380, width: '90vw', overflow: 'hidden',
-          background: 'var(--card-bg)', border: '1px solid var(--border)',
-          boxShadow: '0 40px 80px rgba(0,0,0,0.25)',
+          position:'fixed', top:'50%', left:'50%', zIndex:99998,
+          borderRadius:'1.5rem', padding:'2.5rem 2rem 2rem', textAlign:'center',
+          maxWidth:380, width:'90vw', overflow:'hidden',
+          background:'var(--card-bg)', border:'2px solid var(--border)',
+          boxShadow:'0 40px 80px rgba(0,0,0,0.35), 0 0 0 1px rgba(55,88,249,0.15)',
+          // Modal sendiri TIDAK preventDefault klik — tidak perlu stopPropagation
         }}
       >
         {/* Top accent bar */}
         <div aria-hidden="true" style={{
-          position: 'absolute', top: 0, left: 0, right: 0, height: 4,
-          background: egg.accent, backgroundSize: '200% auto',
-          animation: 'gradientShift 3s linear infinite',
+          position:'absolute', top:0, left:0, right:0, height:4,
+          background:egg.accent, backgroundSize:'200% auto',
+          animation:'gradientShift 3s linear infinite',
         }} />
 
-        {/* Blob bg */}
+        {/* Blob bg dekoratif */}
         <div aria-hidden="true" style={{
-          position: 'absolute', top: -40, right: -40, width: 160, height: 160,
-          borderRadius: '50%', opacity: 0.08, pointerEvents: 'none',
-          background: `radial-gradient(circle, ${egg.accentColor}, transparent 70%)`,
+          position:'absolute', top:-40, right:-40, width:160, height:160,
+          borderRadius:'50%', opacity:0.08, pointerEvents:'none',
+          background:`radial-gradient(circle, ${egg.accentColor}, transparent 70%)`,
         }} />
 
         {/* Emoji */}
         {egg.emojiAnimate ? (
           <motion.div aria-hidden="true"
-            animate={{ y: [0, -10, 0], rotate: [0, -8, 8, 0] }}
-            transition={{ duration: 1.2, repeat: Infinity }}
-            style={{ fontSize: '3.5rem', marginBottom: '0.75rem' }}>
+            animate={{ y:[0,-10,0], rotate:[0,-8,8,0] }}
+            transition={{ duration:1.2, repeat:Infinity }}
+            style={{ fontSize:'3.5rem', marginBottom:'0.75rem' }}>
             {egg.emoji}
           </motion.div>
         ) : (
           <motion.div aria-hidden="true"
-            animate={{ rotate: [0, -8, 8, -8, 0], scale: [1, 1.15, 1] }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            style={{ fontSize: '3.5rem', marginBottom: '0.75rem' }}>
+            animate={{ rotate:[0,-8,8,-8,0], scale:[1,1.15,1] }}
+            transition={{ duration:0.6, delay:0.2 }}
+            style={{ fontSize:'3.5rem', marginBottom:'0.75rem' }}>
             {egg.emoji}
           </motion.div>
         )}
 
-        <h3 style={{
-          fontFamily: 'var(--font-display)', fontSize: '1.25rem', fontWeight: 800,
-          color: 'var(--dark)', marginBottom: '0.25rem', letterSpacing: '-0.02em',
-        }}>
+        <h3 style={{ fontFamily:'var(--font-display)', fontSize:'1.25rem', fontWeight:800,
+          color:'var(--dark)', marginBottom:'0.25rem', letterSpacing:'-0.02em' }}
+          className="text-tracked">
           {egg.title}
         </h3>
-
-        <p style={{ fontSize: '0.72rem', color: egg.accentColor, fontWeight: 700,
-          letterSpacing: '0.04em', marginBottom: '0.5rem' }}>
+        <p style={{ fontSize:'0.72rem', color:egg.accentColor, fontWeight:700,
+          letterSpacing:'0.08em', marginBottom:'0.5rem' }}>
           {egg.subtitle}
         </p>
+        <div aria-hidden="true" style={{ width:40, height:3, borderRadius:2,
+          margin:'0.75rem auto 1rem', background:egg.buttonColor }} />
 
-        <div aria-hidden="true" style={{
-          width: 40, height: 3, borderRadius: 2, margin: '0.75rem auto 1rem',
-          background: egg.buttonColor,
-        }} />
-
-        {/* Dynamic content */}
         <egg.content />
 
+        {/* Tombol tutup — SATU-SATUNYA cara keluar */}
         <motion.button
           ref={closeRef}
           onClick={onClose}
           aria-label={`Tutup — ${egg.title}`}
-          whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}
+          whileHover={{ scale:1.05 }} whileTap={{ scale:0.96 }}
           style={{
-            marginTop: '1.25rem', padding: '0.65rem 2rem', borderRadius: 9999,
-            background: egg.buttonColor, color: '#fff', fontWeight: 700,
-            fontSize: '0.85rem', border: 'none', cursor: 'pointer',
-            boxShadow: `0 8px 24px ${egg.accentColor}40`,
-            minWidth: 44, minHeight: 44,
+            marginTop:'1.25rem', padding:'0.7rem 2.5rem', borderRadius:9999,
+            background:egg.buttonColor, color:'#fff', fontWeight:700,
+            fontSize:'0.875rem', border:'none', cursor:'pointer',
+            boxShadow:`0 8px 24px ${egg.accentColor}45`,
+            minWidth:44, minHeight:44, display:'block', margin:'1.25rem auto 0',
           }}
         >
           {egg.buttonLabel}
         </motion.button>
+
+        {/* Hint kecil */}
+        <p style={{ fontSize:'0.6rem', color:'var(--body-color)', opacity:0.4, marginTop:'0.5rem' }}>
+          Tekan tombol di atas atau Esc untuk menutup
+        </p>
       </motion.div>
     </AnimatePresence>
   )
@@ -433,15 +417,15 @@ function EggModal({ eggId, onClose }) {
 export default function EasterEgg() {
   const [activeEgg, setActiveEgg] = useState(null)
   const [drops, setDrops]         = useState([])
-  const autoCloseRef              = useRef(null)
+  const location = useLocation()
 
-  // Buffer states
-  const felixBuf   = useRef('')
-  const konamiBuf  = useRef([])
-  const discoCount = useRef(0)
-  const discoTimer = useRef(null)
-  const scrollCount = useRef(0)
-  const scrollTimer = useRef(null)
+  // Buffers
+  const felixBuf    = useRef('')
+  const konamiBuf   = useRef([])
+  const discoCount  = useRef(0)
+  const discoTimer  = useRef(null)
+  const visitedPages = useRef(new Set())
+  const explorerTriggered = useRef(false)
   const midnightShown = useRef(false)
 
   /* ── Spawn konfeti ── */
@@ -451,30 +435,24 @@ export default function EasterEgg() {
       emoji: EMOJIS[Math.floor(Math.random() * EMOJIS.length)],
       left: Math.random() * 100,
       duration: 1.3 + Math.random() * 1.4,
-      delay: Math.random() * 2,
+      delay: Math.random() * 1.8,
       rotation: (Math.random() - 0.5) * 120,
     })))
   }, [])
 
   /* ── Trigger egg ── */
   const trigger = useCallback((id) => {
-    if (activeEgg) return   // jangan tumpuk
+    if (activeEgg) return   // tidak tumpuk
     const egg = EGGS[id]
     if (!egg) return
     spawnRain(egg.confettiCount)
     setActiveEgg(id)
-    clearTimeout(autoCloseRef.current)
-    // Auto-close setelah 8 detik
-    autoCloseRef.current = setTimeout(() => {
-      setActiveEgg(null)
-      setDrops([])
-    }, 8000)
   }, [activeEgg, spawnRain])
 
+  /* ── Close — HANYA via tombol/Esc ── */
   const close = useCallback(() => {
     setActiveEgg(null)
     setDrops([])
-    clearTimeout(autoCloseRef.current)
   }, [])
 
   /* ── Listen dari halaman lain (event bus) ── */
@@ -492,111 +470,92 @@ export default function EasterEgg() {
       // Konami — works everywhere
       konamiBuf.current = [...konamiBuf.current, e.key].slice(-KONAMI.length)
       if (konamiBuf.current.join(',') === KONAMI.join(',')) {
-        konamiBuf.current = []
-        trigger('konami')
-        return
+        konamiBuf.current = []; trigger('konami'); return
       }
 
       // Felix — skip di input
       if (isInput) return
       felixBuf.current = (felixBuf.current + e.key).slice(-SECRET.length)
-      if (felixBuf.current === SECRET) {
-        felixBuf.current = ''
-        trigger('felix')
-      }
+      if (felixBuf.current === SECRET) { felixBuf.current = ''; trigger('felix') }
     }
     window.addEventListener('keydown', handler)
     return () => window.removeEventListener('keydown', handler)
   }, [trigger])
 
-  /* ── 5: Dark mode toggle 10x — listen via custom event ── */
+  /* ── 5: Dark mode toggle 10x ── */
   useEffect(() => {
     const handler = () => {
       discoCount.current += 1
       clearTimeout(discoTimer.current)
-      // Reset counter setelah 3 detik tidak diklik
       discoTimer.current = setTimeout(() => { discoCount.current = 0 }, 3000)
-      if (discoCount.current >= 10) {
-        discoCount.current = 0
-        trigger('disco')
-      }
+      if (discoCount.current >= 10) { discoCount.current = 0; trigger('disco') }
     }
     window.addEventListener('felix:theme-toggle', handler)
     return () => window.removeEventListener('felix:theme-toggle', handler)
   }, [trigger])
 
-  /* ── 6: Shake HP — DeviceMotion API ── */
+  /* ── 6: Shake HP ── */
   useEffect(() => {
     if (typeof window === 'undefined') return
     let lastAcc = null
     let shakeTimeout = null
+    let shakeCount = 0
+    let shakeReset = null
 
     const handleMotion = (e) => {
       const acc = e.accelerationIncludingGravity
       if (!acc) return
       const { x, y, z } = acc
       if (lastAcc) {
-        const dx = Math.abs(x - lastAcc.x)
-        const dy = Math.abs(y - lastAcc.y)
-        const dz = Math.abs(z - lastAcc.z)
-        const total = dx + dy + dz
-        if (total > 50) {   // threshold shake kuat
-          clearTimeout(shakeTimeout)
-          shakeTimeout = setTimeout(() => trigger('shake'), 100)
+        const total = Math.abs(x - lastAcc.x) + Math.abs(y - lastAcc.y) + Math.abs(z - lastAcc.z)
+        if (total > 45) {
+          shakeCount += 1
+          clearTimeout(shakeReset)
+          shakeReset = setTimeout(() => { shakeCount = 0 }, 1500)
+          if (shakeCount >= 3) {   // butuh 3 gerakan keras berturut
+            shakeCount = 0
+            clearTimeout(shakeTimeout)
+            shakeTimeout = setTimeout(() => trigger('shake'), 100)
+          }
         }
       }
       lastAcc = { x, y, z }
     }
 
-    // Request permission di iOS 13+
     if (typeof DeviceMotionEvent !== 'undefined' &&
         typeof DeviceMotionEvent.requestPermission === 'function') {
-      // Akan minta permission saat user interaksi pertama
-      const requestOnInteract = () => {
-        DeviceMotionEvent.requestPermission().then(perm => {
-          if (perm === 'granted') {
-            window.addEventListener('devicemotion', handleMotion)
-          }
+      const req = () => {
+        DeviceMotionEvent.requestPermission().then(p => {
+          if (p === 'granted') window.addEventListener('devicemotion', handleMotion)
         }).catch(() => {})
-        window.removeEventListener('touchstart', requestOnInteract)
+        window.removeEventListener('touchstart', req)
       }
-      window.addEventListener('touchstart', requestOnInteract, { once: true })
+      window.addEventListener('touchstart', req, { once: true })
     } else {
-      // Android & browser lain langsung
       window.addEventListener('devicemotion', handleMotion)
     }
-
-    return () => {
-      window.removeEventListener('devicemotion', handleMotion)
-      clearTimeout(shakeTimeout)
-    }
+    return () => { window.removeEventListener('devicemotion', handleMotion); clearTimeout(shakeTimeout) }
   }, [trigger])
 
-  /* ── 8: Scroll ke bawah 3x ── */
+  /* ── 8: Explorer — kunjungi 5 halaman unik ── */
   useEffect(() => {
-    const handler = () => {
-      const atBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 50
-      if (atBottom) {
-        scrollCount.current += 1
-        clearTimeout(scrollTimer.current)
-        scrollTimer.current = setTimeout(() => { scrollCount.current = 0 }, 10000)
-        if (scrollCount.current >= 3) {
-          scrollCount.current = 0
-          trigger('scroll')
-        }
-      }
+    if (explorerTriggered.current) return
+    const path = location.pathname
+    visitedPages.current.add(path)
+    if (visitedPages.current.size >= EXPLORER_THRESHOLD) {
+      explorerTriggered.current = true
+      // Delay kecil agar page transition selesai dulu
+      const t = setTimeout(() => trigger('explorer'), 800)
+      return () => clearTimeout(t)
     }
-    window.addEventListener('scroll', handler, { passive: true })
-    return () => window.removeEventListener('scroll', handler)
-  }, [trigger])
+  }, [location.pathname, trigger])
 
-  /* ── 10: Midnight — jam 00:00-01:00 ── */
+  /* ── 10: Midnight ── */
   useEffect(() => {
     const check = () => {
       const h = new Date().getHours()
       if (h === 0 && !midnightShown.current) {
         midnightShown.current = true
-        // Delay 2 detik biar halaman sempat load
         setTimeout(() => trigger('midnight'), 2000)
       }
     }
@@ -604,8 +563,6 @@ export default function EasterEgg() {
     const interval = setInterval(check, 60000)
     return () => clearInterval(interval)
   }, [trigger])
-
-  useEffect(() => () => clearTimeout(autoCloseRef.current), [])
 
   return (
     <>

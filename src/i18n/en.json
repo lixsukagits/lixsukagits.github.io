@@ -63,11 +63,28 @@
   },
   "skills": {
     "title": "Skills",
-    "subtitle": "What I'm Good At"
+    "subtitle": "What I'm Good At",
+    "filter_label": "Filter skill categories",
+    "empty": "No skills in this category.",
+    "tag_all": "All",
+    "tag_frontend": "Frontend",
+    "tag_creative": "Creative",
+    "tag_hardware": "Hardware",
+    "tag_design": "Design",
+    "tag_media": "Media",
+    "tag_productivity": "Productivity",
+    "tag_programming": "Programming"
   },
   "achievement": {
     "title": "Achievements",
-    "subtitle": "Moments of Glory"
+    "subtitle": "Moments of Glory",
+    "stat_total": "Total Achievements",
+    "stat_national": "National",
+    "stat_school": "School",
+    "prev": "Previous",
+    "next": "Next",
+    "nav_hint": "← → navigate · Esc close",
+    "easter_hint": "Psst... try clicking the medal emoji multiple times"
   },
   "education": {
     "title": "Education",
@@ -76,7 +93,9 @@
   },
   "experience": {
     "title": "Experience",
-    "subtitle": "Every Step of the Way"
+    "subtitle": "Every Step of the Way",
+    "current": "Active",
+    "events_title": "Activities & Events"
   },
   "certificate": {
     "title": "Certificates",
@@ -87,22 +106,52 @@
     "filter_organization": "Organization",
     "search_placeholder": "Search certificates...",
     "view": "View",
-    "total": "Showing {{count}} certificates"
+    "total": "Showing {{count}} certificates",
+    "empty": "No certificates match your search.",
+    "prev": "Previous",
+    "next": "Next",
+    "nav_hint": "← → navigate · Esc close"
   },
   "gallery": {
     "title": "Gallery",
-    "subtitle": "Precious Moments"
+    "subtitle": "Precious Moments",
+    "filter_all": "All",
+    "count": "{{count}} photos",
+    "empty": "No photos in this category.",
+    "prev": "Previous",
+    "next": "Next",
+    "nav_hint": "← → navigate · Esc close"
   },
   "cv": {
     "title": "Curriculum Vitae",
     "subtitle": "Professional Resume",
     "download": "Download CV",
-    "print": "Print"
+    "print": "Print",
+    "share": "Share CV",
+    "share_label": "Share",
+    "print_label": "Download or print CV as PDF",
+    "copied": "CV link copied!",
+    "mobile_tip": "💡 Tap Download / PDF then select \"Save as PDF\" in your browser.",
+    "active": "Active",
+    "section_education": "Education",
+    "section_experience": "Experience",
+    "section_achievements": "Achievements",
+    "section_skills": "Skills",
+    "section_languages": "Languages"
   },
   "contact": {
     "title": "Contact",
     "subtitle": "Let's Connect",
-    "desc": "Have a question, want to collaborate, or just want to say hi? I'm open to all!"
+    "desc": "Have a question, want to collaborate, or just want to say hi? I'm open to all!",
+    "copy": "Copy {{label}}",
+    "copied": "Copied!",
+    "copy_fail": "Failed to copy",
+    "cta_title": "Let's Collaborate!",
+    "cta_wa_label": "Chat via WhatsApp",
+    "cta_chat": "Chat Now",
+    "guestbook_desc": "Leave a message for Felix — log in with GitHub to comment 👋",
+    "powered_by": "Powered by",
+    "giscus_note": "free, no ads."
   },
   "timeline": {
     "title": "Life Timeline",
@@ -111,7 +160,41 @@
   "now": {
     "title": "Now",
     "subtitle": "What I'm Currently Focused On",
-    "updated": "Updated"
+    "updated": "Updated",
+    "learning_label": "Currently Learning",
+    "working_on_label": "Working On",
+    "reading_label": "Currently Reading",
+    "inspired_prefix": "This page is updated manually every few weeks. Inspired by"
+  },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Writings & Thoughts",
+    "desc": "Notes on my learning journey, reflections, and things I think are worth sharing.",
+    "filter_all": "All",
+    "empty": "No posts in this category yet."
+  },
+  "bookshelf": {
+    "title": "Bookshelf",
+    "subtitle": "Reading List",
+    "desc": "Books and readings that shape how I think and learn.",
+    "filter_all": "All",
+    "empty": "No books match this filter.",
+    "status_reading": "Reading",
+    "status_done": "Finished",
+    "status_want": "Want to Read"
+  },
+  "uses": {
+    "title": "Uses",
+    "subtitle": "Setup & Tools",
+    "desc": "Devices, software, and tools I use daily for coding, learning Mandarin, and staying productive.",
+    "inspired": "Inspired by"
+  },
+  "not_found": {
+    "title": "Lost?",
+    "desc": "The page you're looking for doesn't exist or has been moved. Let's get you back on track!",
+    "cta": "Back to Home",
+    "or": "Or go directly to:",
+    "error": "Error 404 · Felix Raymond Portfolio"
   },
   "footer": {
     "made": "Made with ❤️ by Felix Raymond",
@@ -137,6 +220,10 @@
     "pages": "Pages",
     "actions": "Actions",
     "toggle_theme": "Toggle Theme",
-    "no_result": "No results for"
+    "no_result": "No results for",
+    "open_label": "Open command palette (Ctrl+K)",
+    "dialog_label": "Command palette",
+    "search_label": "Search pages or actions",
+    "results_label": "Search results"
   }
 }

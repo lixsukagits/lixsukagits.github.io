@@ -70,7 +70,8 @@ function CertCard({ cert, index, onClick }) {
         {/* Judul dengan HoverPreview — preview gambar sertifikat muncul saat hover nama */}
         <h3
           className="font-display font-bold text-sm mb-1.5 group-hover:text-[var(--primary)] transition-colors duration-200"
-          style={{ color: 'var(--dark)', lineHeight: 1.75, letterSpacing: '0.03em', wordSpacing: '0.05em' }}
+          className="text-tracked-tight word-loose"
+          style={{ lineHeight: 1.75 }}
         >
           <HoverPreview src={cert.img} alt={cert.title} width={220} height={155}>
             {cert.title}
@@ -181,7 +182,8 @@ function CertModal({ cert, filteredList, onClose, onPrev, onNext, isDark }) {
         >
           <p
             className="font-display font-bold text-base mb-1"
-            style={{ color: titleColor, lineHeight: 1.75, letterSpacing: '0.03em', wordSpacing: '0.05em' }}
+            className="text-tracked-tight word-loose"
+            style={{ color: titleColor, lineHeight: 1.75 }}
           >
             {cert.title}
           </p>
@@ -219,10 +221,10 @@ function CertModal({ cert, filteredList, onClose, onPrev, onNext, isDark }) {
             className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold"
             style={{ background: btnBg, border: `1px solid ${btnBorder}`, color: btnColor }}
           >
-            <ChevronLeft size={15} /> Sebelumnya
+            <ChevronLeft size={15} /> {t('cert.prev', 'Sebelumnya')}
           </motion.button>
           <p className="text-xs hidden sm:block" style={{ color: hintColor }}>
-            ← → navigasi · Esc tutup
+            {t('cert.nav_hint', '← → navigasi · Esc tutup')}
           </p>
           <motion.button
             onClick={onNext}
@@ -231,7 +233,7 @@ function CertModal({ cert, filteredList, onClose, onPrev, onNext, isDark }) {
             className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold"
             style={{ background: btnBg, border: `1px solid ${btnBorder}`, color: btnColor }}
           >
-            Berikutnya <ChevronRight size={15} />
+            {t('cert.next', 'Berikutnya')} <ChevronRight size={15} />
           </motion.button>
         </div>
       </motion.div>

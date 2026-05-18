@@ -103,7 +103,7 @@ function Block({ emoji, titleKey, children }) {
   const { t } = useTranslation()
   return (
     <motion.div variants={cardItem} className="card p-6 mb-6">
-      <h3 className="font-display font-bold text-base mb-4 flex items-center gap-2 text-[var(--dark)]">
+      <h3 className="font-display font-bold text-base mb-4 flex items-center gap-2 text-[var(--dark)] text-tracked">
         <span>{emoji}</span>{t(titleKey)}
       </h3>
       {children}
@@ -140,7 +140,7 @@ export default function AboutPage() {
               <ProfilePhoto />
             </div>
             <div className="w-full md:w-3/5">
-              <h2 className="font-display text-2xl font-bold mb-0.5 text-[var(--dark)]">{profile.name}</h2>
+              <h2 className="font-display text-2xl font-bold mb-0.5 text-[var(--dark)] text-tracked">{profile.name}</h2>
               <p className="text-sm italic mb-5 text-[var(--primary)]">{t('about.tagline')}</p>
               <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 gap-2.5">
                 {[
@@ -154,7 +154,7 @@ export default function AboutPage() {
                   <motion.div key={label} className="p-3 rounded-xl" style={{ background: 'var(--bg)' }}
                     whileHover={{ scale: 1.02 }} transition={{ type: 'spring', stiffness: 400 }}>
                     <div className="text-xs mb-0.5 text-[var(--body-color)]">{label}</div>
-                    <div className="font-semibold text-xs text-[var(--dark)]">{val}</div>
+                    <div className="font-semibold text-xs text-[var(--dark)] text-tracked-tight">{val}</div>
                   </motion.div>
                 ))}
               </div>
@@ -239,7 +239,7 @@ export default function AboutPage() {
 
           {/* Goals */}
           <motion.div variants={cardItem} className="card p-6 mb-6">
-            <h3 className="font-display font-bold text-base mb-5 flex items-center gap-2 text-[var(--dark)]">
+            <h3 className="font-display font-bold text-base mb-5 flex items-center gap-2 text-[var(--dark)] text-tracked">
               🎯 {t('about.goals_title')}
             </h3>
             <div className="relative pl-10">

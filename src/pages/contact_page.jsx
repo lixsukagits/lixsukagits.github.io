@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { motion } from 'framer-motion'
 import { Helmet } from 'react-helmet-async'
@@ -7,14 +7,12 @@ import PageWrapper from '../components/ui/page_wrapper'
 import SectionHeader from '../components/ui/section_header'
 import { profile } from '../data/profile'
 import { useThemeStore } from '../store/use_theme_store'
+import { triggerEasterEgg } from '../store/use_easter_egg'
 import toast from 'react-hot-toast'
 
-/* ─── GISCUS CONFIG ─────────────────────────────────────────── */
 const GISCUS_REPO_ID     = 'R_kgDOSYX86A'
 const GISCUS_CATEGORY_ID = 'DIC_kwDOSYX86M4C8oq2'
 
-/* ─── CONTACTS ──────────────────────────────────────────────── */
-// NOTE: bg/bgDark/color tetap inline — nilai per-brand, bukan design token
 const buildContacts = () => {
   const list = [
     {
@@ -22,6 +20,7 @@ const buildContacts = () => {
       label: 'WhatsApp', value: '+62 812-6272-9243', copyValue: '+6281262729243',
       href: 'https://wa.me/6281262729243',
       color: '#25D366', bg: '#f0fdf4', bgDark: '#0f2a1a',
+      eggId: 'waSecret',   // ← Easter egg #9 di WA
     },
     {
       icon: <Mail size={20} aria-hidden="true" />,
@@ -65,7 +64,6 @@ const buildContacts = () => {
       color: '#5865F2', bg: '#f0f0ff', bgDark: '#0f0f2a',
     })
   }
-
   return list
 }
 
@@ -75,18 +73,17 @@ const contacts = buildContacts()
 function ContactCard({ c, i, isDark }) {
   const { t } = useTranslation()
   const [copied, setCopied] = useState(false)
+  const tapCount = useRef(0)
+  const tapTimer = useRef(null)
 
   const handleCopy = async (e) => {
-    e.preventDefault()
-    e.stopPropagation()
+    e.preventDefault(); e.stopPropagation()
     try {
       await navigator.clipboard.writeText(c.copyValue)
       setCopied(true)
       toast.success(`${c.label} disalin! 📋`, {
-        style: {
-          background: 'var(--card-bg)', color: 'var(--dark)',
-          border: '1px solid var(--border)', borderRadius: '0.75rem', fontSize: '0.85rem',
-        },
+        style: { background: 'var(--card-bg)', color: 'var(--dark)',
+          border: '1px solid var(--border)', borderRadius: '0.75rem', fontSize: '0.85rem' },
       })
       setTimeout(() => setCopied(false), 2000)
     } catch {
@@ -94,72 +91,47 @@ function ContactCard({ c, i, isDark }) {
     }
   }
 
+  // Easter egg #9 — tap kartu WA 5x cepat
+  const handleCardClick = useCallback(() => {
+    if (!c.eggId) return
+    tapCount.current += 1
+    clearTimeout(tapTimer.current)
+    tapTimer.current = setTimeout(() => { tapCount.current = 0 }, 1800)
+    if (tapCount.current >= 5) { tapCount.current = 0; triggerEasterEgg(c.eggId) }
+  }, [c.eggId])
+
   return (
     <motion.a
-      href={c.href}
-      target="_blank"
-      rel="noopener noreferrer"
+      href={c.href} target="_blank" rel="noopener noreferrer"
       aria-label={`${c.label}: ${c.value}`}
-      initial={{ opacity: 0, y: 16 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay: i * 0.07, type: 'spring', stiffness: 260, damping: 22 }}
       whileHover={{ y: -4, boxShadow: '0 16px 32px rgba(0,0,0,0.08)' }}
-      // FIX: style={{ textDecoration:'none' }} → className (Tailwind reset)
       className="card flex items-center gap-4 p-4 sm:p-5 no-underline"
+      onClick={handleCardClick}
     >
-      {/* icon bg/color tetap inline — brand color per-item */}
-      <motion.div
-        className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
+      <motion.div className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
         style={{ background: isDark ? c.bgDark : c.bg, color: c.color }}
         whileHover={{ scale: 1.12, rotate: -6 }}
-        transition={{ type: 'spring', stiffness: 400, damping: 17 }}
-        aria-hidden="true"
-      >
+        transition={{ type: 'spring', stiffness: 400, damping: 17 }} aria-hidden="true">
         {c.icon}
       </motion.div>
-
       <div className="min-w-0 flex-1">
-        {/* FIX: style={{ color }} → className */}
-        <p className="text-xs font-semibold uppercase tracking-wider mb-0.5 text-[var(--body-color)]">
-          {c.label}
-        </p>
+        <p className="text-xs font-semibold uppercase tracking-wider mb-0.5 text-[var(--body-color)]">{c.label}</p>
         <p className="font-semibold text-sm truncate text-[var(--dark)]">{c.value}</p>
+        {c.eggId && (
+          <p className="text-[0.6rem] text-[var(--body-color)] opacity-40 mt-0.5">tap 5x untuk kejutan 👀</p>
+        )}
       </div>
-
-      {/* Copy button */}
-      {/* FIX: style={{ width, height, borderRadius, border, flexShrink, display, alignItems,
-           justifyContent, cursor, transition }} → Tailwind
-           background/color kondisional tetap inline */}
-      <motion.button
-        onClick={handleCopy}
-        whileHover={{ scale: 1.15 }}
-        whileTap={{ scale: 0.9 }}
-        aria-label={copied
-          ? t('contact.copied', 'Tersalin!')
-          : t('contact.copy', 'Salin {{label}}', { label: c.label })}
-        className="w-11 h-11 rounded-full border-none shrink-0 flex items-center justify-center
-                   cursor-pointer transition-[background,color] duration-200"
-        style={{
-          background: copied ? 'var(--primary-light)' : 'transparent',
-          color: copied ? 'var(--primary)' : c.color,
-        }}
-      >
-        {copied
-          ? <Check size={14} aria-hidden="true" />
-          : <Copy size={14} aria-hidden="true" />}
+      <motion.button onClick={handleCopy} whileHover={{ scale: 1.15 }} whileTap={{ scale: 0.9 }}
+        aria-label={copied ? 'Tersalin!' : `Salin ${c.label}`}
+        className="w-11 h-11 rounded-full border-none shrink-0 flex items-center justify-center cursor-pointer transition-[background,color] duration-200"
+        style={{ background: copied ? 'var(--primary-light)' : 'transparent', color: copied ? 'var(--primary)' : c.color }}>
+        {copied ? <Check size={14} aria-hidden="true" /> : <Copy size={14} aria-hidden="true" />}
       </motion.button>
-
-      {/* Arrow — dekoratif, tetap inline karena brand color */}
-      <motion.span
-        className="shrink-0 text-lg opacity-50"
-        style={{ color: c.color }}
-        aria-hidden="true"
-        initial={{ x: 0 }}
-        whileHover={{ x: 3 }}
-      >
-        →
-      </motion.span>
+      <motion.span className="shrink-0 text-lg opacity-50" style={{ color: c.color }}
+        aria-hidden="true" initial={{ x: 0 }} whileHover={{ x: 3 }}>→</motion.span>
     </motion.a>
   )
 }
@@ -188,15 +160,14 @@ function Giscus() {
     s.setAttribute('data-theme',             giscusTheme)
     s.setAttribute('data-lang',              'id')
     s.setAttribute('data-loading',           'lazy')
-    s.crossOrigin = 'anonymous'
-    s.async = true
+    s.crossOrigin = 'anonymous'; s.async = true
     containerRef.current.appendChild(s)
   }, [giscusTheme])
 
   return <div ref={containerRef} />
 }
 
-/* ─── CONTACT PAGE ──────────────────────────────────────────── */
+/* ─── PAGE ──────────────────────────────────────────────────── */
 export default function ContactPage() {
   const { t } = useTranslation()
   const { theme } = useThemeStore()
@@ -210,85 +181,49 @@ export default function ContactPage() {
       </Helmet>
 
       <div className="max-w-2xl mx-auto px-4 sm:px-6 md:px-10 py-20">
-
         <SectionHeader label={t('contact.subtitle')} title={t('nav.contact')} />
+        <p className="text-center text-sm -mt-6 mb-12 text-[var(--body-color)]">{t('contact.desc')}</p>
 
-        {/* FIX: style={{ color }} → className */}
-        <p className="text-center text-sm -mt-6 mb-12 text-[var(--body-color)]">
-          {t('contact.desc')}
-        </p>
-
-        {/* Contact grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-12">
-          {contacts.map((c, i) => (
-            <ContactCard key={c.label} c={c} i={i} isDark={isDark} />
-          ))}
+          {contacts.map((c, i) => <ContactCard key={c.label} c={c} i={i} isDark={isDark} />)}
         </div>
 
         {/* CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="card p-7 text-center mb-12"
-          style={{ background: 'linear-gradient(135deg, var(--primary-light), var(--card-bg))' }}
-        >
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }} className="card p-7 text-center mb-12"
+          style={{ background: 'linear-gradient(135deg, var(--primary-light), var(--card-bg))' }}>
           <p className="text-3xl mb-3" aria-hidden="true">🤝</p>
-          {/* FIX: style={{ color }} → className */}
           <h3 className="font-display font-bold text-lg mb-2 text-[var(--dark)]">
             {t('contact.cta_title', 'Mari Berkolaborasi!')}
           </h3>
           <p className="text-sm mb-5 text-[var(--body-color)]">{t('contact.desc')}</p>
-          {/* FIX: style={{ position, overflow }} → className; gradient tetap inline */}
-          <motion.a
-            href="https://wa.me/6281262729243"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={t('contact.cta_wa_label', 'Chat via WhatsApp')}
-            className="btn-shimmer inline-flex items-center gap-2 px-7 py-3 rounded-full
-                       font-semibold text-white text-sm relative overflow-hidden"
+          <motion.a href="https://wa.me/6281262729243" target="_blank" rel="noopener noreferrer"
+            className="btn-shimmer inline-flex items-center gap-2 px-7 py-3 rounded-full font-semibold text-white text-sm relative overflow-hidden"
             style={{ background: 'linear-gradient(135deg, var(--primary), #7c3aed)' }}
             whileHover={{ scale: 1.05, boxShadow: '0 12px 32px rgba(55,88,249,0.35)' }}
-            whileTap={{ scale: 0.97 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 20 }}
-          >
+            whileTap={{ scale: 0.97 }} transition={{ type: 'spring', stiffness: 400, damping: 20 }}>
             <MessageCircle size={15} aria-hidden="true" />
             {t('contact.cta_chat', 'Chat Sekarang')}
           </motion.a>
         </motion.div>
 
         {/* Guestbook */}
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.2 }}
-        >
+        <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }} transition={{ delay: 0.2 }}>
           <SectionHeader label="Say Hello" title="Guestbook" />
-
           <p className="text-center text-sm -mt-6 mb-6 text-[var(--body-color)]">
             {t('contact.guestbook_desc', 'Tinggalkan pesan untuk Felix — login GitHub untuk berkomentar 👋')}
           </p>
-
-          {/* FIX: style={{ background, border, padding }} → className */}
           <div className="rounded-2xl overflow-hidden bg-[var(--card-bg)] border border-[var(--border)] p-5">
             <Giscus />
           </div>
-
           <p className="mt-3 text-xs text-center text-[var(--body-color)]">
             {t('contact.powered_by', 'Ditenagai oleh')}{' '}
-            <a
-              href="https://giscus.app"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="link-underline text-[var(--primary)]"
-            >
-              Giscus
-            </a>
+            <a href="https://giscus.app" target="_blank" rel="noopener noreferrer"
+              className="link-underline text-[var(--primary)]">Giscus</a>
             {' '}&amp; GitHub Discussions — {t('contact.giscus_note', 'gratis, tanpa iklan.')}
           </p>
         </motion.div>
-
       </div>
     </PageWrapper>
   )

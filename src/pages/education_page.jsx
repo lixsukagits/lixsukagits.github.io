@@ -109,7 +109,8 @@ export default function EducationPage() {
                         <div>
                           <h3
                             className="font-display font-bold text-lg sm:text-xl group-hover:text-[var(--primary)] transition-colors duration-200"
-                            style={{ color: 'var(--dark)', letterSpacing: '0.02em' }}
+                            className="text-tracked-tight"
+                            style={{ color: 'var(--dark)' }}
                           >
                             {ed.school}
                           </h3>
@@ -149,7 +150,8 @@ export default function EducationPage() {
                           viewport={{ once: true }}
                           transition={{ delay: i * 0.15 + j * 0.06 + 0.2 }}
                           className="flex items-start gap-2.5 text-sm"
-                          style={{ color: 'var(--body-color)', lineHeight: 1.65, letterSpacing: '0.01em' }}
+                          className="text-tracked-tight leading-comfortable"
+                          style={{ color: 'var(--body-color)' }}
                         >
                           <span className="shrink-0 mt-1 w-4 h-4 rounded-full flex items-center justify-center text-[10px] font-bold"
                             style={{ background: 'rgba(55,88,249,0.1)', color: 'var(--primary)' }}>

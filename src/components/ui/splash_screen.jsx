@@ -80,8 +80,7 @@ export default function SplashScreen({ onDone }) {
                 transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                 style={{ textAlign: 'center' }}
               >
-                <div style={{
-                  fontFamily: 'var(--font-display)',
+                <div className="font-hero" style={{
                   fontSize: 'clamp(3rem, 10vw, 6rem)',
                   fontWeight: 900,
                   color: 'var(--dark)',
@@ -95,15 +94,8 @@ export default function SplashScreen({ onDone }) {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.25 }}
-                  style={{
-                    fontFamily: 'var(--font-body)',
-                    fontSize: '0.7rem',
-                    fontWeight: 700,
-                    letterSpacing: '0.25em',
-                    textTransform: 'uppercase',
-                    color: 'var(--body-color)',
-                    marginTop: '0.75rem',
-                  }}
+                  className="font-body section-label"
+                  style={{ marginTop: '0.75rem' }}
                 >
                   Portfolio
                 </motion.p>

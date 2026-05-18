@@ -1,19 +1,22 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { motion } from 'framer-motion'
 import { Helmet } from 'react-helmet-async'
-import { BookOpen, Star } from 'lucide-react'
+import { Star } from 'lucide-react'
 import PageWrapper from '../components/ui/page_wrapper'
 
-/**
- * bookshelf_page.jsx
- * Halaman "Bookshelf" — buku & bacaan yang sudah/sedang dibaca Felix.
- * Taruh di: src/pages/bookshelf_page.jsx
- */
-
+// NOTE: status key map — UI label dari t(), data filter tetap pakai key EN
+const STATUS_KEYS = ['status_done', 'status_reading', 'status_want']
 const STATUS_COLORS = {
-  'Sedang Dibaca': '#3758F9',
-  'Sudah Baca': '#10b981',
-  'Ingin Baca': '#f59e0b',
+  status_done:    '#10b981',
+  status_reading: '#3758F9',
+  status_want:    '#f59e0b',
+}
+// Map dari status ID (di data) ke key i18n
+const STATUS_ID_TO_KEY = {
+  'Sudah Baca':    'status_done',
+  'Sedang Dibaca': 'status_reading',
+  'Ingin Baca':    'status_want',
 }
 
 const BOOKS = [
@@ -63,7 +66,7 @@ const BOOKS = [
   },
   {
     id: 5,
-    title: 'You Don\'t Know JS',
+    title: "You Don't Know JS",
     author: 'Kyle Simpson',
     category: 'Programming',
     status: 'Sudah Baca',
@@ -96,35 +99,38 @@ const BOOKS = [
   },
 ]
 
-const ALL_CATEGORIES = ['Semua', ...new Set(BOOKS.map(b => b.category))]
-const ALL_STATUS = ['Semua', ...Object.keys(STATUS_COLORS)]
+const ALL_CATEGORIES_KEYS = ['all', ...new Set(BOOKS.map(b => b.category))]
 
 function StarRating({ rating }) {
   if (!rating) return null
   return (
     <div className="flex gap-0.5">
       {[1, 2, 3, 4, 5].map(i => (
-        <Star key={i} size={12} fill={i <= rating ? '#f59e0b' : 'none'}
-          style={{ color: i <= rating ? '#f59e0b' : 'var(--border)' }} />
+        <Star
+          key={i} size={12}
+          fill={i <= rating ? '#f59e0b' : 'none'}
+          className={i <= rating ? 'text-amber-400' : 'text-[var(--border)]'}
+        />
       ))}
     </div>
   )
 }
 
 export default function BookshelfPage() {
-  const [category, setCategory] = useState('Semua')
-  const [status, setStatus] = useState('Semua')
+  const { t } = useTranslation()
+  const [category, setCategory] = useState('all')
+  const [statusFilter, setStatusFilter] = useState('all')
 
   const filtered = BOOKS.filter(b => {
-    const catOk = category === 'Semua' || b.category === category
-    const statusOk = status === 'Semua' || b.status === status
+    const catOk = category === 'all' || b.category === category
+    const statusOk = statusFilter === 'all' || STATUS_ID_TO_KEY[b.status] === statusFilter
     return catOk && statusOk
   })
 
   const counts = {
-    'Sudah Baca': BOOKS.filter(b => b.status === 'Sudah Baca').length,
-    'Sedang Dibaca': BOOKS.filter(b => b.status === 'Sedang Dibaca').length,
-    'Ingin Baca': BOOKS.filter(b => b.status === 'Ingin Baca').length,
+    status_done:    BOOKS.filter(b => b.status === 'Sudah Baca').length,
+    status_reading: BOOKS.filter(b => b.status === 'Sedang Dibaca').length,
+    status_want:    BOOKS.filter(b => b.status === 'Ingin Baca').length,
   }
 
   return (
@@ -138,97 +144,114 @@ export default function BookshelfPage() {
       <div className="max-w-2xl mx-auto px-4 sm:px-6 md:px-10 py-20">
 
         {/* Header */}
+        {/* FIX: style={{ ... }} → className + t() */}
         <div className="text-center mb-8">
-          <p style={{ fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--primary)', marginBottom: '0.5rem' }}>
-            Reading List
+          <p className="text-[0.7rem] font-bold tracking-[0.2em] uppercase text-[var(--primary)] mb-2">
+            {t('bookshelf.subtitle')}
           </p>
-          <h1 className="font-display text-3xl md:text-4xl font-bold" style={{ color: 'var(--dark)' }}>
-            Bookshelf
+          <h1 className="font-display text-3xl md:text-4xl font-bold text-[var(--dark)]">
+            {t('bookshelf.title')}
           </h1>
-          <p className="mt-3 text-sm" style={{ color: 'var(--body-color)' }}>
-            Buku dan bacaan yang membentuk cara saya berpikir dan belajar.
-          </p>
+          <p className="mt-3 text-sm text-[var(--body-color)]">{t('bookshelf.desc')}</p>
         </div>
 
-        {/* Stats */}
+        {/* Stats — klik untuk filter status */}
         <div className="grid grid-cols-3 gap-3 mb-8">
-          {Object.entries(counts).map(([s, count]) => (
-            <motion.button
-              key={s}
-              onClick={() => setStatus(status === s ? 'Semua' : s)}
-              whileHover={{ y: -3 }} whileTap={{ scale: 0.97 }}
-              className="card p-4 text-center"
-              style={{ borderColor: status === s ? STATUS_COLORS[s] : 'var(--border)' }}
-            >
-              <div className="font-display text-2xl font-bold" style={{ color: STATUS_COLORS[s] }}>{count}</div>
-              <div className="text-xs mt-0.5" style={{ color: 'var(--body-color)' }}>{s}</div>
-            </motion.button>
-          ))}
+          {STATUS_KEYS.map(key => {
+            const color = STATUS_COLORS[key]
+            const isActive = statusFilter === key
+            return (
+              <motion.button
+                key={key}
+                onClick={() => setStatusFilter(isActive ? 'all' : key)}
+                whileHover={{ y: -3 }} whileTap={{ scale: 0.97 }}
+                className="card p-4 text-center"
+                style={{ borderColor: isActive ? color : 'var(--border)' }}
+              >
+                <div className="font-display text-2xl font-bold" style={{ color }}>{counts[key]}</div>
+                {/* FIX: hardcode status label → t() */}
+                <div className="text-xs mt-0.5 text-[var(--body-color)]">{t(`bookshelf.${key}`)}</div>
+              </motion.button>
+            )
+          })}
         </div>
 
         {/* Category filter */}
         <div className="flex flex-wrap gap-2 mb-6">
-          {ALL_CATEGORIES.map(cat => (
-            <motion.button
-              key={cat}
-              onClick={() => setCategory(cat)}
-              whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}
-              className="px-3 py-1.5 rounded-xl text-xs font-medium transition-all"
-              style={{
-                background: category === cat ? 'var(--primary)' : 'var(--card-bg)',
-                color: category === cat ? '#fff' : 'var(--body-color)',
-                border: `1px solid ${category === cat ? 'var(--primary)' : 'var(--border)'}`,
-              }}
-            >
-              {cat}
-            </motion.button>
-          ))}
+          {ALL_CATEGORIES_KEYS.map(cat => {
+            const isActive = category === cat
+            const label = cat === 'all' ? t('bookshelf.filter_all') : cat
+            return (
+              <motion.button
+                key={cat}
+                onClick={() => setCategory(cat)}
+                whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}
+                // FIX: style={{ background, color, border }} → className
+                className={`px-3 py-1.5 rounded-xl text-xs font-medium transition-all border ${
+                  isActive
+                    ? 'bg-[var(--primary)] text-white border-[var(--primary)]'
+                    : 'bg-[var(--card-bg)] text-[var(--body-color)] border-[var(--border)]'
+                }`}
+              >
+                {label}
+              </motion.button>
+            )
+          })}
         </div>
 
         {/* Book list */}
         <div className="space-y-3">
-          {filtered.map((book, i) => (
-            <motion.div
-              key={book.id}
-              className="card p-5"
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.07 }}
-              whileHover={{ x: 4 }}
-            >
-              <div className="flex gap-4">
-                <div className="w-11 h-11 rounded-xl flex items-center justify-center text-xl shrink-0"
-                  style={{ background: `${STATUS_COLORS[book.status]}12`, border: `1px solid ${STATUS_COLORS[book.status]}25` }}>
-                  {book.emoji}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-start justify-between gap-2 flex-wrap mb-1">
-                    <h3 className="font-display font-bold text-sm leading-snug" style={{ color: 'var(--dark)' }}>
-                      {book.title}
-                    </h3>
-                    <span className="text-xs px-2 py-0.5 rounded-full shrink-0"
-                      style={{ background: `${STATUS_COLORS[book.status]}12`, color: STATUS_COLORS[book.status], fontWeight: 600 }}>
-                      {book.status}
-                    </span>
+          {filtered.map((book, i) => {
+            const statusKey = STATUS_ID_TO_KEY[book.status]
+            const statusColor = STATUS_COLORS[statusKey]
+            return (
+              <motion.div
+                key={book.id}
+                className="card p-5"
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.07 }}
+                whileHover={{ x: 4 }}
+              >
+                <div className="flex gap-4">
+                  {/* icon bg — alpha dari statusColor dinamis, tetap inline */}
+                  <div
+                    className="w-11 h-11 rounded-xl flex items-center justify-center text-xl shrink-0"
+                    style={{ background: `${statusColor}12`, border: `1px solid ${statusColor}25` }}
+                  >
+                    {book.emoji}
                   </div>
-                  <p className="text-xs mb-2" style={{ color: 'var(--body-color)' }}>
-                    {book.author} · <span className="tag" style={{ display: 'inline' }}>{book.category}</span>
-                  </p>
-                  {book.rating && <StarRating rating={book.rating} />}
-                  <p className="text-xs mt-2 leading-relaxed" style={{ color: 'var(--body-color)' }}>
-                    {book.review}
-                  </p>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-start justify-between gap-2 flex-wrap mb-1">
+                      <h3 className="font-display font-bold text-sm leading-snug text-[var(--dark)] text-tracked word-loose">
+                        {book.title}
+                      </h3>
+                      {/* FIX: hardcode status string → t() */}
+                      <span
+                        className="text-xs px-2 py-0.5 rounded-full shrink-0 font-semibold"
+                        style={{ background: `${statusColor}12`, color: statusColor }}
+                      >
+                        {t(`bookshelf.${statusKey}`)}
+                      </span>
+                    </div>
+                    <p className="text-xs mb-2 text-[var(--body-color)]">
+                      {book.author} · <span className="tag" style={{ display: 'inline' }}>{book.category}</span>
+                    </p>
+                    {book.rating && <StarRating rating={book.rating} />}
+                    <p className="text-xs mt-2 leading-relaxed text-[var(--body-color)]">{book.review}</p>
+                  </div>
                 </div>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            )
+          })}
         </div>
 
+        {/* FIX: t() + style={{ color }} → className */}
         {filtered.length === 0 && (
           <div className="text-center py-12">
             <p className="text-4xl mb-3">📚</p>
-            <p style={{ color: 'var(--body-color)' }}>Tidak ada buku yang cocok filter ini.</p>
+            <p className="text-[var(--body-color)]">{t('bookshelf.empty')}</p>
           </div>
         )}
       </div>

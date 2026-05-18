@@ -1,16 +1,12 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Helmet } from 'react-helmet-async'
-import { BookOpen, Clock, Tag, ChevronRight, X } from 'lucide-react'
+import { Clock, ChevronRight, X } from 'lucide-react'
 import PageWrapper from '../components/ui/page_wrapper'
 
-/**
- * blog_page.jsx
- * Halaman blog/catatan — data dari array lokal, tanpa CMS/backend.
- * Untuk tambah post baru, edit array POSTS di bawah.
- * Taruh di: src/pages/blog_page.jsx
- */
-
+// NOTE: Konten post sengaja tidak di-i18n — konten panjang & personal,
+// lebih natural tetap dalam satu bahasa (ID). Judul/subtitle/meta di-translate.
 const POSTS = [
   {
     id: 1,
@@ -132,13 +128,14 @@ Fokus meningkatkan HSK ke level 4. Jaga nilai akademik. Perkuat portofolio IT. D
   },
 ]
 
-const CATEGORIES = ['Semua', ...new Set(POSTS.map(p => p.category))]
-
 export default function BlogPage() {
-  const [active, setActive] = useState('Semua')
+  const { t } = useTranslation()
+  const [active, setActive] = useState('all')
   const [selected, setSelected] = useState(null)
 
-  const filtered = active === 'Semua' ? POSTS : POSTS.filter(p => p.category === active)
+  // FIX: filter pakai key 'all', bukan string 'Semua' — lebih robust
+  const CATEGORIES = ['all', ...new Set(POSTS.map(p => p.category))]
+  const filtered = active === 'all' ? POSTS : POSTS.filter(p => p.category === active)
 
   return (
     <PageWrapper>
@@ -151,35 +148,38 @@ export default function BlogPage() {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 md:px-10 py-20">
 
         {/* Header */}
+        {/* FIX: style={{ fontSize, fontWeight, letterSpacing, textTransform, color }} → className + t() */}
         <div className="text-center mb-12">
-          <p style={{ fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--primary)', marginBottom: '0.5rem' }}>
-            Tulisan & Pikiran
+          <p className="text-[0.7rem] font-bold tracking-[0.2em] uppercase text-[var(--primary)] mb-2">
+            {t('blog.subtitle')}
           </p>
-          <h1 className="font-display text-3xl md:text-4xl font-bold" style={{ color: 'var(--dark)' }}>
-            Blog
+          <h1 className="font-display text-3xl md:text-4xl font-bold text-[var(--dark)]">
+            {t('blog.title')}
           </h1>
-          <p className="mt-3 text-sm" style={{ color: 'var(--body-color)' }}>
-            Catatan perjalanan belajar, refleksi, dan hal-hal yang saya pikir layak dibagikan.
-          </p>
+          <p className="mt-3 text-sm text-[var(--body-color)]">{t('blog.desc')}</p>
         </div>
 
         {/* Category filter */}
         <div className="flex flex-wrap gap-2 mb-8 justify-center">
-          {CATEGORIES.map(cat => (
-            <motion.button
-              key={cat}
-              onClick={() => setActive(cat)}
-              whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}
-              className="px-4 py-2 rounded-xl text-sm font-medium transition-all"
-              style={{
-                background: active === cat ? 'var(--primary)' : 'var(--card-bg)',
-                color: active === cat ? '#fff' : 'var(--body-color)',
-                border: `1px solid ${active === cat ? 'var(--primary)' : 'var(--border)'}`,
-              }}
-            >
-              {cat}
-            </motion.button>
-          ))}
+          {CATEGORIES.map(cat => {
+            const isActive = active === cat
+            const label = cat === 'all' ? t('blog.filter_all') : cat
+            return (
+              <motion.button
+                key={cat}
+                onClick={() => setActive(cat)}
+                whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}
+                // FIX: style={{ background, color, border }} → className
+                className={`px-4 py-2 rounded-xl text-sm font-medium transition-all border ${
+                  isActive
+                    ? 'bg-[var(--primary)] text-white border-[var(--primary)]'
+                    : 'bg-[var(--card-bg)] text-[var(--body-color)] border-[var(--border)]'
+                }`}
+              >
+                {label}
+              </motion.button>
+            )
+          })}
         </div>
 
         {/* Post list */}
@@ -198,40 +198,49 @@ export default function BlogPage() {
                 whileHover={{ y: -4 }}
               >
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0"
-                    style={{ background: `${post.color}15`, border: `1px solid ${post.color}25` }}>
+                  {/* icon bg — alpha dari post.color dinamis, tetap inline */}
+                  <div
+                    className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0"
+                    style={{ background: `${post.color}15`, border: `1px solid ${post.color}25` }}
+                  >
                     {post.emoji}
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1 flex-wrap">
-                      <span className="text-xs font-bold px-2 py-0.5 rounded-full"
-                        style={{ background: `${post.color}15`, color: post.color }}>
+                      {/* category badge — color dinamis, tetap inline */}
+                      <span
+                        className="text-xs font-bold px-2 py-0.5 rounded-full"
+                        style={{ background: `${post.color}15`, color: post.color }}
+                      >
                         {post.category}
                       </span>
-                      <span className="flex items-center gap-1 text-xs" style={{ color: 'var(--body-color)' }}>
+                      {/* FIX: style={{ color }} → className */}
+                      <span className="flex items-center gap-1 text-xs text-[var(--body-color)]">
                         <Clock size={11} /> {post.readTime}
                       </span>
-                      <span className="text-xs" style={{ color: 'var(--body-color)' }}>{post.date}</span>
+                      <span className="text-xs text-[var(--body-color)]">{post.date}</span>
                     </div>
-                    <h2 className="font-display font-bold text-base leading-snug mb-1" style={{ color: 'var(--dark)' }}>
+                    <h2 className="font-display font-bold text-base leading-snug mb-1 text-[var(--dark)] text-tracked word-loose">
                       {post.title}
                     </h2>
-                    <p className="text-sm" style={{ color: 'var(--body-color)' }}>{post.subtitle}</p>
+                    <p className="text-sm text-[var(--body-color)]">{post.subtitle}</p>
                     <div className="flex flex-wrap gap-1 mt-3">
                       {post.tags.map(tag => <span key={tag} className="tag">{tag}</span>)}
                     </div>
                   </div>
-                  <ChevronRight size={18} style={{ color: 'var(--border)', flexShrink: 0, marginTop: 4 }} />
+                  {/* FIX: style={{ color, flexShrink, marginTop }} → className */}
+                  <ChevronRight size={18} className="text-[var(--border)] shrink-0 mt-1" />
                 </div>
               </motion.article>
             ))}
           </AnimatePresence>
         </div>
 
+        {/* FIX: t() + style={{ color }} → className */}
         {filtered.length === 0 && (
           <div className="text-center py-16">
             <p className="text-4xl mb-3">📭</p>
-            <p style={{ color: 'var(--body-color)' }}>Belum ada tulisan di kategori ini.</p>
+            <p className="text-[var(--body-color)]">{t('blog.empty')}</p>
           </div>
         )}
       </div>
@@ -240,73 +249,70 @@ export default function BlogPage() {
       <AnimatePresence>
         {selected && (
           <>
+            {/* FIX: style={{ position, inset, background, backdropFilter, zIndex }} → Tailwind + inline rgba */}
             <motion.div
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
               onClick={() => setSelected(null)}
-              style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(6px)', zIndex: 100 }}
+              className="fixed inset-0 z-[100]"
+              style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(6px)' }}
             />
+            {/* FIX: style={{ position, inset, maxWidth, margin, background, border, borderRadius, zIndex, overflow, display, flexDirection }} → Tailwind */}
             <motion.div
               initial={{ opacity: 0, y: 40, scale: 0.97 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 40, scale: 0.97 }}
               transition={{ type: 'spring', stiffness: 300, damping: 28 }}
-              style={{
-                position: 'fixed', inset: '1rem',
-                maxWidth: 680, margin: '0 auto',
-                background: 'var(--card-bg)',
-                border: '1px solid var(--border)',
-                borderRadius: '1.25rem',
-                zIndex: 101,
-                overflow: 'hidden',
-                display: 'flex', flexDirection: 'column',
-              }}
+              className="fixed inset-4 max-w-[680px] mx-auto z-[101] rounded-[1.25rem]
+                         overflow-hidden flex flex-col bg-[var(--card-bg)] border border-[var(--border)]"
             >
               {/* Modal header */}
-              <div className="flex items-center justify-between px-6 py-4 border-b shrink-0"
-                style={{ borderColor: 'var(--border)' }}>
+              <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--border)] shrink-0">
                 <div className="flex items-center gap-3">
                   <span className="text-2xl">{selected.emoji}</span>
-                  <span className="text-xs font-bold px-2 py-0.5 rounded-full"
-                    style={{ background: `${selected.color}15`, color: selected.color }}>
+                  <span
+                    className="text-xs font-bold px-2 py-0.5 rounded-full"
+                    style={{ background: `${selected.color}15`, color: selected.color }}
+                  >
                     {selected.category}
                   </span>
                 </div>
-                <motion.button onClick={() => setSelected(null)}
-                  whileTap={{ rotate: 90 }} style={{ color: 'var(--body-color)', background: 'none', border: 'none' }}>
+                {/* FIX: style={{ color, background, border }} → className */}
+                <motion.button
+                  onClick={() => setSelected(null)}
+                  whileTap={{ rotate: 90 }}
+                  className="text-[var(--body-color)] bg-transparent border-none"
+                >
                   <X size={20} />
                 </motion.button>
               </div>
 
               {/* Modal body */}
               <div className="flex-1 overflow-y-auto px-6 py-6">
-                <h1 className="font-display font-bold text-xl mb-1" style={{ color: 'var(--dark)' }}>
-                  {selected.title}
-                </h1>
-                <p className="text-sm mb-4" style={{ color: 'var(--body-color)' }}>{selected.subtitle}</p>
-                <div className="flex items-center gap-3 mb-6 pb-4 border-b" style={{ borderColor: 'var(--border)' }}>
-                  <span className="flex items-center gap-1 text-xs" style={{ color: 'var(--body-color)' }}>
+                <h1 className="font-display font-bold text-xl mb-1 text-[var(--dark)] text-tracked word-loose">{selected.title}</h1>
+                <p className="text-sm mb-4 text-[var(--body-color)]">{selected.subtitle}</p>
+                <div className="flex items-center gap-3 mb-6 pb-4 border-b border-[var(--border)]">
+                  <span className="flex items-center gap-1 text-xs text-[var(--body-color)]">
                     <Clock size={11} /> {selected.readTime}
                   </span>
-                  <span className="text-xs" style={{ color: 'var(--body-color)' }}>{selected.date}</span>
+                  <span className="text-xs text-[var(--body-color)]">{selected.date}</span>
                 </div>
-                {/* Content — render newlines as paragraphs */}
                 <div className="prose-felix">
                   {selected.content.split('\n\n').map((block, i) => {
                     if (block.startsWith('**') && block.endsWith('**')) {
                       return (
-                        <h3 key={i} className="font-display font-bold text-base mt-5 mb-2" style={{ color: 'var(--dark)' }}>
+                        <h3 key={i} className="font-display font-bold text-base mt-5 mb-2 text-[var(--dark)] text-tracked word-loose">
                           {block.replace(/\*\*/g, '')}
                         </h3>
                       )
                     }
                     return (
-                      <p key={i} className="text-sm leading-relaxed mb-3" style={{ color: 'var(--body-color)' }}>
+                      <p key={i} className="text-sm leading-relaxed mb-3 text-[var(--body-color)]">
                         {block.replace(/\*\*(.*?)\*\*/g, '$1')}
                       </p>
                     )
                   })}
                 </div>
-                <div className="flex flex-wrap gap-1 mt-6 pt-4 border-t" style={{ borderColor: 'var(--border)' }}>
+                <div className="flex flex-wrap gap-1 mt-6 pt-4 border-t border-[var(--border)]">
                   {selected.tags.map(tag => <span key={tag} className="tag">{tag}</span>)}
                 </div>
               </div>

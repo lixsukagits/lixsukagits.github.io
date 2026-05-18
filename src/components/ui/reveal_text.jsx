@@ -25,6 +25,10 @@ export default function RevealText({
   const ref = useRef(null)
   const isInView = useInView(ref, { once, margin: '-10% 0px -10% 0px' })
 
+  // Skip animasi jika user prefer reduced motion
+  const prefersReduced = typeof window !== 'undefined'
+    && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
   const words = text.split(' ')
 
   return (
@@ -42,12 +46,12 @@ export default function RevealText({
         >
           <motion.span
             style={{ display: 'inline-block' }}
-            initial={{ y: '110%', opacity: 0 }}
+            initial={{ y: prefersReduced ? '0%' : '110%', opacity: prefersReduced ? 1 : 0 }}
             animate={isInView
               ? { y: '0%', opacity: 1 }
-              : { y: '110%', opacity: 0 }
+              : { y: prefersReduced ? '0%' : '110%', opacity: prefersReduced ? 1 : 0 }
             }
-            transition={{
+            transition={prefersReduced ? { duration: 0 } : {
               type: 'spring',
               stiffness: 220,
               damping: 22,

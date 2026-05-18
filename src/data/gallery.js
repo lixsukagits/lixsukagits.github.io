@@ -1,45 +1,68 @@
-// Ganti URL placeholder dengan URL Imgur asli setelah foto diupload
 export const gallery = [
   // ── PRESTASI ──────────────────────────────────────────────
   {
     id: 1,
     title: 'OSTN 2024 — Juara Utama',
+    titleEn: 'OSTN 2024 — Grand Champion',
+    titleZh: 'OSTN 2024 — 全国第一',
     desc: 'Momen kemenangan pertama di panggung nasional — Juara Utama Bidang Informatika OSTN 2024.',
+    descEn: 'The first national victory — Grand Champion in Informatics at OSTN 2024.',
+    descZh: '首次登上全国领奖台——荣获OSTN 2024信息学科第一名。',
     category: 'Prestasi',
     img: 'https://i.imgur.com/NuTXi7t.jpeg',
   },
   {
     id: 2,
     title: 'OPSI 2025 — Juara Utama',
+    titleEn: 'OPSI 2025 — Grand Champion',
+    titleZh: 'OPSI 2025 — 全国第一',
     desc: 'Juara Utama Informatika OPSI 2025, membuktikan konsistensi di level nasional.',
+    descEn: 'Grand Champion in Informatics at OPSI 2025, proving consistency at the national level.',
+    descZh: '荣获OPSI 2025信息学科第一名，再次证明在全国级别的持续卓越表现。',
     category: 'Prestasi',
     img: 'https://i.imgur.com/5X9XnYN.jpeg',
   },
   {
     id: 3,
     title: 'IYSHO 2025 — Medali Emas Internasional',
+    titleEn: 'IYSHO 2025 — International Gold Medal',
+    titleZh: 'IYSHO 2025 — 国际金牌',
     desc: 'Meraih Medali Emas di ajang internasional IYSHO 2025 — pencapaian lintas batas.',
+    descEn: 'Earned a Gold Medal at the international IYSHO 2025 — a cross-border achievement.',
+    descZh: '在国际赛事IYSHO 2025荣获金牌——跨越国界的荣耀。',
     category: 'Prestasi',
     img: 'https://i.imgur.com/8G5xZlN.jpeg',
   },
   {
     id: 4,
     title: 'PON 2025 — Medali Emas',
+    titleEn: 'PON 2025 — Gold Medal',
+    titleZh: 'PON 2025 — 金牌',
     desc: 'Mewakili Sumatera Utara dan pulang membawa Medali Emas Informatika di PON 2025.',
+    descEn: 'Represented North Sumatra and returned with the Gold Medal in Informatics at PON 2025.',
+    descZh: '代表北苏门答腊省出征，载誉而归——PON 2025信息学科金牌得主。',
     category: 'Prestasi',
     img: 'https://i.imgur.com/p6Wxyds.jpeg',
   },
   {
     id: 5,
     title: 'OSI HP 2025 — Medali Emas',
+    titleEn: 'OSI HP 2025 — Gold Medal',
+    titleZh: 'OSI HP 2025 — 金牌',
     desc: 'Medali Emas OSI HP 2025, melengkapi koleksi prestasi gemilang tahun 2025.',
+    descEn: 'Gold Medal at OSI HP 2025, completing an outstanding collection of achievements in 2025.',
+    descZh: '荣获OSI HP 2025金牌，为2025年辉煌的荣誉集锦画上圆满句号。',
     category: 'Prestasi',
     img: 'https://i.imgur.com/1LlXSL8.jpeg',
   },
   {
     id: 6,
     title: 'ESC 2025',
+    titleEn: 'ESC 2025',
+    titleZh: 'ESC 2025',
     desc: 'Momen juara di ajang ESC 2025.',
+    descEn: 'Championship moment at ESC 2025.',
+    descZh: '在ESC 2025竞赛中夺冠的荣耀时刻。',
     category: 'Prestasi',
     img: 'https://i.imgur.com/DUAWdtq.jpeg',
   },
@@ -48,41 +71,61 @@ export const gallery = [
   {
     id: 7,
     title: 'Coding Camp DBS Foundation 2025',
+    titleEn: 'DBS Foundation Coding Camp 2025',
+    titleZh: 'DBS基金会编程营 2025',
     desc: 'Sesi pelatihan intensif bersama mentor dan rekan tim di Coding Camp DBS Foundation 2025.',
+    descEn: 'Intensive training sessions with mentors and teammates at DBS Foundation Coding Camp 2025.',
+    descZh: '与导师及团队伙伴共同度过的DBS基金会编程营2025强化培训时光。',
     category: 'Pelatihan',
-    img: 'https://placehold.co/600x400/f0fdf4/166534?text=DBS+2025', // TODO: upload foto kegiatan
+    img: 'https://placehold.co/600x400/f0fdf4/166534?text=DBS+2025',
   },
   {
     id: 8,
     title: 'Coding Camp DBS Foundation 2026',
+    titleEn: 'DBS Foundation Coding Camp 2026',
+    titleZh: 'DBS基金会编程营 2026',
     desc: 'Batch kedua Coding Camp DBS Foundation — pengalaman yang makin matang.',
+    descEn: 'Second batch of DBS Foundation Coding Camp — a more mature and enriching experience.',
+    descZh: 'DBS基金会编程营第二批——更加成熟丰富的学习体验。',
     category: 'Pelatihan',
-    img: 'https://placehold.co/600x400/f0fdf4/166534?text=DBS+2026', // TODO: upload foto kegiatan
+    img: 'https://placehold.co/600x400/f0fdf4/166534?text=DBS+2026',
   },
 
   // ── ORGANISASI ────────────────────────────────────────────
   {
     id: 9,
     title: 'Kegiatan OSIS — Divisi IT',
+    titleEn: 'OSIS Activity — IT Division',
+    titleZh: '学生会活动 — IT部门',
     desc: 'Dokumentasi kegiatan divisi IT OSIS SMK Telkom 2 Medan.',
+    descEn: 'Documentation of IT Division activities at OSIS SMK Telkom 2 Medan.',
+    descZh: 'SMK Telkom 2 Medan学生会IT部门活动记录。',
     category: 'Organisasi',
-    img: 'https://placehold.co/600x400/fef9c3/854d0e?text=OSIS+IT', // TODO: foto menyusul
+    img: 'https://placehold.co/600x400/fef9c3/854d0e?text=OSIS+IT',
   },
   {
     id: 10,
     title: 'Waisak 2026 — Cetiya Aryavamsa',
+    titleEn: 'Vesak 2026 — Cetiya Aryavamsa',
+    titleZh: '卫塞节 2026 — Cetiya Aryavamsa',
     desc: 'Perayaan Waisak 2026 bersama komunitas Muda Mudi Cetiya Aryavamsa — tim medcom dan dokumentasi.',
+    descEn: 'Vesak 2026 celebration with the Cetiya Aryavamsa youth community — media and documentation team.',
+    descZh: '与Cetiya Aryavamsa青年社区共同庆祝2026年卫塞节——媒体与文档记录团队工作留影。',
     category: 'Organisasi',
-    img: 'https://placehold.co/600x400/fdf2f8/86198f?text=Waisak+2026', // TODO: foto menyusul
+    img: 'https://placehold.co/600x400/fdf2f8/86198f?text=Waisak+2026',
   },
 
   // ── HOBI ──────────────────────────────────────────────────
   {
     id: 11,
     title: 'Sesi Fotografi',
+    titleEn: 'Photography Session',
+    titleZh: '摄影时光',
     desc: 'Mengabadikan momen lewat lensa — fotografi sebagai hobi dan keahlian.',
+    descEn: 'Capturing moments through the lens — photography as both a hobby and a skill.',
+    descZh: '用镜头定格美好瞬间——摄影既是兴趣爱好，也是一门技艺。',
     category: 'Hobi',
-    img: 'https://placehold.co/600x400/fbeaf0/86198f?text=Fotografi', // TODO: foto menyusul
+    img: 'https://placehold.co/600x400/fbeaf0/86198f?text=Fotografi',
   },
 ]
 

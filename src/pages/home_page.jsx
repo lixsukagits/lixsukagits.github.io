@@ -6,6 +6,7 @@ import { TypeAnimation } from 'react-type-animation'
 import CountUp from 'react-countup'
 import { Helmet } from 'react-helmet-async'
 import { useUserStore } from '../store/use_user_store'
+import { useThemeStore } from '../store/use_theme_store'
 import WelcomeModal from '../components/ui/welcome_modal'
 import PageWrapper from '../components/ui/page_wrapper'
 import SectionHeader from '../components/ui/section_header'
@@ -171,9 +172,8 @@ function BentoCell({ cell, isDark, delay }) {
 export default function HomePage() {
   const { t } = useTranslation()
   const { userName, hasVisited } = useUserStore()
-
-  const isDark = typeof document !== 'undefined'
-    && document.documentElement.getAttribute('data-theme') === 'dark'
+  const { theme } = useThemeStore()
+  const isDark = theme === 'dark'
 
   const blob1Ref = useRef(null)
   const blob2Ref = useRef(null)
@@ -329,19 +329,19 @@ export default function HomePage() {
 
           {/* Badges */}
           <motion.div variants={item} className="flex flex-wrap justify-center gap-2 mb-5">
-            <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold border
+            <span className="badge-open-to inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold border
                          text-[var(--primary)] border-[var(--primary)]"
               style={{ background: 'var(--card-bg)' }}>
               <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" aria-hidden="true" />
               {t('hero.open_to')}
             </span>
-            <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold border
-                         text-amber-800 border-amber-400 dark:text-amber-300 dark:border-amber-500"
+            <span className="badge-ranking inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold border
+                         text-amber-900 border-amber-600"
               style={{ background: 'var(--card-bg)' }}>
               🏅 Ranking 1 — 2025
             </span>
-            <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold border
-                         text-red-800 border-red-400 dark:text-red-300 dark:border-red-400"
+            <span className="badge-hsk inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold border
+                         text-red-900 border-red-600"
               style={{ background: 'var(--card-bg)' }}>
               🇨🇳 HSK 3
             </span>
@@ -433,11 +433,7 @@ export default function HomePage() {
                 </span>
               </div>
               <div className="p-4">
-                <h3 className="font-display font-bold text-sm leading-snug mb-1 text-[var(--dark)]"
-                style={{
-                letterSpacing: '0.05em',   /* ← jarak antar huruf lebih lebar */
-                wordSpacing: '0.05em',     /* ← jarak antar kata sedikit lebih lega */
-                }}>
+                <h3 className="font-display font-bold text-sm leading-snug mb-1 text-[var(--dark)] text-tracked word-loose">
                   {a.title}
                 </h3>
                 <p className="text-xs text-[var(--body-color)]">{a.date}</p>
@@ -479,7 +475,7 @@ export default function HomePage() {
                 </span>
               </div>
               <div className="p-5">
-                <h3 className="font-display font-bold text-sm tracking-[0.1em] text-[var(--dark)] mb-2">
+                <h3 className="font-display font-bold text-sm text-tracked-wide text-[var(--dark)] mb-2">
                   {p.title}
                 </h3>
                 <p className="text-xs mb-3 leading-relaxed text-[var(--body-color)]">{p.desc}</p>

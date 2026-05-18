@@ -63,11 +63,28 @@
   },
   "skills": {
     "title": "Keterampilan",
-    "subtitle": "Apa yang Saya Kuasai"
+    "subtitle": "Apa yang Saya Kuasai",
+    "filter_label": "Filter kategori skill",
+    "empty": "Tidak ada skill di kategori ini.",
+    "tag_all": "Semua",
+    "tag_frontend": "Frontend",
+    "tag_creative": "Kreatif",
+    "tag_hardware": "Hardware",
+    "tag_design": "Desain",
+    "tag_media": "Media",
+    "tag_productivity": "Produktivitas",
+    "tag_programming": "Programming"
   },
   "achievement": {
     "title": "Prestasi",
-    "subtitle": "Apa yang Telah Saya Raih"
+    "subtitle": "Apa yang Telah Saya Raih",
+    "stat_total": "Total Prestasi",
+    "stat_national": "Nasional",
+    "stat_school": "Sekolah",
+    "prev": "Sebelumnya",
+    "next": "Berikutnya",
+    "nav_hint": "← → navigasi · Esc tutup",
+    "easter_hint": "Psst... coba klik emoji medalinya berkali-kali"
   },
   "education": {
     "title": "Pendidikan",
@@ -76,7 +93,9 @@
   },
   "experience": {
     "title": "Pengalaman",
-    "subtitle": "Yang Telah Saya Jalani"
+    "subtitle": "Yang Telah Saya Jalani",
+    "current": "Aktif",
+    "events_title": "Kegiatan & Event"
   },
   "certificate": {
     "title": "Sertifikat",
@@ -87,22 +106,52 @@
     "filter_organization": "Organisasi",
     "search_placeholder": "Cari sertifikat...",
     "view": "Lihat",
-    "total": "Menampilkan {{count}} sertifikat"
+    "total": "Menampilkan {{count}} sertifikat",
+    "empty": "Tidak ada sertifikat yang cocok.",
+    "prev": "Sebelumnya",
+    "next": "Berikutnya",
+    "nav_hint": "← → navigasi · Esc tutup"
   },
   "gallery": {
     "title": "Galeri",
-    "subtitle": "Momen Berharga"
+    "subtitle": "Momen Berharga",
+    "filter_all": "Semua",
+    "count": "{{count}} foto",
+    "empty": "Tidak ada foto di kategori ini.",
+    "prev": "Sebelumnya",
+    "next": "Berikutnya",
+    "nav_hint": "← → navigasi · Esc tutup"
   },
   "cv": {
     "title": "Curriculum Vitae",
     "subtitle": "Resume Profesional",
     "download": "Download CV",
-    "print": "Cetak"
+    "print": "Cetak",
+    "share": "Bagikan CV",
+    "share_label": "Bagikan",
+    "print_label": "Download atau cetak CV sebagai PDF",
+    "copied": "Link CV berhasil disalin!",
+    "mobile_tip": "💡 Tap Download / PDF lalu pilih \"Save as PDF\" di browser.",
+    "active": "Aktif",
+    "section_education": "Pendidikan",
+    "section_experience": "Pengalaman",
+    "section_achievements": "Prestasi",
+    "section_skills": "Keterampilan",
+    "section_languages": "Bahasa"
   },
   "contact": {
     "title": "Kontak",
     "subtitle": "Mari Terhubung",
-    "desc": "Punya pertanyaan, ingin berkolaborasi, atau sekadar ingin menyapa? Saya terbuka untuk semua!"
+    "desc": "Punya pertanyaan, ingin berkolaborasi, atau sekadar ingin menyapa? Saya terbuka untuk semua!",
+    "copy": "Salin {{label}}",
+    "copied": "Tersalin!",
+    "copy_fail": "Gagal menyalin",
+    "cta_title": "Mari Berkolaborasi!",
+    "cta_wa_label": "Chat via WhatsApp",
+    "cta_chat": "Chat Sekarang",
+    "guestbook_desc": "Tinggalkan pesan untuk Felix — login GitHub untuk berkomentar 👋",
+    "powered_by": "Ditenagai oleh",
+    "giscus_note": "gratis, tanpa iklan."
   },
   "timeline": {
     "title": "Timeline Hidup",
@@ -111,7 +160,41 @@
   "now": {
     "title": "Sekarang",
     "subtitle": "Apa yang Sedang Saya Kerjakan",
-    "updated": "Diperbarui"
+    "updated": "Diperbarui",
+    "learning_label": "Sedang Belajar",
+    "working_on_label": "Sedang Dikerjakan",
+    "reading_label": "Sedang Dibaca",
+    "inspired_prefix": "Halaman ini diperbarui manual setiap beberapa minggu. Terinspirasi dari"
+  },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Tulisan & Pikiran",
+    "desc": "Catatan perjalanan belajar, refleksi, dan hal-hal yang saya pikir layak dibagikan.",
+    "filter_all": "Semua",
+    "empty": "Belum ada tulisan di kategori ini."
+  },
+  "bookshelf": {
+    "title": "Rak Buku",
+    "subtitle": "Reading List",
+    "desc": "Buku dan bacaan yang membentuk cara saya berpikir dan belajar.",
+    "filter_all": "Semua",
+    "empty": "Tidak ada buku yang cocok filter ini.",
+    "status_reading": "Sedang Dibaca",
+    "status_done": "Sudah Baca",
+    "status_want": "Ingin Baca"
+  },
+  "uses": {
+    "title": "Peralatan",
+    "subtitle": "Setup & Tools",
+    "desc": "Perangkat, software, dan tools yang saya pakai sehari-hari untuk coding, belajar Mandarin, dan produktivitas.",
+    "inspired": "Terinspirasi dari"
+  },
+  "not_found": {
+    "title": "Tersesat, nih?",
+    "desc": "Halaman yang kamu cari tidak ada atau sudah dipindahkan. Yuk balik ke jalur yang benar!",
+    "cta": "Kembali ke Beranda",
+    "or": "Atau langsung ke:",
+    "error": "Error 404 · Felix Raymond Portfolio"
   },
   "footer": {
     "made": "Dibuat dengan ❤️ oleh Felix Raymond",
@@ -137,6 +220,10 @@
     "pages": "Halaman",
     "actions": "Aksi",
     "toggle_theme": "Ganti Tema",
-    "no_result": "Tidak ada hasil untuk"
+    "no_result": "Tidak ada hasil untuk",
+    "open_label": "Buka command palette (Ctrl+K)",
+    "dialog_label": "Command palette",
+    "search_label": "Cari halaman atau aksi",
+    "results_label": "Hasil pencarian"
   }
 }

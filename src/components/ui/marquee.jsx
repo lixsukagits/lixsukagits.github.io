@@ -12,6 +12,7 @@ export default function Marquee({ items = [], speed = 35, separator = '·' }) {
 
   return (
     <div
+      aria-hidden="true"
       style={{
         overflow: 'hidden',
         width: '100%',

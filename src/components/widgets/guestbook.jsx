@@ -64,12 +64,11 @@ export default function GuestbookGiscus() {
       <div className="mb-8 text-center">
         <span className="section-label">Say Hello</span>
         <h2
-          className="font-display text-3xl font-extrabold mt-2"
-          style={{ color: 'var(--dark)' }}
+          className="font-display text-3xl font-extrabold mt-2 text-[var(--dark)] text-tracked"
         >
           Guestbook
         </h2>
-        <p className="mt-2 text-sm" style={{ color: 'var(--body-color)' }}>
+        <p className="mt-2 text-sm text-[var(--body-color)]">
           Tinggalkan pesan, kesan, atau sapa Felix di sini! Login GitHub untuk berkomentar.
         </p>
       </div>
@@ -88,14 +87,13 @@ export default function GuestbookGiscus() {
       />
 
       {/* Info note */}
-      <p className="mt-4 text-xs text-center" style={{ color: 'var(--body-color)' }}>
+      <p className="mt-4 text-xs text-center text-[var(--body-color)]">
         Komentar ditenagai oleh{' '}
         <a
           href="https://giscus.app"
           target="_blank"
           rel="noopener noreferrer"
-          className="link-underline"
-          style={{ color: 'var(--primary)' }}
+          className="link-underline text-[var(--primary)]"
         >
           Giscus
         </a>{' '}

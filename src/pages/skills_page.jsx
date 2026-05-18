@@ -110,7 +110,7 @@ export default function SkillsPage() {
             {skillRadarData.map(({ subject, value }) => (
               <div key={subject}>
                 <div className="flex justify-between text-xs mb-1">
-                  <span className="font-medium" style={{ color: 'var(--dark)' }}>{subject}</span>
+                  <span className="font-medium text-[var(--dark)]">{subject}</span>
                   <span style={{ color: 'var(--primary)' }}>{value}%</span>
                 </div>
                 <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'var(--border)' }}>
@@ -202,7 +202,7 @@ export default function SkillsPage() {
                   {/* Title + tag */}
                   <div className="flex items-start justify-between gap-2 mb-2">
                     <div>
-                      <h3 className="font-display font-bold text-sm" style={{ color: 'var(--dark)' }}>
+                      <h3 className="font-display font-bold text-sm text-[var(--dark)] text-tracked word-loose">
                         {lang === 'zh' ? skill.titleZh : skill.title}
                       </h3>
                       <p className="text-xs mt-0.5" style={{ color: 'var(--body-color)' }}>
