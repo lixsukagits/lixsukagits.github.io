@@ -22,14 +22,16 @@ const funFacts = [
 
 const PHOTO_MAIN  = 'https://i.imgur.com/NY5EWPU.jpeg'
 const PHOTO_HOVER = 'https://i.imgur.com/NY5EWPU.jpeg'
-const GOALS = (t) => [
-  { icon: '📅', label: t('about.goal_short_label'),  valKey: 'short',        color: '#3758F9' },
-  { icon: '🎓', label: t('about.goal_long_label'),   valKey: 'long',         color: '#7c3aed' },
-  { icon: '💼', label: t('about.goal_career_label'), valKey: 'career',       color: '#10b981' },
-  { icon: '🇨🇳', label: t('about.goal_china_label'),  valKey: 'china_reason', color: '#dc2626' },
+
+// FIX: GOALS pakai valKey multilang (shortEn/shortZh, dll)
+const GOALS = (t, lang) => [
+  { icon: '📅', label: t('about.goal_short_label'),  valKey: lang === 'en' ? 'shortEn'        : lang === 'zh' ? 'shortZh'        : 'short',        color: '#3758F9' },
+  { icon: '🎓', label: t('about.goal_long_label'),   valKey: lang === 'en' ? 'longEn'         : lang === 'zh' ? 'longZh'         : 'long',         color: '#7c3aed' },
+  { icon: '💼', label: t('about.goal_career_label'), valKey: lang === 'en' ? 'careerEn'       : lang === 'zh' ? 'careerZh'       : 'career',       color: '#10b981' },
+  { icon: '🇨🇳', label: t('about.goal_china_label'),  valKey: lang === 'en' ? 'china_reasonEn' : lang === 'zh' ? 'china_reasonZh' : 'china_reason', color: '#dc2626' },
 ]
 
-/* ─── PROFILE PHOTO — klik 5x → easter egg ──────────────────── */
+/* ─── PROFILE PHOTO ─────────────────────────────────────────── */
 function ProfilePhoto() {
   const [hovered, setHovered] = useState(false)
   const clickCount = useRef(0)
@@ -38,12 +40,8 @@ function ProfilePhoto() {
   const handleClick = useCallback(() => {
     clickCount.current += 1
     clearTimeout(clickTimer.current)
-    // Reset jika berhenti klik > 2 detik
     clickTimer.current = setTimeout(() => { clickCount.current = 0 }, 2000)
-    if (clickCount.current >= 5) {
-      clickCount.current = 0
-      triggerEasterEgg('photo')
-    }
+    if (clickCount.current >= 5) { clickCount.current = 0; triggerEasterEgg('photo') }
   }, [])
 
   return (
@@ -55,10 +53,9 @@ function ProfilePhoto() {
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
         onClick={handleClick}
-        onTouchEnd={handleClick}  // support HP
+        onTouchEnd={handleClick}
         aria-label="Foto Felix Raymond — klik beberapa kali untuk kejutan"
-        role="button"
-        tabIndex={0}
+        role="button" tabIndex={0}
         onKeyDown={e => e.key === 'Enter' && handleClick()}
       >
         <img src={PHOTO_MAIN} alt="Felix Raymond" style={{
@@ -84,15 +81,8 @@ function ProfilePhoto() {
           Hover me ✨
         </motion.div>
       </div>
-      <div
-        className="absolute z-[4] whitespace-nowrap text-[0.8rem] font-bold text-[var(--primary)]
-                   px-[14px] py-[6px] rounded-xl"
-        style={{
-          bottom: -16, right: -16,
-          background: 'var(--card-bg)', border: '1px solid var(--border)',
-          boxShadow: '0 4px 16px rgba(0,0,0,0.1)',
-        }}
-      >
+      <div className="absolute z-[4] whitespace-nowrap text-[0.8rem] font-bold text-[var(--primary)] px-[14px] py-[6px] rounded-xl"
+        style={{ bottom: -16, right: -16, background: 'var(--card-bg)', border: '1px solid var(--border)', boxShadow: '0 4px 16px rgba(0,0,0,0.1)' }}>
         Class of 2027 🎓
       </div>
     </TiltCard>
@@ -103,7 +93,7 @@ function Block({ emoji, titleKey, children }) {
   const { t } = useTranslation()
   return (
     <motion.div variants={cardItem} className="card p-6 mb-6">
-      <h3 className="font-display font-bold text-base mb-4 flex items-center gap-2 text-[var(--dark)] text-tracked">
+      <h3 className="font-display font-bold text-base mb-4 flex items-center gap-2 text-[var(--dark)]">
         <span>{emoji}</span>{t(titleKey)}
       </h3>
       {children}
@@ -112,7 +102,8 @@ function Block({ emoji, titleKey, children }) {
 }
 
 export default function AboutPage() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const lang = i18n.language
 
   return (
     <PageWrapper>
@@ -133,6 +124,7 @@ export default function AboutPage() {
         </div>
 
         <motion.div variants={container} initial="hidden" animate="show">
+
           {/* Bio + photo */}
           <motion.div variants={cardItem}
             className="card p-6 sm:p-8 mb-6 flex flex-col md:flex-row gap-8 items-start md:items-center">
@@ -140,21 +132,21 @@ export default function AboutPage() {
               <ProfilePhoto />
             </div>
             <div className="w-full md:w-3/5">
-              <h2 className="font-display text-2xl font-bold mb-0.5 text-[var(--dark)] text-tracked">{profile.name}</h2>
+              <h2 className="font-display text-2xl font-bold mb-0.5 text-[var(--dark)]">{profile.name}</h2>
               <p className="text-sm italic mb-5 text-[var(--primary)]">{t('about.tagline')}</p>
               <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 gap-2.5">
                 {[
-                  { label: '🎂 Lahir', val: profile.birth.date },
-                  { label: '📍 Lokasi', val: profile.location },
-                  { label: '🙏 Agama', val: profile.religion },
-                  { label: '🏮 Suku', val: profile.ethnicity },
-                  { label: '👨‍👩‍👦 Keluarga', val: profile.sibling },
+                  { label: '🎂 Lahir',       val: profile.birth.date },
+                  { label: '📍 Lokasi',      val: profile.location },
+                  { label: '🙏 Agama',       val: profile.religion },
+                  { label: '🏮 Suku',        val: profile.ethnicity },
+                  { label: '👨‍👩‍👦 Keluarga',  val: profile.sibling },
                   { label: '🎯 Kepribadian', val: profile.personality },
                 ].map(({ label, val }) => (
                   <motion.div key={label} className="p-3 rounded-xl" style={{ background: 'var(--bg)' }}
                     whileHover={{ scale: 1.02 }} transition={{ type: 'spring', stiffness: 400 }}>
                     <div className="text-xs mb-0.5 text-[var(--body-color)]">{label}</div>
-                    <div className="font-semibold text-xs text-[var(--dark)] text-tracked-tight">{val}</div>
+                    <div className="font-semibold text-xs text-[var(--dark)]">{val}</div>
                   </motion.div>
                 ))}
               </div>
@@ -202,10 +194,10 @@ export default function AboutPage() {
           <Block emoji="🌐" titleKey="about.lang_title">
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               {[
-                { flag: 'https://flagcdn.com/w40/id.png', name: 'Indonesia', level: 'Native', alt: 'ID' },
-                { flag: 'https://flagcdn.com/w40/gb.png', name: 'English', level: 'Intermediate', alt: 'GB' },
-                { flag: 'https://flagcdn.com/w40/cn.png', name: '普通话', level: 'HSK 3', alt: 'CN' },
-                { flag: null, name: 'Hokkien', level: 'Daily', alt: '🏮' },
+                { flag: 'https://flagcdn.com/w40/id.png', name: 'Indonesia', level: 'Native',       alt: 'ID' },
+                { flag: 'https://flagcdn.com/w40/gb.png', name: 'English',   level: 'Intermediate', alt: 'GB' },
+                { flag: 'https://flagcdn.com/w40/cn.png', name: '普通话',     level: 'HSK 3',        alt: 'CN' },
+                { flag: null,                             name: 'Hokkien',   level: 'Daily',        alt: '🏮' },
               ].map(lang => (
                 <motion.div key={lang.name} className="text-center p-4 rounded-xl card"
                   whileHover={{ y: -4 }} transition={{ type: 'spring', stiffness: 400 }}>
@@ -239,14 +231,14 @@ export default function AboutPage() {
 
           {/* Goals */}
           <motion.div variants={cardItem} className="card p-6 mb-6">
-            <h3 className="font-display font-bold text-base mb-5 flex items-center gap-2 text-[var(--dark)] text-tracked">
+            <h3 className="font-display font-bold text-base mb-5 flex items-center gap-2 text-[var(--dark)]">
               🎯 {t('about.goals_title')}
             </h3>
             <div className="relative pl-10">
               <div className="absolute left-3 top-2 bottom-2 w-px"
                 style={{ background: 'linear-gradient(to bottom, var(--primary), var(--border))' }} />
               <div className="space-y-5">
-                {GOALS(t).map(({ icon, label, valKey, color }, i) => (
+                {GOALS(t, lang).map(({ icon, label, valKey, color }, i) => (
                   <motion.div key={label} className="relative flex gap-4 items-start"
                     initial={{ opacity: 0, x: -16 }} whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }} transition={{ delay: i * 0.1 }}>
@@ -254,6 +246,7 @@ export default function AboutPage() {
                       style={{ background: color, boxShadow: '0 0 0 3px var(--bg)' }} />
                     <div className="p-3 rounded-xl flex-1" style={{ background: 'var(--bg)' }}>
                       <p className="text-xs font-bold mb-0.5" style={{ color }}>{icon} {label}</p>
+                      {/* FIX: pakai valKey yang sudah multilang */}
                       <p className="text-sm text-[var(--dark)]">{profile.goals[valKey]}</p>
                     </div>
                   </motion.div>
@@ -270,12 +263,16 @@ export default function AboutPage() {
                   style={{ borderColor: 'var(--primary)', background: 'var(--bg)' }}
                   initial={{ opacity: 0, x: -12 }} whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }} transition={{ delay: i * 0.12 }}>
-                  <p className="text-sm italic mb-1 text-[var(--dark)]">"{q.text}"</p>
+                  {/* FIX: pakai textEn/textZh sesuai bahasa */}
+                  <p className="text-sm italic mb-1 text-[var(--dark)]">
+                    "{lang === 'en' ? (q.textEn ?? q.text) : lang === 'zh' ? (q.textZh ?? q.text) : q.text}"
+                  </p>
                   <cite className="text-xs text-[var(--body-color)]">— {q.source}</cite>
                 </motion.blockquote>
               ))}
             </div>
           </Block>
+
         </motion.div>
       </div>
     </PageWrapper>

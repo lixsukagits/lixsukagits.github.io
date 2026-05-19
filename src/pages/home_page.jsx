@@ -59,7 +59,7 @@ function SocialLink({ href, children, label }) {
 const BENTO_CELLS = [
   {
     id: 'medals',
-    end: 5, suffix: '+',
+    end: achievements.filter(a => a.medal === '🥇').length, suffix: '+',
     label: 'Medali Emas',
     sublabel: 'Olimpiade Informatika',
     icon: Trophy, color: '#f59e0b', emoji: '🏆',
@@ -170,7 +170,8 @@ function BentoCell({ cell, isDark, delay }) {
 
 /* ─── HOME PAGE ─────────────────────────────────────────────── */
 export default function HomePage() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+  const lang = i18n.language
   const { userName, hasVisited } = useUserStore()
   const { theme } = useThemeStore()
   const isDark = theme === 'dark'
@@ -376,7 +377,7 @@ export default function HomePage() {
       <section id="stats-section" className="max-w-4xl mx-auto px-4 sm:px-6 md:px-10 py-20">
         <div className="text-center mb-10">
           <RevealText
-            text="Sekilas Tentang Saya"
+            text={t('home.about_title', 'Sekilas Tentang Saya')}
             as="h2"
             className="font-display text-2xl md:text-3xl font-bold justify-center"
             style={{ color: 'var(--dark)' }}
@@ -386,10 +387,9 @@ export default function HomePage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.4 }}
-            className="text-sm mt-2"
-            style={{ color: 'var(--body-color)' }}
+            className="text-sm mt-2 text-[var(--body-color)]"
           >
-            Angka-angka yang merangkum perjalanan saya sejauh ini
+            {t('home.about_desc', 'Angka-angka yang merangkum perjalanan saya sejauh ini')}
           </motion.p>
         </div>
 
@@ -411,7 +411,7 @@ export default function HomePage() {
       <section className="max-w-4xl mx-auto px-4 sm:px-6 md:px-10 pb-20">
         <SectionHeader label="What I've Achieved" title={t('nav.achievement')} />
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {achievements.slice(0, 3).map((a, i) => (
+          {[...achievements].reverse().slice(0, 3).map((a, i) => (
             <motion.div
               key={a.id}
               initial={{ opacity: 0, y: 20 }}
@@ -445,7 +445,7 @@ export default function HomePage() {
           <motion.div whileHover={{ x: 4 }} transition={{ type: 'spring', stiffness: 400 }}>
             <Link to="/achievement"
               className="inline-flex items-center gap-2 text-sm font-semibold link-underline text-[var(--primary)]">
-              Lihat Semua Prestasi <ExternalLink size={14} />
+              {t('home.view_all_achievements', 'Lihat Semua Prestasi')} <ExternalLink size={14} />
             </Link>
           </motion.div>
         </div>
@@ -478,7 +478,7 @@ export default function HomePage() {
                 <h3 className="font-display font-bold text-sm text-tracked-wide text-[var(--dark)] mb-2">
                   {p.title}
                 </h3>
-                <p className="text-xs mb-3 leading-relaxed text-[var(--body-color)]">{p.desc}</p>
+                <p className="text-xs mb-3 leading-relaxed text-[var(--body-color)]">{lang === 'en' ? p.descEn : lang === 'zh' ? p.descZh : p.desc}</p>
                 <div className="flex flex-wrap gap-1">
                   {p.tags.slice(0, 3).map(tag => <span key={tag} className="tag">{tag}</span>)}
                 </div>

@@ -3,17 +3,18 @@ import { useEffect } from 'react'
 /**
  * custom_cursor.jsx
  * - Desktop (mouse): custom dot + ring
- * - Mobile/touch: tidak muncul sama sekali
+ * - Mobile/touch: tidak muncul
+ *
+ * FIX: Tidak pakai media query untuk deteksi (pointer: coarse, hover, dll)
+ * karena laptop touchscreen Windows melaporkan semua sebagai touch device
+ * meskipun sedang dipakai dengan mouse.
+ *
+ * Strategi: SELALU siapkan elemen, aktifkan hanya setelah mousemove
+ * dikonfirmasi bukan dari touch via InputDeviceCapabilities.firesTouchEvents.
+ * Kalau user switch ke touch, cursor disembunyikan lagi.
  */
 export default function CustomCursor() {
   useEffect(() => {
-    const isTouch =
-      'ontouchstart' in window ||
-      navigator.maxTouchPoints > 0 ||
-      window.matchMedia('(pointer: coarse)').matches
-
-    if (isTouch) return
-
     const dot  = document.createElement('div')
     const ring = document.createElement('div')
     dot.id  = 'felix-cursor-dot'
@@ -42,67 +43,28 @@ export default function CustomCursor() {
     document.body.appendChild(dot)
     document.body.appendChild(ring)
 
-    // Hide native cursor via style injection — lebih reliable dari body.style.cursor
-    // karena body.style.cursor tidak override cursor pada child elements
-    const styleTag = document.createElement('style')
-    styleTag.id = 'felix-cursor-style'
-    styleTag.textContent = '*, *::before, *::after { cursor: none !important; }'
-    document.head.appendChild(styleTag)
-
     let mouseX = -9999, mouseY = -9999
     let ringX  = -9999, ringY  = -9999
     let rafId
-    let isVisible = false
+    let isVisible  = false
+    let usingMouse = false
+    let styleTag   = null
 
-    const onMove = (e) => {
-      mouseX = e.clientX
-      mouseY = e.clientY
-      dot.style.transform = `translate(${mouseX - 4}px, ${mouseY - 4}px)`
-      if (!isVisible) {
-        isVisible = true
-        dot.style.opacity  = '1'
-        ring.style.opacity = '0.65'
-      }
-    }
-
-    const onLeave = () => {
-      isVisible = false
-      dot.style.opacity  = '0'
-      ring.style.opacity = '0'
-    }
-
-    const onEnter = () => {
-      if (mouseX > 0) {
-        isVisible = true
-        dot.style.opacity  = '1'
-        ring.style.opacity = '0.65'
-      }
-    }
-
-    const onDown = () => {
-      dot.style.width  = '5px';  dot.style.height  = '5px'
-      ring.style.width = '22px'; ring.style.height = '22px'
-    }
-
-    const onUp = () => {
-      dot.style.width  = '8px';  dot.style.height  = '8px'
-      ring.style.width = '36px'; ring.style.height = '36px'
-    }
+    const HOVER_SELECTORS = 'a, button, [role="button"], input, textarea, select, label, .card'
 
     const onHoverIn = () => {
-      ring.style.width      = '50px'
-      ring.style.height     = '50px'
+      if (!usingMouse) return
+      ring.style.width       = '50px'
+      ring.style.height      = '50px'
       ring.style.borderColor = 'var(--primary)'
       ring.style.background  = 'rgba(55,88,249,0.07)'
     }
 
     const onHoverOut = () => {
-      ring.style.width     = '36px'
-      ring.style.height    = '36px'
+      ring.style.width      = '36px'
+      ring.style.height     = '36px'
       ring.style.background = 'transparent'
     }
-
-    const HOVER_SELECTORS = 'a, button, [role="button"], input, textarea, select, label, .card'
 
     const attachHover = () => {
       document.querySelectorAll(HOVER_SELECTORS).forEach(el => {
@@ -113,9 +75,82 @@ export default function CustomCursor() {
       })
     }
 
-    attachHover()
+    const enableCursorHide = () => {
+      if (styleTag) return
+      styleTag = document.createElement('style')
+      styleTag.id = 'felix-cursor-style'
+      styleTag.textContent = '*, *::before, *::after { cursor: none !important; }'
+      document.head.appendChild(styleTag)
+    }
 
-    // Ring lerp via rAF
+    const disableCursorHide = () => {
+      styleTag?.remove()
+      styleTag = null
+    }
+
+    const onMove = (e) => {
+      // InputDeviceCapabilities: firesTouchEvents = true berarti event dari touch
+      // Kalau tidak ada sourceCapabilities (browser lama) → anggap mouse
+      const isFromTouch = e.sourceCapabilities?.firesTouchEvents === true
+
+      if (!isFromTouch) {
+        if (!usingMouse) {
+          usingMouse = true
+          enableCursorHide()
+          attachHover()
+        }
+      } else {
+        // Mouse event yang di-generate dari touch — skip
+        return
+      }
+
+      mouseX = e.clientX
+      mouseY = e.clientY
+      dot.style.transform = `translate(${mouseX - 4}px, ${mouseY - 4}px)`
+
+      if (!isVisible) {
+        isVisible = true
+        dot.style.opacity  = '1'
+        ring.style.opacity = '0.65'
+      }
+    }
+
+    // User switch ke touch — restore cursor
+    const onTouchStart = () => {
+      if (!usingMouse) return
+      usingMouse = false
+      isVisible  = false
+      dot.style.opacity  = '0'
+      ring.style.opacity = '0'
+      disableCursorHide()
+    }
+
+    const onLeave = () => {
+      isVisible = false
+      dot.style.opacity  = '0'
+      ring.style.opacity = '0'
+    }
+
+    const onEnter = () => {
+      if (!usingMouse || mouseX < 0) return
+      isVisible = true
+      dot.style.opacity  = '1'
+      ring.style.opacity = '0.65'
+    }
+
+    const onDown = () => {
+      if (!usingMouse) return
+      dot.style.width  = '5px';  dot.style.height  = '5px'
+      ring.style.width = '22px'; ring.style.height = '22px'
+    }
+
+    const onUp = () => {
+      if (!usingMouse) return
+      dot.style.width  = '8px';  dot.style.height  = '8px'
+      ring.style.width = '36px'; ring.style.height = '36px'
+    }
+
+    // Ring lerp — selalu jalan
     const animateRing = () => {
       ringX += (mouseX - ringX) * 0.1
       ringY += (mouseY - ringY) * 0.1
@@ -124,7 +159,7 @@ export default function CustomCursor() {
     }
     rafId = requestAnimationFrame(animateRing)
 
-    // FIX: debounce MutationObserver — tidak fire setiap frame animasi
+    // MutationObserver debounced
     let debounceTimer
     const observer = new MutationObserver(() => {
       clearTimeout(debounceTimer)
@@ -132,7 +167,8 @@ export default function CustomCursor() {
     })
     observer.observe(document.body, { childList: true, subtree: true })
 
-    document.addEventListener('mousemove',  onMove,   { passive: true })
+    document.addEventListener('mousemove',  onMove,       { passive: true })
+    document.addEventListener('touchstart', onTouchStart, { passive: true })
     document.addEventListener('mouseleave', onLeave)
     document.addEventListener('mouseenter', onEnter)
     document.addEventListener('mousedown',  onDown)
@@ -140,6 +176,7 @@ export default function CustomCursor() {
 
     return () => {
       document.removeEventListener('mousemove',  onMove)
+      document.removeEventListener('touchstart', onTouchStart)
       document.removeEventListener('mouseleave', onLeave)
       document.removeEventListener('mouseenter', onEnter)
       document.removeEventListener('mousedown',  onDown)
@@ -147,8 +184,7 @@ export default function CustomCursor() {
       cancelAnimationFrame(rafId)
       clearTimeout(debounceTimer)
       observer.disconnect()
-      // Restore native cursor
-      document.getElementById('felix-cursor-style')?.remove()
+      disableCursorHide()
       dot.remove()
       ring.remove()
     }
