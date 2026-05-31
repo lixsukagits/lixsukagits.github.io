@@ -4,17 +4,12 @@ import { motion, AnimatePresence } from 'framer-motion'
 /**
  * splash_screen.jsx
  * Animasi: loading bar → nama Felix muncul → fade out → onDone()
- *
- * FIX: onDone di-capture via useRef agar timer tidak reset
- *      jika parent re-render dan kirim reference baru.
+ * Tidak perlu i18n — "Felix." dan "Portfolio" adalah brand name, bukan UI string.
  */
 export default function SplashScreen({ onDone }) {
   const [phase, setPhase] = useState(0)
-  // 0 = loading bar
-  // 1 = nama muncul
-  // 2 = exit fade
+  // 0 = loading bar | 1 = nama muncul | 2 = exit fade
 
-  // Guard: capture onDone sekali, tidak jadi dependency timer
   const onDoneRef = useRef(onDone)
   useEffect(() => { onDoneRef.current = onDone }, [onDone])
 
@@ -23,47 +18,35 @@ export default function SplashScreen({ onDone }) {
     const t2 = setTimeout(() => setPhase(2), 1800)
     const t3 = setTimeout(() => onDoneRef.current?.(), 2400)
     return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3) }
-  }, []) // intentionally empty — timer hanya berjalan sekali
+  }, [])
 
   return (
     <AnimatePresence>
       {phase < 2 && (
+        // FIX: style={{ position, inset, zIndex, display, flexDirection, alignItems,
+        //      justifyContent, background }} → Tailwind
         <motion.div
           key="splash"
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.5, ease: 'easeInOut' }}
-          style={{
-            position: 'fixed',
-            inset: 0,
-            zIndex: 99999,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            background: 'var(--bg)',
-          }}
+          className="fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-[var(--bg)]"
         >
           {/* Loading bar — phase 0 */}
           <AnimatePresence>
             {phase === 0 && (
+              // FIX: style={{ width, height, background, borderRadius, overflow }} → Tailwind
               <motion.div
                 key="bar"
                 initial={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                style={{
-                  width: 100,
-                  height: 2,
-                  background: 'var(--border)',
-                  borderRadius: 2,
-                  overflow: 'hidden',
-                }}
+                className="w-[100px] h-[2px] bg-[var(--border)] rounded-sm overflow-hidden"
               >
                 <motion.div
                   initial={{ width: 0 }}
                   animate={{ width: '100%' }}
                   transition={{ duration: 0.8, ease: 'easeInOut' }}
-                  style={{ height: '100%', background: 'var(--primary)', borderRadius: 2 }}
+                  className="h-full bg-[var(--primary)] rounded-sm"
                 />
               </motion.div>
             )}
@@ -78,34 +61,34 @@ export default function SplashScreen({ onDone }) {
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -16, scale: 1.02 }}
                 transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                style={{ textAlign: 'center' }}
+                className="text-center"
               >
-                <div className="font-hero" style={{
+                {/* font-hero + clamp tetap inline — tidak ada Tailwind equiv */}
+                <div className="font-hero text-[var(--dark)]" style={{
                   fontSize: 'clamp(3rem, 10vw, 6rem)',
                   fontWeight: 900,
-                  color: 'var(--dark)',
                   letterSpacing: '-0.04em',
                   lineHeight: 1,
                 }}>
-                  Felix<span style={{ color: 'var(--primary)' }}>.</span>
+                  Felix<span className="text-[var(--primary)]">.</span>
                 </div>
 
                 <motion.p
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.25 }}
-                  className="font-body section-label"
-                  style={{ marginTop: '0.75rem' }}
+                  className="font-body section-label mt-3"
                 >
                   Portfolio
                 </motion.p>
 
                 {/* Dots animasi */}
+                {/* FIX: style={{ display, gap, justifyContent, marginTop }} → Tailwind */}
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.4 }}
-                  style={{ display: 'flex', gap: 6, justifyContent: 'center', marginTop: '2rem' }}
+                  className="flex gap-1.5 justify-center mt-8"
                   aria-hidden="true"
                 >
                   {[0, 1, 2].map(i => (
@@ -113,13 +96,8 @@ export default function SplashScreen({ onDone }) {
                       key={i}
                       animate={{ scale: [1, 1.5, 1], opacity: [0.3, 1, 0.3] }}
                       transition={{ duration: 0.7, repeat: Infinity, delay: i * 0.15, ease: 'easeInOut' }}
-                      style={{
-                        width: 5,
-                        height: 5,
-                        borderRadius: '50%',
-                        background: 'var(--primary)',
-                        display: 'block',
-                      }}
+                      // FIX: style={{ width, height, borderRadius, background, display }} → Tailwind
+                      className="w-[5px] h-[5px] rounded-full bg-[var(--primary)] block"
                     />
                   ))}
                 </motion.div>

@@ -3,7 +3,7 @@ import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Globe, Menu, X, Home, User, Zap, Trophy, GraduationCap,
          Briefcase, Award, Image, GitBranch, FileText, Mail, Flame,
-         ChevronDown, Palette, Search, BookOpen, Wrench, Library } from 'lucide-react'
+         ChevronDown, Palette, Search, BookOpen, Wrench, Library, Terminal } from 'lucide-react'
 import { useThemeStore } from '../../store/use_theme_store'
 import { useColorThemeStore, COLOR_THEMES } from '../../store/use_color_theme_store'
 import { triggerEasterEgg } from '../../store/use_easter_egg'
@@ -31,6 +31,7 @@ const LINKS = [
   { to: '/blog',        icon: BookOpen,       key: 'blog' },
   { to: '/uses',        icon: Wrench,         key: 'uses' },
   { to: '/bookshelf',   icon: Library,        key: 'bookshelf' },
+  { to: '/terminal',    icon: Terminal,       key: 'terminal' }, // ← tambahan baru
 ]
 
 function ThemeToggleIcon({ isDark }) {

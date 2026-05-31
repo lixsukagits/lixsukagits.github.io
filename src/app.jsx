@@ -15,6 +15,8 @@ import EasterEgg from './components/widgets/easter_egg'
 import ShareButton from './components/widgets/share_button'
 import FontSizeToggle from './components/widgets/font_size_toggle'
 import AnimatedBg from './components/widgets/animated_bg'
+import CursorTrail from './components/widgets/cursor_trail'
+import PwaInstall from './components/widgets/pwa_install'
 
 // ─── LAZY ROUTES ─────────────────────────────────────────────────
 const HomePage        = lazy(() => import('./pages/home_page'))
@@ -32,6 +34,7 @@ const NowPage         = lazy(() => import('./pages/now_page'))
 const BlogPage        = lazy(() => import('./pages/blog_page'))
 const UsesPage        = lazy(() => import('./pages/uses_page'))
 const BookshelfPage   = lazy(() => import('./pages/bookshelf_page'))
+const TerminalPage    = lazy(() => import('./pages/terminal_page'))  // ← baru
 const NotFoundPage    = lazy(() => import('./pages/not_found_page'))
 
 // ─── PAGE SKELETON ────────────────────────────────────────────────
@@ -69,13 +72,14 @@ function ScrollToTop() {
 // ─── FLOATING STACK ───────────────────────────────────────────────
 function FloatingStack() {
   const { pathname } = useLocation()
-  const isCV = pathname === '/cv'
+  const isCV       = pathname === '/cv'
+  const isTerminal = pathname === '/terminal'
   return (
     <div className="floating-stack">
       <BackToTop />
-      {!isCV && <FontSizeToggle />}
-      {!isCV && <ShareButton />}
-      {!isCV && <WhatsappButton />}
+      {!isCV && !isTerminal && <FontSizeToggle />}
+      {!isCV && !isTerminal && <ShareButton />}
+      {!isCV && !isTerminal && <WhatsappButton />}
     </div>
   )
 }
@@ -85,6 +89,11 @@ export default function App() {
   const { theme } = useThemeStore()
   const { colorThemeId } = useColorThemeStore()
   const location = useLocation()
+
+  // Cursor trail mode — tersimpan di localStorage
+  const [trailMode, setTrailMode] = useState(() => {
+    try { return localStorage.getItem('felix-trail-mode') || 'sparkle' } catch { return 'sparkle' }
+  })
 
   // Splash: hanya tampil sekali per session
   const [showSplash] = useState(() => {
@@ -109,6 +118,19 @@ export default function App() {
     applyColorTheme(colorThemeId, theme === 'dark')
   }, [colorThemeId, theme])
 
+  // Toggle trail mode via event (dari disco easter egg)
+  useEffect(() => {
+    const handler = () => {
+      setTrailMode(prev => {
+        const next = prev === 'sparkle' ? 'orb' : 'sparkle'
+        try { localStorage.setItem('felix-trail-mode', next) } catch {}
+        return next
+      })
+    }
+    window.addEventListener('felix:toggle-trail', handler)
+    return () => window.removeEventListener('felix:toggle-trail', handler)
+  }, [])
+
   return (
     <>
       {showSplash && !splashDone && (
@@ -118,6 +140,8 @@ export default function App() {
       <CustomCursor />
       <EasterEgg />
       <AnimatedBg />
+      <CursorTrail mode={trailMode} />  {/* ← baru */}
+      <PwaInstall />                     {/* ← baru */}
 
       <div
         className="min-h-screen flex"
@@ -154,6 +178,7 @@ export default function App() {
                   <Route path="/blog"        element={<BlogPage />} />
                   <Route path="/uses"        element={<UsesPage />} />
                   <Route path="/bookshelf"   element={<BookshelfPage />} />
+                  <Route path="/terminal"    element={<TerminalPage />} />  {/* ← baru */}
                   <Route path="*"            element={<NotFoundPage />} />
                 </Routes>
               </AnimatePresence>

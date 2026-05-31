@@ -13,19 +13,13 @@ import SectionHeader from '../components/ui/section_header'
 import Marquee from '../components/ui/marquee'
 import LazyImage from '../components/ui/lazy_image'
 import RevealText from '../components/ui/reveal_text'
+import AgeCountdown from '../components/widgets/age_countdown'
+import QuoteOfDay from '../components/widgets/quote_of_day'
 import { profile } from '../data/profile'
 import { achievements } from '../data/achievements'
 import { projects } from '../data/projects'
 import { Github, Mail, ExternalLink, ChevronDown,
-         Trophy, Users, FolderGit2, ScrollText, Linkedin,
-         Star, Globe } from 'lucide-react'
-
-/* ─── CONSTANTS ─────────────────────────────────────────────── */
-const MARQUEE_ITEMS = [
-  'IT Enthusiast 🔥', 'Web Developer 💻', 'Olimpiade Informatika 🏆',
-  'Medan, Indonesia 🇮🇩', 'Calon Mahasiswa China 🇨🇳',
-  'HSK 3 Learner 学中文', 'Badminton Player 🏸', 'Open to Collaborate ✨',
-]
+         Trophy, Users, FolderGit2, ScrollText, Linkedin } from 'lucide-react'
 
 /* ─── STAGGER VARIANTS ──────────────────────────────────────── */
 const container = {
@@ -55,64 +49,8 @@ function SocialLink({ href, children, label }) {
   )
 }
 
-/* ─── BENTO CELLS DATA ──────────────────────────────────────── */
-const BENTO_CELLS = [
-  {
-    id: 'medals',
-    end: achievements.filter(a => a.medal === '🥇').length, suffix: '+',
-    label: 'Medali Emas',
-    sublabel: 'Olimpiade Informatika',
-    icon: Trophy, color: '#f59e0b', emoji: '🏆',
-    gradient: 'linear-gradient(135deg, #fef3c7, #fde68a)',
-    darkGradient: 'linear-gradient(135deg, rgba(245,158,11,0.18), rgba(245,158,11,0.06))',
-  },
-  {
-    id: 'experience',
-    end: 4, suffix: '+',
-    label: 'Pengalaman',
-    sublabel: 'Organisasi & Kepanitiaan',
-    icon: Users, color: '#3758F9', emoji: '🤝',
-    gradient: 'linear-gradient(135deg, #dbeafe, #bfdbfe)',
-    darkGradient: 'linear-gradient(135deg, rgba(55,88,249,0.18), rgba(55,88,249,0.06))',
-  },
-  {
-    id: 'projects',
-    end: 3, suffix: '+',
-    label: 'Proyek',
-    sublabel: 'Web & Software',
-    icon: FolderGit2, color: '#10b981', emoji: '💻',
-    gradient: 'linear-gradient(135deg, #d1fae5, #a7f3d0)',
-    darkGradient: 'linear-gradient(135deg, rgba(16,185,129,0.18), rgba(16,185,129,0.06))',
-  },
-  {
-    id: 'certificates',
-    end: 8, suffix: '+',
-    label: 'Sertifikat',
-    sublabel: 'IT & Pelatihan Profesional',
-    icon: ScrollText, color: '#7c3aed', emoji: '📜',
-    gradient: 'linear-gradient(135deg, #ede9fe, #ddd6fe)',
-    darkGradient: 'linear-gradient(135deg, rgba(124,58,237,0.18), rgba(124,58,237,0.06))',
-  },
-  {
-    id: 'ranking', custom: true, wide: true,
-    label: 'Ranking 1',
-    sublabel: 'SMK Telkom 2 Medan — 2025',
-    icon: Star, color: '#f59e0b', emoji: '🥇',
-    gradient: 'linear-gradient(135deg, #fffbeb, #fef3c7)',
-    darkGradient: 'linear-gradient(135deg, rgba(245,158,11,0.14), rgba(245,158,11,0.04))',
-  },
-  {
-    id: 'hsk', custom: true, wide: true,
-    label: 'HSK 3',
-    sublabel: 'Mandarin · 学中文 · Target HSK 4',
-    icon: Globe, color: '#dc2626', emoji: '🇨🇳',
-    gradient: 'linear-gradient(135deg, #fee2e2, #fecaca)',
-    darkGradient: 'linear-gradient(135deg, rgba(220,38,38,0.18), rgba(220,38,38,0.06))',
-  },
-]
-
 /* ─── BENTO CELL ────────────────────────────────────────────── */
-function BentoCell({ cell, isDark, delay }) {
+function BentoCell({ cell, isDark, delay, label, sublabel }) {
   const Icon = cell.icon
   return (
     <motion.div
@@ -124,45 +62,32 @@ function BentoCell({ cell, isDark, delay }) {
       transition={{ delay, type: 'spring', stiffness: 240, damping: 22 }}
       whileHover={{ y: -5, boxShadow: `0 16px 40px ${cell.color}22` }}
     >
-      {/* Background tint */}
       <div aria-hidden="true" style={{
         position: 'absolute', inset: 0, pointerEvents: 'none',
         background: isDark ? cell.darkGradient : cell.gradient,
         opacity: isDark ? 1 : 0.5,
       }} />
-      {/* Decorative emoji */}
       <div aria-hidden="true" style={{
         position: 'absolute', right: -8, bottom: -8,
-        fontSize: cell.wide ? '5rem' : '4rem',
+        fontSize: '4rem',
         opacity: 0.06, lineHeight: 1, pointerEvents: 'none', userSelect: 'none',
       }}>
         {cell.emoji}
       </div>
-      {/* Icon */}
       <div className="w-9 h-9 rounded-xl flex items-center justify-center mb-3 relative z-[1]"
         style={{ background: `${cell.color}18`, color: cell.color }}>
         <Icon size={17} />
       </div>
-      {/* Content */}
       <div className="relative z-[1]">
-        {cell.custom ? (
-          <p className="font-display text-2xl font-extrabold leading-none mb-1"
-            style={{ color: cell.color }}>
-            {cell.label}
-          </p>
-        ) : (
-          <p className="font-display text-3xl font-extrabold leading-none mb-1"
-            style={{ color: cell.color }}>
-            <CountUp end={cell.end} duration={2} delay={delay + 0.3}
-              suffix={cell.suffix} enableScrollSpy scrollSpyOnce />
-          </p>
-        )}
-        <p className="font-semibold text-xs mb-0.5" style={{ color: 'var(--dark)' }}>
-          {cell.custom ? cell.sublabel : cell.label}
+        <p className="font-display text-3xl font-extrabold leading-none mb-1"
+          style={{ color: cell.color }}>
+          <CountUp end={cell.end} duration={2} delay={delay + 0.3}
+            suffix={cell.suffix} enableScrollSpy scrollSpyOnce />
         </p>
-        {!cell.custom && (
-          <p className="text-xs" style={{ color: 'var(--body-color)' }}>{cell.sublabel}</p>
-        )}
+        <p className="font-semibold text-xs mb-0.5" style={{ color: 'var(--dark)' }}>
+          {label}
+        </p>
+        <p className="text-xs" style={{ color: 'var(--body-color)' }}>{sublabel}</p>
       </div>
     </motion.div>
   )
@@ -178,6 +103,82 @@ export default function HomePage() {
 
   const blob1Ref = useRef(null)
   const blob2Ref = useRef(null)
+
+  /* ── Marquee items per language ─────────────────────────────── */
+  const marqueeItems = (lang === 'zh' ? [
+    'IT爱好者 🔥', '网页开发者 💻', '信息学奥林匹克 🏆',
+    '印尼 棉兰 🇮🇩', '学习普通话 学中文 🇨🇳',
+    '羽毛球爱好者 🏸', '欢迎合作 ✨',
+  ] : lang === 'en' ? [
+    'IT Enthusiast 🔥', 'Web Developer 💻', 'Informatics Olympiad 🏆',
+    'Medan, Indonesia 🇮🇩', 'Learning Mandarin 学中文 🇨🇳',
+    'Badminton Player 🏸', 'Open to Collaborate ✨',
+  ] : [
+    'IT Enthusiast 🔥', 'Web Developer 💻', 'Olimpiade Informatika 🏆',
+    'Medan, Indonesia 🇮🇩', 'Belajar Mandarin 学中文 🇨🇳',
+    'Pemain Badminton 🏸', 'Terbuka untuk Kolaborasi ✨',
+  ])
+
+  /* ── TypeAnimation sequences per language ───────────────────── */
+  const typeSequence = lang === 'zh' ? [
+    'IT爱好者 🔥', 2000, '网页开发者 💻', 2000,
+    '信息学奥林匹克 🏆', 2000, '学习普通话 🇨🇳', 2000,
+  ] : lang === 'en' ? [
+    'IT Enthusiast 🔥', 2000, 'Web Developer 💻', 2000,
+    'Informatics Olympiad 🏆', 2000, 'Learning Mandarin 学中文 🇨🇳', 2000,
+  ] : [
+    'IT Enthusiast 🔥', 2000, 'Web Developer 💻', 2000,
+    'Olimpiade Informatika 🏆', 2000, 'Belajar Mandarin 学中文 🇨🇳', 2000,
+  ]
+
+  /* ── Bento cells dengan label ter-translate ─────────────────── */
+  const bentoCells = [
+    {
+      id: 'medals',
+      end: achievements.filter(a => a.medal === '🥇').length, suffix: '+',
+      label: t('about.stats_achievements'),
+      sublabel: lang === 'zh' ? '信息学奥林匹克' : lang === 'en' ? 'Informatics Olympiad' : 'Olimpiade Informatika',
+      icon: Trophy, color: '#f59e0b', emoji: '🏆',
+      gradient: 'linear-gradient(135deg, #fef3c7, #fde68a)',
+      darkGradient: 'linear-gradient(135deg, rgba(245,158,11,0.18), rgba(245,158,11,0.06))',
+    },
+    {
+      id: 'experience',
+      end: 4, suffix: '+',
+      label: t('about.stats_experience'),
+      sublabel: lang === 'zh' ? '组织与委员会' : lang === 'en' ? 'Organizations & Committees' : 'Organisasi & Kepanitiaan',
+      icon: Users, color: '#3758F9', emoji: '🤝',
+      gradient: 'linear-gradient(135deg, #dbeafe, #bfdbfe)',
+      darkGradient: 'linear-gradient(135deg, rgba(55,88,249,0.18), rgba(55,88,249,0.06))',
+    },
+    {
+      id: 'projects',
+      end: 3, suffix: '+',
+      label: t('about.stats_projects'),
+      sublabel: lang === 'zh' ? '网页与软件' : lang === 'en' ? 'Web & Software' : 'Web & Software',
+      icon: FolderGit2, color: '#10b981', emoji: '💻',
+      gradient: 'linear-gradient(135deg, #d1fae5, #a7f3d0)',
+      darkGradient: 'linear-gradient(135deg, rgba(16,185,129,0.18), rgba(16,185,129,0.06))',
+    },
+    {
+      id: 'certificates',
+      end: 8, suffix: '+',
+      label: t('about.stats_certificates'),
+      sublabel: lang === 'zh' ? 'IT与专业培训' : lang === 'en' ? 'IT & Professional Training' : 'IT & Pelatihan Profesional',
+      icon: ScrollText, color: '#7c3aed', emoji: '📜',
+      gradient: 'linear-gradient(135deg, #ede9fe, #ddd6fe)',
+      darkGradient: 'linear-gradient(135deg, rgba(124,58,237,0.18), rgba(124,58,237,0.06))',
+    },
+  ]
+
+  /* ── Label section per language ─────────────────────────────── */
+  const achievedLabel = lang === 'zh' ? '我的荣誉' : lang === 'en' ? "What I've Achieved" : 'Yang Telah Saya Raih'
+  const builtLabel    = lang === 'zh' ? '我的项目' : lang === 'en' ? "What I've Built"    : 'Yang Telah Saya Buat'
+  const viewAllLabel  = lang === 'zh' ? '查看全部荣誉' : lang === 'en' ? 'View All Achievements' : 'Lihat Semua Prestasi'
+
+  /* ── Achievement title per language ─────────────────────────── */
+  const getAchievementTitle = (a) =>
+    lang === 'en' ? a.titleEn : lang === 'zh' ? a.titleZh : a.title
 
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
@@ -199,13 +200,19 @@ export default function HomePage() {
     <PageWrapper>
       <Helmet>
         <title>Felix Raymond — Portfolio</title>
-        <meta name="description" content="Portfolio pribadi Felix Raymond — IT Enthusiast, peraih 5 medali emas, calon mahasiswa China." />
+        <meta name="description" content={
+          lang === 'zh'
+            ? 'Felix Raymond的个人作品集 — IT爱好者，五枚金牌获得者。'
+            : lang === 'en'
+            ? 'Felix Raymond personal portfolio — IT Enthusiast, 5-gold-medal winner.'
+            : 'Portfolio pribadi Felix Raymond — IT Enthusiast, peraih 5 medali emas.'
+        } />
       </Helmet>
 
       {!hasVisited && <WelcomeModal />}
 
       {/* ══════════════════════════════════════════════════════════
-          HERO — identik 100% dengan versi lama
+          HERO
       ══════════════════════════════════════════════════════════ */}
       <section className="relative flex flex-col items-center justify-center text-center
                           min-h-[92vh] px-6 md:px-12 py-20 overflow-hidden">
@@ -218,7 +225,6 @@ export default function HomePage() {
           pointerEvents: 'none', zIndex: 0,
           transition: 'transform 0.08s ease-out', willChange: 'transform',
         }} />
-
         <div ref={blob2Ref} aria-hidden="true" style={{
           position: 'absolute', top: '25%', right: '20%',
           width: 320, height: 320, borderRadius: '50%',
@@ -240,7 +246,7 @@ export default function HomePage() {
             {userName ? `Hi ${userName}, ${t('hero.greeting')}` : t('hero.greeting')}
           </motion.p>
 
-          {/* H1 — 2 baris gradient */}
+          {/* H1 */}
           <motion.h1 variants={item} className="leading-none mb-6"
             style={{ fontSize: 'clamp(3.2rem, 9vw, 6rem)' }}>
             <span className="font-hero tracking-wide" style={{
@@ -257,17 +263,15 @@ export default function HomePage() {
             }}>Raymond</span>
           </motion.h1>
 
-          {/* TypeAnimation */}
+          {/* TypeAnimation — key={lang} agar restart saat ganti bahasa */}
           <motion.div variants={item}
             className="h-7 mb-7 font-medium text-[var(--body-color)]"
             aria-live="polite" aria-atomic="true"
             style={{ fontSize: 'clamp(1rem, 2vw, 1.2rem)' }}
           >
             <TypeAnimation
-              sequence={[
-                'IT Enthusiast 🔥', 2000, 'Web Developer 💻', 2000,
-                'Olimpiade Informatika 🏆', 2000, 'Calon Mahasiswa China 🇨🇳', 2000,
-              ]}
+              key={lang}
+              sequence={typeSequence}
               repeat={Infinity} speed={50}
             />
           </motion.div>
@@ -297,12 +301,10 @@ export default function HomePage() {
             </SocialLink>
           </motion.div>
 
-          {/* CTA buttons — identik versi lama, tanpa MagneticButton */}
+          {/* CTA buttons */}
           <motion.div variants={item} className="flex flex-col sm:flex-row gap-3 justify-center mb-6">
             <motion.a
-              href={profile.whatsapp}
-              target="_blank"
-              rel="noopener noreferrer"
+              href={profile.whatsapp} target="_blank" rel="noopener noreferrer"
               aria-label={t('hero.cta_contact')}
               className="btn-shimmer px-8 py-3 rounded-full font-semibold text-white text-sm text-center relative overflow-hidden"
               style={{ background: 'linear-gradient(135deg, var(--primary) 0%, #7c3aed 100%)' }}
@@ -312,39 +314,24 @@ export default function HomePage() {
             >
               {t('hero.cta_contact')}
             </motion.a>
-            <motion.div
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.97 }}
-              transition={{ type: 'spring', stiffness: 400, damping: 20 }}
-            >
-              <Link
-                to="/about"
+            <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 20 }}>
+              <Link to="/about"
                 className="block px-8 py-3 rounded-full font-semibold text-sm border-2 text-center
                            transition-colors hover:border-[var(--primary)] hover:text-[var(--primary)]
-                           text-[var(--body-color)] border-[var(--border)]"
-              >
+                           text-[var(--body-color)] border-[var(--border)]">
                 {t('hero.cta_portfolio')}
               </Link>
             </motion.div>
           </motion.div>
 
-          {/* Badges */}
+          {/* Badge — hanya "Open to collaboration", Ranking 1 & HSK 3 dihapus */}
           <motion.div variants={item} className="flex flex-wrap justify-center gap-2 mb-5">
             <span className="badge-open-to inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold border
                          text-[var(--primary)] border-[var(--primary)]"
               style={{ background: 'var(--card-bg)' }}>
               <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" aria-hidden="true" />
               {t('hero.open_to')}
-            </span>
-            <span className="badge-ranking inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold border
-                         text-amber-900 border-amber-600"
-              style={{ background: 'var(--card-bg)' }}>
-              🏅 Ranking 1 — 2025
-            </span>
-            <span className="badge-hsk inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-semibold border
-                         text-red-900 border-red-600"
-              style={{ background: 'var(--card-bg)' }}>
-              🇨🇳 HSK 3
             </span>
           </motion.div>
         </motion.div>
@@ -366,18 +353,21 @@ export default function HomePage() {
         </motion.button>
       </section>
 
-      {/* ── MARQUEE ──────────────────────────────────────────── */}
+      {/* ── MARQUEE — items sesuai bahasa aktif ──────────────────── */}
       <div className="border-y border-[var(--border)] py-3">
-        <Marquee items={MARQUEE_ITEMS} speed={45} />
+        <Marquee items={marqueeItems} speed={45} />
       </div>
 
       {/* ══════════════════════════════════════════════════════════
           BENTO BOX STATS
+          Row 1: 4 cell (medals, experience, projects, certificates)
+          Row 2: AgeCountdown + QuoteOfDay
+          Ranking & HSK dihapus
       ══════════════════════════════════════════════════════════ */}
       <section id="stats-section" className="max-w-4xl mx-auto px-4 sm:px-6 md:px-10 py-20">
         <div className="text-center mb-10">
           <RevealText
-            text={t('home.about_title', 'Sekilas Tentang Saya')}
+            text={t('home.about_title', lang === 'zh' ? '关于我' : lang === 'en' ? 'About Me at a Glance' : 'Sekilas Tentang Saya')}
             as="h2"
             className="font-display text-2xl md:text-3xl font-bold justify-center"
             style={{ color: 'var(--dark)' }}
@@ -389,29 +379,41 @@ export default function HomePage() {
             transition={{ delay: 0.4 }}
             className="text-sm mt-2 text-[var(--body-color)]"
           >
-            {t('home.about_desc', 'Angka-angka yang merangkum perjalanan saya sejauh ini')}
+            {t('home.about_desc', lang === 'zh' ? '概括我成长历程的几个数字' : lang === 'en' ? 'Numbers that summarize my journey so far' : 'Angka-angka yang merangkum perjalanan saya sejauh ini')}
           </motion.p>
         </div>
 
-        {/* Row 1: 4 cell kecil */}
+        {/* Row 1: 4 bento cell */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
-          {BENTO_CELLS.slice(0, 4).map((cell, i) => (
-            <BentoCell key={cell.id} cell={cell} isDark={isDark} delay={i * 0.08} />
+          {bentoCells.map((cell, i) => (
+            <BentoCell key={cell.id} cell={cell} isDark={isDark} delay={i * 0.08}
+              label={cell.label} sublabel={cell.sublabel} />
           ))}
         </div>
-        {/* Row 2: 2 cell lebar */}
+
+        {/* Row 2: AgeCountdown + QuoteOfDay */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {BENTO_CELLS.slice(4).map((cell, i) => (
-            <BentoCell key={cell.id} cell={cell} isDark={isDark} delay={0.32 + i * 0.08} />
-          ))}
+          <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }} transition={{ delay: 0.32 }}>
+            <AgeCountdown />
+          </motion.div>
+          <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }} transition={{ delay: 0.40 }}>
+            <QuoteOfDay />
+          </motion.div>
         </div>
       </section>
 
-      {/* ── FEATURED ACHIEVEMENTS ────────────────────────────── */}
+      {/* ── FEATURED ACHIEVEMENTS ────────────────────────────────── */}
       <section className="max-w-4xl mx-auto px-4 sm:px-6 md:px-10 pb-20">
-        <SectionHeader label="What I've Achieved" title={t('nav.achievement')} />
+        <SectionHeader label={achievedLabel} title={t('nav.achievement')} />
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {[...achievements].reverse().slice(0, 3).map((a, i) => (
+          {/* Filter level Sekolah (Ranking 1), ambil 3 terbaru */}
+          {achievements
+            .filter(a => a.level !== 'Sekolah')
+            .slice(-3)
+            .reverse()
+            .map((a, i) => (
             <motion.div
               key={a.id}
               initial={{ opacity: 0, y: 20 }}
@@ -423,7 +425,7 @@ export default function HomePage() {
               <div className="relative h-44 overflow-hidden">
                 <motion.div className="w-full h-full"
                   whileHover={{ scale: 1.08 }} transition={{ duration: 0.4, ease: 'easeOut' }}>
-                  <LazyImage src={a.img} alt={a.title} className="object-cover" />
+                  <LazyImage src={a.img} alt={getAchievementTitle(a)} className="object-cover" />
                 </motion.div>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent pointer-events-none" />
                 <span className="absolute top-3 left-3 text-2xl drop-shadow-lg" aria-hidden="true">{a.medal}</span>
@@ -434,7 +436,7 @@ export default function HomePage() {
               </div>
               <div className="p-4">
                 <h3 className="font-display font-bold text-sm leading-snug mb-1 text-[var(--dark)] text-tracked word-loose">
-                  {a.title}
+                  {getAchievementTitle(a)}
                 </h3>
                 <p className="text-xs text-[var(--body-color)]">{a.date}</p>
               </div>
@@ -445,15 +447,15 @@ export default function HomePage() {
           <motion.div whileHover={{ x: 4 }} transition={{ type: 'spring', stiffness: 400 }}>
             <Link to="/achievement"
               className="inline-flex items-center gap-2 text-sm font-semibold link-underline text-[var(--primary)]">
-              {t('home.view_all_achievements', 'Lihat Semua Prestasi')} <ExternalLink size={14} />
+              {viewAllLabel} <ExternalLink size={14} />
             </Link>
           </motion.div>
         </div>
       </section>
 
-      {/* ── FEATURED PROJECTS ────────────────────────────────── */}
+      {/* ── FEATURED PROJECTS ────────────────────────────────────── */}
       <section className="max-w-4xl mx-auto px-4 sm:px-6 md:px-10 pb-28">
-        <SectionHeader label="What I've Built" title={t('nav.skills')} />
+        <SectionHeader label={builtLabel} title={t('nav.skills')} />
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {projects.map((p, i) => (
             <motion.div
@@ -478,7 +480,9 @@ export default function HomePage() {
                 <h3 className="font-display font-bold text-sm text-tracked-wide text-[var(--dark)] mb-2">
                   {p.title}
                 </h3>
-                <p className="text-xs mb-3 leading-relaxed text-[var(--body-color)]">{lang === 'en' ? p.descEn : lang === 'zh' ? p.descZh : p.desc}</p>
+                <p className="text-xs mb-3 leading-relaxed text-[var(--body-color)]">
+                  {lang === 'en' ? p.descEn : lang === 'zh' ? p.descZh : p.desc}
+                </p>
                 <div className="flex flex-wrap gap-1">
                   {p.tags.slice(0, 3).map(tag => <span key={tag} className="tag">{tag}</span>)}
                 </div>

@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { Helmet } from 'react-helmet-async'
 import { motion } from 'framer-motion'
 import PageWrapper from '../components/ui/page_wrapper'
+import SectionHeader from '../components/ui/section_header'
 import TiltCard from '../components/ui/tilt_card'
 import GithubGraph from '../components/widgets/github_graph'
 import { profile } from '../data/profile'
@@ -117,11 +118,7 @@ export default function AboutPage() {
       </Helmet>
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 md:px-10 py-20">
-        <div className="text-center mb-12">
-          <p className="text-[clamp(0.85rem,1.5vw,1rem)] font-bold tracking-[0.2em] uppercase text-[var(--primary)]">
-            {t('about.subtitle')}
-          </p>
-        </div>
+        <SectionHeader label={t('about.subtitle')} title={t('about.title')} />
 
         <motion.div variants={container} initial="hidden" animate="show">
 
@@ -136,12 +133,12 @@ export default function AboutPage() {
               <p className="text-sm italic mb-5 text-[var(--primary)]">{t('about.tagline')}</p>
               <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 gap-2.5">
                 {[
-                  { label: '🎂 Lahir',       val: profile.birth.date },
-                  { label: '📍 Lokasi',      val: profile.location },
-                  { label: '🙏 Agama',       val: profile.religion },
-                  { label: '🏮 Suku',        val: profile.ethnicity },
-                  { label: '👨‍👩‍👦 Keluarga',  val: profile.sibling },
-                  { label: '🎯 Kepribadian', val: profile.personality },
+                  { label: `🎂 ${t('about.info_born',        'Lahir')}`,       val: profile.birth.date },
+                  { label: `📍 ${t('about.info_location',    'Lokasi')}`,      val: profile.location },
+                  { label: `🙏 ${t('about.info_religion',    'Agama')}`,       val: profile.religion },
+                  { label: `🏮 ${t('about.info_ethnicity',   'Suku')}`,        val: profile.ethnicity },
+                  { label: `👨‍👩‍👦 ${t('about.info_family',   'Keluarga')}`,  val: profile.sibling },
+                  { label: `🎯 ${t('about.info_personality', 'Kepribadian')}`, val: profile.personality },
                 ].map(({ label, val }) => (
                   <motion.div key={label} className="p-3 rounded-xl" style={{ background: 'var(--bg)' }}
                     whileHover={{ scale: 1.02 }} transition={{ type: 'spring', stiffness: 400 }}>

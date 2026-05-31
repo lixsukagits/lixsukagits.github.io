@@ -16,7 +16,8 @@
     "uses": "Peralatan",
     "bookshelf": "Rak Buku",
     "search_placeholder": "Cari halaman...",
-    "clear_search": "Hapus pencarian"
+    "clear_search": "Hapus pencarian",
+    "terminal": "Terminal"
   },
   "hero": {
     "greeting": "Halo, saya",
@@ -59,7 +60,13 @@
     "stats_achievements": "Prestasi",
     "stats_experience": "Organisasi",
     "stats_projects": "Proyek",
-    "stats_certificates": "Sertifikat"
+    "stats_certificates": "Sertifikat",
+    "info_born": "Lahir",
+    "info_location": "Lokasi",
+    "info_religion": "Agama",
+    "info_ethnicity": "Suku",
+    "info_family": "Keluarga",
+    "info_personality": "Kepribadian"
   },
   "skills": {
     "title": "Keterampilan",
@@ -73,7 +80,10 @@
     "tag_design": "Desain",
     "tag_media": "Media",
     "tag_productivity": "Produktivitas",
-    "tag_programming": "Programming"
+    "tag_programming": "Programming",
+    "level_intermediate": "Menengah",
+    "level_basic": "Dasar",
+    "meta_desc": "Keterampilan Felix Raymond dalam pemrograman, desain, hardware, dan lainnya. Filter berdasarkan kategori untuk melihat keahliannya dalam pengembangan frontend, alat kreatif, perangkat lunak produktivitas, dan bahasa pemrograman."
   },
   "achievement": {
     "title": "Prestasi",
@@ -225,5 +235,17 @@
     "dialog_label": "Command palette",
     "search_label": "Cari halaman atau aksi",
     "results_label": "Hasil pencarian"
+  },
+  "font": {
+    "small": "Kecil",
+    "normal": "Normal",
+    "large": "Besar",
+    "toggle_label": "Ubah ukuran teks",
+    "menu_label": "Pilihan ukuran teks"
+  },
+  "home": {
+    "about_title": "Sekilas Tentang Saya",
+    "about_desc": "Angka-angka yang merangkum perjalanan saya sejauh ini",
+    "view_all_achievements": "Lihat Semua Prestasi"
   }
 }

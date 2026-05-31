@@ -16,7 +16,8 @@
     "uses": "Uses",
     "bookshelf": "Bookshelf",
     "search_placeholder": "Search pages...",
-    "clear_search": "Clear search"
+    "clear_search": "Clear search",
+    "terminal": "Terminal"
   },
   "hero": {
     "greeting": "Hi, I'm",
@@ -59,7 +60,13 @@
     "stats_achievements": "Achievements",
     "stats_experience": "Organizations",
     "stats_projects": "Projects",
-    "stats_certificates": "Certificates"
+    "stats_certificates": "Certificates",
+    "info_born": "Born",
+    "info_location": "Location",
+    "info_religion": "Religion",
+    "info_ethnicity": "Ethnicity",
+    "info_family": "Family",
+    "info_personality": "Personality"
   },
   "skills": {
     "title": "Skills",
@@ -73,7 +80,10 @@
     "tag_design": "Design",
     "tag_media": "Media",
     "tag_productivity": "Productivity",
-    "tag_programming": "Programming"
+    "tag_programming": "Programming",
+    "level_intermediate": "Intermediate",
+    "level_basic": "Basic",
+    "meta_desc": "Felix Raymond's skills in programming, design, hardware, and more. Filter by category to see his expertise in frontend development, creative tools, productivity software, and programming languages."
   },
   "achievement": {
     "title": "Achievements",
@@ -225,5 +235,17 @@
     "dialog_label": "Command palette",
     "search_label": "Search pages or actions",
     "results_label": "Search results"
+  },
+  "font": {
+    "small": "Small",
+    "normal": "Normal",
+    "large": "Large",
+    "toggle_label": "Change text size",
+    "menu_label": "Text size options"
+  },
+  "home": {
+    "about_title": "About Me at a Glance",
+    "about_desc": "Numbers that summarize my journey so far",
+    "view_all_achievements": "View All Achievements"
   }
 }

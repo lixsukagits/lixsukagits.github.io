@@ -64,9 +64,9 @@ export default function SkillsPage() {
   return (
     <PageWrapper>
       <Helmet>
-        <title>Keterampilan Felix Raymond</title>
-        <meta name="description" content="Keterampilan teknis Felix Raymond — web development, programming, cybersecurity, dan desain." />
-        <meta property="og:title" content="Keterampilan Felix Raymond" />
+        <title>{t('skills.title')} — Felix Raymond</title>
+        <meta name="description" content={t('skills.meta_desc', 'Keterampilan teknis Felix Raymond — web development, programming, cybersecurity, dan desain.')} />
+        <meta property="og:title" content={t('skills.title')} />
         <meta property="og:url" content="https://lixsukagits.github.io/skills" />
       </Helmet>
 
@@ -209,13 +209,15 @@ export default function SkillsPage() {
                         {lang === 'zh' ? skill.descZh : skill.desc}
                       </p>
                     </div>
-                    <span className={`badge shrink-0 text-xs ${skill.tagColor}`}>{skill.tag}</span>
+                    <span className={`badge shrink-0 text-xs ${skill.tagColor}`}>
+                      {TAG_LABEL(Object.entries(TAG_VALUE_MAP).find(([,v]) => v === skill.tag)?.[0] ?? 'all')}
+                    </span>
                   </div>
 
                   {/* Progress bar */}
                   <div className="mb-3 mt-3">
                     <div className="flex justify-between text-xs mb-1.5" style={{ color: 'var(--body-color)' }}>
-                      <span className="font-medium">{skill.levelLabel}</span>
+                      <span className="font-medium">{t(skill.levelLabelKey, skill.levelLabel)}</span>
                     </div>
                     <div
                       className="h-1.5 rounded-full overflow-hidden"

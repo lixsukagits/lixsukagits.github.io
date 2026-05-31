@@ -10,7 +10,6 @@ import HoverPreview from '../components/ui/hover_preview'
 import { certificates } from '../data/certificates'
 import { useThemeStore } from '../store/use_theme_store'
 
-// ── Accent color (Pelatihan) ────────────────────────────────────
 const accent = { color: '#7c3aed', border: 'rgba(124,58,237,0.35)', bg: 'rgba(124,58,237,0.12)' }
 
 // ── Card ────────────────────────────────────────────────────────
@@ -25,61 +24,38 @@ function CertCard({ cert, index, onClick }) {
       className="card overflow-hidden cursor-pointer group"
       whileHover={{ y: -6 }}
     >
-      {/* Top accent border */}
-      <div
-        className="h-0.5 w-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-        style={{ background: `linear-gradient(90deg, transparent, ${accent.color}, transparent)` }}
-      />
+      <div className="h-0.5 w-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        style={{ background: `linear-gradient(90deg, transparent, ${accent.color}, transparent)` }} />
 
-      {/* Image */}
       <div className="relative aspect-[4/3] overflow-hidden" style={{ background: 'var(--bg)' }}>
-        <LazyImage
-          src={cert.img}
-          alt={cert.title}
-          className="object-cover transition-transform duration-500 group-hover:scale-[1.06]"
-        />
+        <LazyImage src={cert.img} alt={cert.title}
+          className="object-cover transition-transform duration-500 group-hover:scale-[1.06]" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
-
-        {/* Hover shimmer */}
-        <div
-          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-          style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.07) 0%, transparent 50%, rgba(124,58,237,0.09) 100%)' }}
-        />
-
-        {/* Desc overlay */}
+        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+          style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.07) 0%, transparent 50%, rgba(124,58,237,0.09) 100%)' }} />
         <div className="absolute inset-0 flex flex-col justify-end p-4 pointer-events-none">
-          <p
-            className="text-white/90 text-xs leading-relaxed line-clamp-2 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300"
-            style={{ textShadow: '0 1px 6px rgba(0,0,0,0.7)' }}
-          >
+          <p className="text-white/90 text-xs leading-relaxed line-clamp-2 translate-y-2 opacity-0
+                        group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300"
+            style={{ textShadow: '0 1px 6px rgba(0,0,0,0.7)' }}>
             {cert.desc}
           </p>
         </div>
-
-        {/* Issuer badge */}
-        <span
-          className="absolute top-2 right-2 px-2.5 py-1 rounded-full text-xs font-bold"
-          style={{ background: accent.bg, color: accent.color, backdropFilter: 'blur(8px)', border: `1px solid ${accent.border}` }}
-        >
+        <span className="absolute top-2 right-2 px-2.5 py-1 rounded-full text-xs font-bold"
+          style={{ background: accent.bg, color: accent.color, backdropFilter: 'blur(8px)', border: `1px solid ${accent.border}` }}>
           {cert.issuer}
         </span>
       </div>
 
-      {/* Body */}
       <div className="p-4 pb-5">
-        {/* Judul dengan HoverPreview — preview gambar sertifikat muncul saat hover nama */}
-        <h3
-          className="font-display font-bold text-sm mb-1.5 group-hover:text-[var(--primary)] transition-colors duration-200"
-          className="text-tracked-tight word-loose"
-          style={{ lineHeight: 1.75 }}
-        >
+        <h3 className="font-display font-bold text-sm mb-1.5 text-[var(--dark)]
+                       group-hover:text-[var(--primary)] transition-colors duration-200"
+          style={{ lineHeight: 1.75 }}>
           <HoverPreview src={cert.img} alt={cert.title} width={220} height={155}>
             {cert.title}
           </HoverPreview>
         </h3>
-        <p className="text-xs mb-3" style={{ color: 'var(--body-color)' }}>
-          {cert.issuer} · {cert.date}
-        </p>
+        {/* FIX: style={{ color }} → className */}
+        <p className="text-xs mb-3 text-[var(--body-color)]">{cert.issuer} · {cert.date}</p>
         <div className="flex flex-wrap gap-1">
           {cert.tags.map(tag => <span key={tag} className="tag">{tag}</span>)}
         </div>
@@ -89,7 +65,7 @@ function CertCard({ cert, index, onClick }) {
 }
 
 // ── Modal ───────────────────────────────────────────────────────
-function CertModal({ cert, filteredList, onClose, onPrev, onNext, isDark }) {
+function CertModal({ cert, filteredList, onClose, onPrev, onNext, isDark, t }) {
   if (!cert) return null
   const currentIndex = filteredList.findIndex(c => c.id === cert.id)
   const total = filteredList.length
@@ -110,9 +86,7 @@ function CertModal({ cert, filteredList, onClose, onPrev, onNext, isDark }) {
 
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
       transition={{ duration: 0.22 }}
       className="fixed inset-0 z-[9999] flex items-center justify-center p-4"
       style={{ background: backdropBg, backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)' }}
@@ -128,31 +102,23 @@ function CertModal({ cert, filteredList, onClose, onPrev, onNext, isDark }) {
         onClick={e => e.stopPropagation()}
       >
         {/* Top bar */}
-        <div className="flex items-center justify-between px-5 py-3" style={{ borderBottom: `1px solid ${divider}` }}>
+        <div className="flex items-center justify-between px-5 py-3"
+          style={{ borderBottom: `1px solid ${divider}` }}>
           <div className="flex items-center gap-1.5">
             {filteredList.map((_, i) => (
-              <div
-                key={i}
-                className="rounded-full transition-all duration-300"
-                style={{
-                  width:  i === currentIndex ? 20 : 6,
-                  height: 6,
-                  background: i === currentIndex
-                    ? accent.color
-                    : (isDark ? 'rgba(255,255,255,0.18)' : 'rgba(0,0,0,0.13)'),
-                }}
-              />
+              <div key={i} className="rounded-full transition-all duration-300"
+                style={{ width: i === currentIndex ? 20 : 6, height: 6,
+                  background: i === currentIndex ? accent.color
+                    : (isDark ? 'rgba(255,255,255,0.18)' : 'rgba(0,0,0,0.13)') }} />
             ))}
           </div>
           <div className="flex items-center gap-3">
             <span className="text-xs font-medium tabular-nums" style={{ color: counterColor }}>
               {currentIndex + 1} / {total}
             </span>
-            <button
-              onClick={onClose}
+            <button onClick={onClose}
               className="w-7 h-7 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110"
-              style={{ background: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)', color: closeColor }}
-            >
+              style={{ background: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)', color: closeColor }}>
               <X size={15} />
             </button>
           </div>
@@ -160,49 +126,27 @@ function CertModal({ cert, filteredList, onClose, onPrev, onNext, isDark }) {
 
         {/* Image */}
         <div className="relative overflow-hidden" style={{ background: imgBg }}>
-          <motion.img
-            key={cert.id}
-            initial={{ opacity: 0, scale: 1.03 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.25 }}
-            src={cert.img}
-            alt={cert.title}
-            className="w-full object-contain"
-            style={{ maxHeight: '52vh' }}
-          />
+          <motion.img key={cert.id} initial={{ opacity: 0, scale: 1.03 }} animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.25 }} src={cert.img} alt={cert.title}
+            className="w-full object-contain" style={{ maxHeight: '52vh' }} />
         </div>
 
         {/* Info */}
-        <motion.div
-          key={`desc-${cert.id}`}
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1, duration: 0.22 }}
-          className="px-6 py-5"
-        >
-          <p
-            className="font-display font-bold text-base mb-1"
-            className="text-tracked-tight word-loose"
-            style={{ color: titleColor, lineHeight: 1.75 }}
-          >
-            {cert.title}
-          </p>
+        <motion.div key={`desc-${cert.id}`} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1, duration: 0.22 }} className="px-6 py-5">
+          <p className="font-display font-bold text-base mb-1"
+            style={{ color: titleColor, lineHeight: 1.75 }}>{cert.title}</p>
           <p className="text-xs mb-3" style={{ color: subColor }}>{cert.issuer} · {cert.date}</p>
           {cert.desc && (
-            <p
-              className="text-sm leading-relaxed pl-3"
-              style={{ color: descColor, borderLeft: `2px solid ${accent.color}`, lineHeight: 1.75 }}
-            >
+            <p className="text-sm leading-relaxed pl-3"
+              style={{ color: descColor, borderLeft: `2px solid ${accent.color}`, lineHeight: 1.75 }}>
               {cert.desc}
             </p>
           )}
           <div className="flex flex-wrap gap-1.5 mt-4">
             {cert.tags.map(tag => (
-              <span
-                key={tag}
-                className="px-2.5 py-1 rounded-full text-xs font-medium"
-                style={{ background: accent.bg, color: accent.color, border: `1px solid ${accent.border}` }}
-              >
+              <span key={tag} className="px-2.5 py-1 rounded-full text-xs font-medium"
+                style={{ background: accent.bg, color: accent.color, border: `1px solid ${accent.border}` }}>
                 {tag}
               </span>
             ))}
@@ -210,30 +154,23 @@ function CertModal({ cert, filteredList, onClose, onPrev, onNext, isDark }) {
         </motion.div>
 
         {/* Prev / Next */}
-        <div
-          className="flex items-center justify-between px-6 pb-5 pt-4"
-          style={{ borderTop: `1px solid ${divider}` }}
-        >
-          <motion.button
-            onClick={onPrev}
-            whileHover={{ scale: 1.05, x: -2 }}
-            whileTap={{ scale: 0.95 }}
+        <div className="flex items-center justify-between px-6 pb-5 pt-4"
+          style={{ borderTop: `1px solid ${divider}` }}>
+          <motion.button onClick={onPrev} whileHover={{ scale: 1.05, x: -2 }} whileTap={{ scale: 0.95 }}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold"
-            style={{ background: btnBg, border: `1px solid ${btnBorder}`, color: btnColor }}
-          >
-            <ChevronLeft size={15} /> {t('cert.prev', 'Sebelumnya')}
+            style={{ background: btnBg, border: `1px solid ${btnBorder}`, color: btnColor }}>
+            {/* FIX: 'cert.prev' → 'certificate.prev' */}
+            <ChevronLeft size={15} /> {t('certificate.prev')}
           </motion.button>
           <p className="text-xs hidden sm:block" style={{ color: hintColor }}>
-            {t('cert.nav_hint', '← → navigasi · Esc tutup')}
+            {/* FIX: 'cert.nav_hint' → 'certificate.nav_hint' */}
+            {t('certificate.nav_hint')}
           </p>
-          <motion.button
-            onClick={onNext}
-            whileHover={{ scale: 1.05, x: 2 }}
-            whileTap={{ scale: 0.95 }}
+          <motion.button onClick={onNext} whileHover={{ scale: 1.05, x: 2 }} whileTap={{ scale: 0.95 }}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold"
-            style={{ background: btnBg, border: `1px solid ${btnBorder}`, color: btnColor }}
-          >
-            {t('cert.next', 'Berikutnya')} <ChevronRight size={15} />
+            style={{ background: btnBg, border: `1px solid ${btnBorder}`, color: btnColor }}>
+            {/* FIX: 'cert.next' → 'certificate.next' */}
+            {t('certificate.next')} <ChevronRight size={15} />
           </motion.button>
         </div>
       </motion.div>
@@ -296,18 +233,20 @@ export default function CertificatePage() {
 
         {/* Search */}
         <div className="relative max-w-md mx-auto mb-4">
-          <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: 'var(--body-color)' }} />
+          {/* FIX: style={{ color }} → className */}
+          <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--body-color)]" />
           <input
             value={query}
             onChange={e => setQuery(e.target.value)}
             placeholder={t('certificate.search_placeholder')}
-            className="w-full pl-9 pr-4 py-2.5 rounded-xl text-sm outline-none border transition-colors"
-            style={{ background: 'var(--card-bg)', borderColor: 'var(--border)', color: 'var(--dark)' }}
+            className="w-full pl-9 pr-4 py-2.5 rounded-xl text-sm outline-none border transition-colors
+                       bg-[var(--card-bg)] text-[var(--dark)] border-[var(--border)]"
           />
         </div>
 
         {/* Count */}
-        <p className="text-sm text-center mb-10" style={{ color: 'var(--body-color)' }}>
+        {/* FIX: style={{ color }} → className */}
+        <p className="text-sm text-center mb-10 text-[var(--body-color)]">
           {t('certificate.total', { count: filtered.length })}
         </p>
 
@@ -323,7 +262,8 @@ export default function CertificatePage() {
         ) : (
           <div className="text-center py-20">
             <p className="text-4xl mb-3">🔍</p>
-            <p style={{ color: 'var(--body-color)' }}>Tidak ada sertifikat yang cocok.</p>
+            {/* FIX: hardcode → t() + style={{ color }} → className */}
+            <p className="text-[var(--body-color)]">{t('certificate.empty')}</p>
           </div>
         )}
       </div>
@@ -331,12 +271,9 @@ export default function CertificatePage() {
       <AnimatePresence>
         {modal && (
           <CertModal
-            cert={modal}
-            filteredList={filtered}
-            onClose={closeModal}
-            onPrev={prevModal}
-            onNext={nextModal}
-            isDark={isDark}
+            cert={modal} filteredList={filtered}
+            onClose={closeModal} onPrev={prevModal} onNext={nextModal}
+            isDark={isDark} t={t}
           />
         )}
       </AnimatePresence>
